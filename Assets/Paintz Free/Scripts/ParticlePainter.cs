@@ -21,7 +21,7 @@ public class ParticlePainter : MonoBehaviour
         PaintTarget paintTarget = other.GetComponent<PaintTarget>();
         if (paintTarget != null)
         {
-            if (RandomChannel) brush.splatChannel = Random.Range(0, 2);
+            if (RandomChannel) brush.splatChannel = Random.Range(0, 3);
 
             int numCollisionEvents = part.GetCollisionEvents(other, collisionEvents);
             for (int i = 0; i < numCollisionEvents; i++)

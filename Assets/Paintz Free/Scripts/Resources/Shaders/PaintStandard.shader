@@ -10,6 +10,7 @@
 
 		_SplatColor1("Splat Color 1", Color) = (1,.5,0,1)
 		_SplatColor2("Splat Color 2", Color) = (1,0,0,1)
+		_SplatColor3("Splat Color 3", Color) = (0,0,1,1)
 
 		_SplatTex("Splat Texture", 2D) = "black" {}
 		_SplatTileNormalTex("Splat Normal", 2D) = "bump" {}
@@ -45,6 +46,7 @@
 		fixed4 _Color;
 		fixed4 _SplatColor1;
 		fixed4 _SplatColor2;
+		fixed4 _SplatColor3;
 
 		half _BumpPower;
 		half _Glossiness;
@@ -178,6 +180,7 @@
 		// Lerp the color with the splat colors based on the splat mask channels
 		c.xyz = lerp(c.xyz, _SplatColor1.xyz, splatMask.x);
 		c.xyz = lerp(c.xyz, _SplatColor2.xyz, splatMask.y);
+		c.xyz = lerp(c.xyz, _SplatColor3.xyz, splatMask.z);
 
 		o.Albedo = c.rgb;
 		o.Normal = tanNormal;
