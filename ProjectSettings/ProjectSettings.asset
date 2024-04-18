@@ -731,7 +731,7 @@ PlayerSettings:
   cloudProjectId: 1f39e678-3656-48e0-9336-620308bcbeb5
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
+  projectName: StandardRendererTesting
   organizationId: unity_cac759b3fc8e70fc4a0b
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
