@@ -24,6 +24,7 @@ public class WeaponEditor : Editor
 	private bool showBulletHoles = false;
 	private bool showCrosshairs = false;
 	private bool showAudio = false;
+	private bool showBrush = false;
 
 	public override void OnInspectorGUI()
 	{

@@ -68,6 +68,8 @@ public class SmartBulletHoleGroup
 // The Weapon class itself handles the weapon mechanics
 public class Weapon : MonoBehaviour
 {
+	
+
 	// Weapon Type
 	public WeaponType type = WeaponType.Projectile;		// Which weapon system should be used
 	
@@ -206,12 +208,15 @@ public class Weapon : MonoBehaviour
 	public AudioClip dryFireSound;						// Sound to play when the user tries to fire but is out of ammo
 
 	// Other
-	private bool canFire = true;						// Whether or not the weapon can currently fire (used for semi-auto weapons)
+	private bool canFire = true;                        // Whether or not the weapon can currently fire (used for semi-auto weapons)
 
+	private Brush brush;
 
 	// Use this for initialization
 	void Start()
 	{
+		brush = GetComponent<BrushMono>().brush;
+
 		// Calculate the actual ROF to be used in the weapon systems.  The rateOfFire variable is
 		// designed to make it easier on the user - it represents the number of rounds to be fired
 		// per second.  Here, an actual ROF decimal value is calculated that can be used with timers.
@@ -604,6 +609,9 @@ public class Weapon : MonoBehaviour
 			Ray ray = new Ray(raycastStartSpot.position, direction);
 			RaycastHit hit;
 
+
+			Debug.DrawRay(raycastStartSpot.position, direction, Color.red, 2f);
+
 			if (Physics.Raycast(ray, out hit, range))
 			{
 				// Warmup heat
@@ -614,6 +622,12 @@ public class Weapon : MonoBehaviour
 					heat = 0.0f;
 				}
 				
+				//paint the paintable.
+				if(hit.collider.gameObject.TryGetComponent<PaintTarget>(out PaintTarget paintTarget))
+                {
+					PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
+				}
+
 				// Damage
 				hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
 				
@@ -776,6 +790,7 @@ public class Weapon : MonoBehaviour
 				{
 					hit.rigidbody.AddForce(ray.direction * power * forceMultiplier);
 				}
+
 			}
 		}
 
