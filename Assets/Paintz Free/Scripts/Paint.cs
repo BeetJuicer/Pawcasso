@@ -3,7 +3,7 @@
 public class Paint
 {
     public Matrix4x4 paintMatrix;
-    public Vector4 channelMask;
+    public Vector4  channelMask;
     public Vector4 scaleBias;
     public Brush brush;
 }
