@@ -10,7 +10,7 @@ public class PaintSurfaceChecker : MonoBehaviour
     private float rayDistance = 1f;
 
     public GameObject testSphere;
-    public bool IsOnColoredGround { get; private set; }
+    public static bool IsOnColoredGround { get; private set; }
 
     private void Update()
     {

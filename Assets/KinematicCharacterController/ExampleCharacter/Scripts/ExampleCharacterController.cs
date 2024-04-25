@@ -297,7 +297,9 @@ namespace KinematicCharacterController.Examples
                             // Calculate target velocity
                             Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
-                            Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
+
+                            float onPaintSpeedMultiplier = PaintSurfaceChecker.IsOnColoredGround ? 1.5f : 1f;
+                            Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed * onPaintSpeedMultiplier;
 
                             // Smooth movement Velocity
                             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
