@@ -15,6 +15,7 @@ public class Paint
 {
     public Matrix4x4 paintMatrix;
     public Vector4  channelMask;
+    public Vector4  channelMask2;
     public Vector4 scaleBias;
     public Brush brush;
 }
@@ -42,6 +43,11 @@ public class Brush
         if (this.splatChannel == 1) return new Vector4(0, 1, 0, 0);
         if (this.splatChannel == 2) return new Vector4(0, 0, 1, 0);
         if (this.splatChannel == 3) return new Vector4(0, 0, 0, 1);
+
+        if (this.splatChannel == 4) return new Vector4(1, 0, 0, 1);
+        if (this.splatChannel == 5) return new Vector4(1, 1, 0, 1);
+        if (this.splatChannel == 6) return new Vector4(1, 1, 1, 1);
+        if (this.splatChannel == 7) return new Vector4(0, 0, 1, 1);
         return new Vector4(0, 0, 0, 0);
     }
 

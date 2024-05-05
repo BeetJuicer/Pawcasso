@@ -245,6 +245,7 @@ public class PaintTarget : MonoBehaviour
 
         Paint newPaint = new Paint();
         newPaint.paintMatrix = splatObject.transform.worldToLocalMatrix;
+
         newPaint.channelMask = brush.getMask();
         newPaint.scaleBias = brush.getTile();
         newPaint.brush = brush;
