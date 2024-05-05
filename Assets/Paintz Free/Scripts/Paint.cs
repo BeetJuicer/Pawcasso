@@ -1,5 +1,16 @@
 ﻿using UnityEngine;
 
+public struct ChannelMask
+{
+    int one;
+    int two;
+    int three;
+    int four;
+    int five;
+    int six;
+    int seven;
+}
+
 public class Paint
 {
     public Matrix4x4 paintMatrix;
