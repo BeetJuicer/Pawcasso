@@ -13,8 +13,10 @@ public class Pistol : MonoBehaviour
 	private float fireTimer;
 
 	// Charging
-	private float heat;
-	[SerializeField] private float maxWarmup;
+	private float startChargeTime;
+	private float finalChargeTime;
+	[SerializeField] private float maxChargeTime;
+	private bool isChargeAllowed;
 
 	// Ammo
 	private bool canFire = true;
@@ -57,29 +59,43 @@ public class Pistol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		/*flow:
-			getbuttonup Fire1 - shoot.
-
-			getbuttondown Fire2 - start counting until:
-					-getbuttonup Fire2 || getbuttonup Fire1
-
-			if get button up fire2
-				Do Boost. Depending on amount of charge.
-		 
-		 */
-
 		// Calculate the current accuracy for this weapon
 		currentAccuracy = Mathf.Lerp(currentAccuracy, accuracy, accuracyRecoverRate * Time.deltaTime);
 
 		// Update the fireTimer
 		fireTimer += Time.deltaTime;
 
-		if (fireTimer >= actualROF && canFire)
-		{
-			if (Input.GetButtonDown("Fire1"))
-			{
+		// start counting the charge if allowed.
+		if (isChargeAllowed && Input.GetButtonDown("Fire2"))
+        {
+			startChargeTime = Time.time;
+        }
+
+		// count the final charge time.
+		if (Input.GetButtonUp("Fire2"))
+        {
+			// charge not allowed means the user cancelled the charge using the left mouse button. No dash.
+			if(!isChargeAllowed)
+            {
+				isChargeAllowed = true;
+            }
+            else
+            {
+				finalChargeTime = Mathf.Min(Time.time - startChargeTime, maxChargeTime);
+				print("final charge time: " + finalChargeTime);
+            }
+
+		}
+
+		// Cancel the charge if there is any, and shoot if allowed.
+		if (Input.GetButtonDown("Fire1"))
+        {
+			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
+			isChargeAllowed = false;
+			finalChargeTime = 0;
+
+			if (fireTimer >= actualROF && canFire)
 				Fire();
-			}
 		}
 
 		// Reload if the weapon is out of ammo
