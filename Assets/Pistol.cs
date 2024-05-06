@@ -17,6 +17,7 @@ public class Pistol : MonoBehaviour
 	private float finalChargeTime;
 	[SerializeField] private float maxChargeTime;
 	private bool isChargeAllowed;
+	private float boostStartTime;
 
 	// Ammo
 	private bool canFire = true;
@@ -65,31 +66,40 @@ public class Pistol : MonoBehaviour
 		// Update the fireTimer
 		fireTimer += Time.deltaTime;
 
+		CheckInputs();
+
+		// Reload if the weapon is out of ammo
+		if (currentAmmo <= 0)
+			Reload();
+	}
+
+	void CheckInputs()
+    {
 		// start counting the charge if allowed.
 		if (isChargeAllowed && Input.GetButtonDown("Fire2"))
-        {
+		{
 			startChargeTime = Time.time;
-        }
+		}
 
 		// count the final charge time.
 		if (Input.GetButtonUp("Fire2"))
-        {
+		{
 			// charge not allowed means the user cancelled the charge using the left mouse button. No dash.
-			if(!isChargeAllowed)
-            {
+			if (!isChargeAllowed)
+			{
 				isChargeAllowed = true;
-            }
-            else
-            {
+			}
+			else
+			{
 				finalChargeTime = Mathf.Min(Time.time - startChargeTime, maxChargeTime);
-				print("final charge time: " + finalChargeTime);
-            }
+				//TODO: Boost() here. Call the character controller and enter a boosted state. No guns, no shooting.
+			}
 
 		}
 
 		// Cancel the charge if there is any, and shoot if allowed.
 		if (Input.GetButtonDown("Fire1"))
-        {
+		{
 			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
 			isChargeAllowed = false;
 			finalChargeTime = 0;
@@ -97,10 +107,6 @@ public class Pistol : MonoBehaviour
 			if (fireTimer >= actualROF && canFire)
 				Fire();
 		}
-
-		// Reload if the weapon is out of ammo
-		if (currentAmmo <= 0)
-			Reload();
 	}
 
 	void Fire()

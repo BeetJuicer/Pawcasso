@@ -9,6 +9,7 @@ namespace KinematicCharacterController.Examples
     public enum CharacterState
     {
         Default,
+        Charging
     }
 
     public enum OrientationMethod
@@ -25,6 +26,7 @@ namespace KinematicCharacterController.Examples
         public bool JumpDown;
         public bool CrouchDown;
         public bool CrouchUp;
+        public bool ChargingDown;
     }
 
     public struct AICharacterInputs
@@ -62,6 +64,11 @@ namespace KinematicCharacterController.Examples
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
 
+        [Header("Charging")]
+        public float ChargeSpeed = 15f;
+        public float MaxChargeTime = 1.5f;
+        public float StoppedTime = 1f;
+
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
         public BonusOrientationMethod BonusOrientationMethod = BonusOrientationMethod.None;
@@ -88,6 +95,12 @@ namespace KinematicCharacterController.Examples
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
+
+        private Vector3 _currentChargeVelocity;
+        private bool _isStopped;
+        private bool _mustStopVelocity = false;
+        private float _timeSinceStartedCharge = 0;
+        private float _timeSinceStopped = 0;
 
         private void Awake()
         {
@@ -120,6 +133,14 @@ namespace KinematicCharacterController.Examples
                     {
                         break;
                     }
+                case CharacterState.Charging:
+                    {
+                        _currentChargeVelocity = Motor.CharacterForward * ChargeSpeed;
+                        _isStopped = false;
+                        _timeSinceStartedCharge = 0f;
+                        _timeSinceStopped = 0f;
+                        break;
+                    }
             }
         }
 
@@ -142,6 +163,12 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void SetInputs(ref PlayerCharacterInputs inputs)
         {
+            // Handle state transition from input
+            if (inputs.ChargingDown)
+            {
+                TransitionToState(CharacterState.Charging);
+            }
+
             // Clamp input
             Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
 
@@ -216,6 +243,23 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void BeforeCharacterUpdate(float deltaTime)
         {
+            switch (CurrentCharacterState)
+            {
+                case CharacterState.Default:
+                    {
+                        break;
+                    }
+                case CharacterState.Charging:
+                    {
+                        // Update times
+                        _timeSinceStartedCharge += deltaTime;
+                        if (_isStopped)
+                        {
+                            _timeSinceStopped += deltaTime;
+                        }
+                        break;
+                    }
+            }
         }
 
         /// <summary>
@@ -387,6 +431,31 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
+
+                case CharacterState.Charging:
+                    {
+                        // If we have stopped and need to cancel velocity, do it here
+                        if (_mustStopVelocity)
+                        {
+                            currentVelocity = Vector3.zero;
+                            _mustStopVelocity = false;
+                        }
+
+                        if (_isStopped)
+                        {
+                            // When stopped, do no velocity handling except gravity
+                            currentVelocity += Gravity * deltaTime;
+                        }
+                        else
+                        {
+                            // When charging, velocity is always constant
+                            float previousY = currentVelocity.y;
+                            currentVelocity = _currentChargeVelocity;
+                            currentVelocity.y = previousY;
+                            currentVelocity += Gravity * deltaTime;
+                        }
+                        break;
+                    }
             }
         }
 
@@ -448,6 +517,23 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
+
+                case CharacterState.Charging:
+                    {
+                        // Detect being stopped by elapsed time
+                        if (!_isStopped && _timeSinceStartedCharge > MaxChargeTime)
+                        {
+                            _mustStopVelocity = true;
+                            _isStopped = true;
+                        }
+
+                        // Detect end of stopping phase and transition back to default movement state
+                        if (_timeSinceStopped > StoppedTime)
+                        {
+                            TransitionToState(CharacterState.Default);
+                        }
+                        break;
+                    }
             }
         }
 
@@ -485,6 +571,19 @@ namespace KinematicCharacterController.Examples
 
         public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
         {
+            switch (CurrentCharacterState)
+            {
+                case CharacterState.Charging:
+                    {
+                        // Detect being stopped by obstructions
+                        if (!_isStopped && !hitStabilityReport.IsStable && Vector3.Dot(-hitNormal, _currentChargeVelocity.normalized) > 0.5f)
+                        {
+                            _mustStopVelocity = true;
+                            _isStopped = true;
+                        }
+                        break;
+                    }
+            }
         }
 
         public void AddVelocity(Vector3 velocity)
