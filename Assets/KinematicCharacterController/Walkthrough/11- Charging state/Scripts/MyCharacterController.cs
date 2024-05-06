@@ -141,6 +141,10 @@ namespace KinematicCharacterController.Walkthrough.ChargingState
         /// <summary>
         /// This is called every frame by MyPlayer in order to tell the character what its inputs are
         /// </summary>
+        /// 
+
+
+
         public void SetInputs(ref PlayerCharacterInputs inputs)
         {
             // Handle state transition from input

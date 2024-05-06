@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController.Examples;
 
 public class Pistol : MonoBehaviour
 {
 	private Brush brush;
+	[SerializeField] private ExampleCharacterController characterController;
 
     #region Gun Variables
     // shoot speed
@@ -91,8 +93,13 @@ public class Pistol : MonoBehaviour
 			}
 			else
 			{
-				finalChargeTime = Mathf.Min(Time.time - startChargeTime, maxChargeTime);
+				finalChargeTime = Time.time - startChargeTime;
 				//TODO: Boost() here. Call the character controller and enter a boosted state. No guns, no shooting.
+				//Fire off an event named Charge. Passing in finalChargeTime as event Argument
+				// have a low medium high.
+
+				//calculate the charge level depending on the amount of time charged.
+				characterController.EnterChargeState(1);
 			}
 
 		}

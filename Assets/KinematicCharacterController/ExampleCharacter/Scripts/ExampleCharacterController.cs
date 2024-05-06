@@ -66,8 +66,11 @@ namespace KinematicCharacterController.Examples
 
         [Header("Charging")]
         public float ChargeSpeed = 15f;
-        public float MaxChargeTime = 1.5f;
+        public float lowChargeTime = 0.5f;
+        public float mediumChargeTime = 1f;
+        public float highChargeTime = 1.5f;
         public float StoppedTime = 1f;
+        private float finalChargeTime;
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -158,17 +161,29 @@ namespace KinematicCharacterController.Examples
             }
         }
 
+        public void EnterChargeState(int chargeLevel)
+        {
+            switch (chargeLevel)
+            {
+                case 1:
+                    finalChargeTime = lowChargeTime;
+                    break;
+                case 2:
+                    finalChargeTime = mediumChargeTime;
+                    break;
+                case 3:
+                    finalChargeTime = highChargeTime;
+                    break;
+            }
+
+            TransitionToState(CharacterState.Charging);
+        }
+
         /// <summary>
         /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
         /// </summary>
         public void SetInputs(ref PlayerCharacterInputs inputs)
         {
-            // Handle state transition from input
-            if (inputs.ChargingDown)
-            {
-                TransitionToState(CharacterState.Charging);
-            }
-
             // Clamp input
             Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
 
@@ -521,7 +536,7 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Charging:
                     {
                         // Detect being stopped by elapsed time
-                        if (!_isStopped && _timeSinceStartedCharge > MaxChargeTime)
+                        if (!_isStopped && _timeSinceStartedCharge > finalChargeTime)
                         {
                             _mustStopVelocity = true;
                             _isStopped = true;
