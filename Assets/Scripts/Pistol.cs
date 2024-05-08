@@ -77,6 +77,17 @@ public class Pistol : MonoBehaviour
 
 	void CheckInputs()
     {
+		// Cancel the charge if there is any, and shoot if allowed.
+		if (Input.GetButtonDown("Fire1"))
+		{
+			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
+			isChargeAllowed = false;
+			finalChargeTime = 0;
+
+			if (fireTimer >= actualROF && canFire)
+				Fire();
+		}
+
 		// start counting the charge if allowed.
 		if (isChargeAllowed && Input.GetButtonDown("Fire2"))
 		{
@@ -104,16 +115,7 @@ public class Pistol : MonoBehaviour
 
 		}
 
-		// Cancel the charge if there is any, and shoot if allowed.
-		if (Input.GetButtonDown("Fire1"))
-		{
-			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
-			isChargeAllowed = false;
-			finalChargeTime = 0;
 
-			if (fireTimer >= actualROF && canFire)
-				Fire();
-		}
 	}
 
 	void Fire()
