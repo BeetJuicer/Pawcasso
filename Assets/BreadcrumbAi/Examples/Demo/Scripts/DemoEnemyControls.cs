@@ -164,7 +164,7 @@ public class DemoEnemyControls : MonoBehaviour {
 
 			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
 
-			ScoreManager.AddToPlayerScore(pointWorth);
+			ScoreManager.Instance.AddToPlayerScore(pointWorth);
 
 			Destroy(GetComponent<Rigidbody>());
 			Destroy(GetComponent<Collider>());

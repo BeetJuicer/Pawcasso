@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager instance;
+    public static ScoreManager Instance { get; private set; }
     public static int playerScore { get; private set; }
 
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
-    public static void AddToPlayerScore(int addScore)
+    public void AddToPlayerScore(int addScore)
     {
         // apply multipliers here
         playerScore += addScore;
