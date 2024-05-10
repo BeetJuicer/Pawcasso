@@ -184,7 +184,8 @@ public class DemoEnemyControls : MonoBehaviour {
 		if(enemyType == EnemyType.Special){
 			GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().specialEnemyCount--;
 		}
-		GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().enemyCount--;
+		//TODO: update enemy count in room.
+		//GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().enemyCount--;
 		Destroy(gameObject);
 	}
 	
@@ -192,7 +193,6 @@ public class DemoEnemyControls : MonoBehaviour {
     {
 		_isHit = true;
 		ai.Health -= damage;
-		print(ai.Health);
 		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
 		Destroy(blood, 3);
 	}

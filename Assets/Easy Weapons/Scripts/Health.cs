@@ -42,10 +42,11 @@ public class Health : MonoBehaviour
 		// If the health runs out, then Die.
 		if (currentHealth <= 0 && !dead && canDie)
 			Die();
-
 		// Make sure that the health never exceeds the maximum health
 		else if (currentHealth > maxHealth)
 			currentHealth = maxHealth;
+
+		print("Health: " + currentHealth + "/" + maxHealth);
 	}
 
 	public void Die()
@@ -59,10 +60,15 @@ public class Health : MonoBehaviour
 		if (makeExplosion)
 			Instantiate(explosion, transform.position, transform.rotation);
 
-		if (isPlayer && deathCam != null)
-			deathCam.SetActive(true);
-
-		// Remove this GameObject from the scene
-		Destroy(gameObject);
+		if (isPlayer)
+        {
+			// TODO: Change scene to restart.
+			print("Player is dead!");
+        }
+        else
+        {
+			// Remove this GameObject from the scene
+			Destroy(gameObject);
+		}
 	}
 }
