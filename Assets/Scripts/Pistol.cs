@@ -57,6 +57,8 @@ public class Pistol : MonoBehaviour
 			actualROF = 1.0f / rateOfFire;
 		else
 			actualROF = 0.01f;
+
+		currentAmmo = ammoCapacity;
 	}
 
     // Update is called once per frame
@@ -167,14 +169,20 @@ public class Pistol : MonoBehaviour
 				PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 			}
 
+			//damage the enemy
+			if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
+            {
+				enemy.TakeDamage(damage, hit.point, Quaternion.identity);
+            }
+
 			// Damage
 			hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
 
 			// Hit Effects -TODO: place a paint impact particle here
 			if (hitEffect != null)
 				Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
-			else
-				print("no hit effect gameObject!");        
+			//else
+				//print("no hit effect gameObject!");        
 
 			// Add force to the object that was hit
 			//if (hit.rigidbody)

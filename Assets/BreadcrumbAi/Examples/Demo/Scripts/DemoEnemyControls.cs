@@ -140,12 +140,13 @@ public class DemoEnemyControls : MonoBehaviour {
 	        _isHit = false;
         }
         
+		//TODO: implement scoring system.
 		if(ai.lifeState == Ai.LIFE_STATE.IsDead){
 			if(!_pointScored){
 				if(enemyType == EnemyType.Special){
-					score.ScorePoint(50);
+					//score.ScorePoint(50);
 				} else {
-					score.ScorePoint(15);
+					//score.ScorePoint(15);
 				}
 				_pointScored = true;
 			}
@@ -187,12 +188,12 @@ public class DemoEnemyControls : MonoBehaviour {
 		Destroy(gameObject);
 	}
 	
-	void OnCollisionEnter(Collision col){
-		if(col.collider.name.Contains("Bullet")){
-			_isHit = true;
-			ai.Health -= 25;
-			GameObject blood = Instantiate(bloodPrefab, col.collider.transform.position, col.collider.transform.rotation) as GameObject;
-			Destroy(blood, 3);
-		}
+	public void TakeDamage(float damage, Vector3 hitSpawnPoint, Quaternion rotation)
+    {
+		_isHit = true;
+		ai.Health -= damage;
+		print(ai.Health);
+		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
+		Destroy(blood, 3);
 	}
 }
