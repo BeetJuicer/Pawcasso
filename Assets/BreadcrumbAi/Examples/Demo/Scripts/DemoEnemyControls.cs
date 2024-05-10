@@ -10,6 +10,8 @@ public class DemoEnemySounds{
 public class DemoEnemyControls : MonoBehaviour {
 
 	public DemoEnemySounds audioClips;
+
+	public int pointWorth;
 	public enum EnemyType {Melee, Ranged, Special};
 	public GameObject healthPickUpPrefab;
 	public bool _canDropPickUp;
@@ -159,6 +161,11 @@ public class DemoEnemyControls : MonoBehaviour {
 				}
 				_canDropPickUp = false;
 			}
+
+			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
+
+			ScoreManager.AddToPlayerScore(pointWorth);
+
 			Destroy(GetComponent<Rigidbody>());
 			Destroy(GetComponent<Collider>());
 			Destroy(GetComponent<Ai>());		
