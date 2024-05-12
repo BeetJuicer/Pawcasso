@@ -463,9 +463,10 @@ namespace KinematicCharacterController.Examples
                         }
                         else
                         {
+                            float onPaintSpeedMultiplier = PaintSurfaceChecker.IsOnColoredGround ? 1.5f : 1f;
                             // When charging, velocity is always constant
                             float previousY = currentVelocity.y;
-                            currentVelocity = _currentChargeVelocity;
+                            currentVelocity = _currentChargeVelocity * onPaintSpeedMultiplier;
                             currentVelocity.y = previousY;
                             currentVelocity += Gravity * deltaTime;
                         }
