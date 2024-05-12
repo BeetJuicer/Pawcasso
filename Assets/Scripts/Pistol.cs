@@ -7,6 +7,7 @@ public class Pistol : MonoBehaviour
 {
 	private Brush brush;
 	[SerializeField] private ExampleCharacterController characterController;
+	[SerializeField] private DashParticles dashParticles;
 
     #region Gun Variables
     // shoot speed
@@ -113,11 +114,10 @@ public class Pistol : MonoBehaviour
 
 				//calculate the charge level depending on the amount of time charged.
 				characterController.EnterChargeState(1);
+				dashParticles.PlayDash(1);
 			}
 
 		}
-
-
 	}
 
 	void Fire()

@@ -148,7 +148,7 @@ public class DemoEnemyControls : MonoBehaviour {
 				if(enemyType == EnemyType.Special){
 					//score.ScorePoint(50);
 				} else {
-					//score.ScorePoint(15);
+					ScoreManager.Instance.AddToPlayerScore(pointWorth);
 				}
 				_pointScored = true;
 			}
@@ -163,8 +163,6 @@ public class DemoEnemyControls : MonoBehaviour {
 			}
 
 			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
-
-			ScoreManager.Instance.AddToPlayerScore(pointWorth);
 
 			Destroy(GetComponent<Rigidbody>());
 			Destroy(GetComponent<Collider>());

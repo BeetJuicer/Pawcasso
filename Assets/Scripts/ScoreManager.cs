@@ -6,11 +6,16 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
     public static int playerScore { get; private set; }
-
+    public static int comboMultiplier { get; private set; }
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void AddToPlayerScore(int addScore)
@@ -20,5 +25,8 @@ public class ScoreManager : MonoBehaviour
         print("New Score: " + playerScore);
     }
 
+    public void AddToComboMultiplier(float addMultiplier)
+    {
 
+    }
 }
