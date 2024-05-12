@@ -7,25 +7,25 @@ public class PlayerMovement : MonoBehaviour
     //Ground
     [SerializeField] float groundSpeed = 8f;
     [SerializeField] float runSpeed = 10f;
-    float grAccel = 30f;
+    [SerializeField] float grAccel = 30f;
 
     //Air
-    float airSpeed = 8f;
-    float airAccel = 20f;
+    [SerializeField] float airSpeed = 8f;
+    [SerializeField] float airAccel = 20f;
 
     //Jump
-    float jumpUpSpeed = 7.2f;
-    float dashSpeed = 6f;
+    [SerializeField] float jumpUpSpeed = 7.2f;
+    [SerializeField] float dashSpeed = 6f;
 
     //Wall
-    float wallSpeed = 10f;
-    float wallClimbSpeed = 4f;
-    float wallAccel = 20f;
-    float wallRunTime = 3f;
-    float wallStickiness = 20f;
-    float wallStickDistance = 1f;
-    float wallFloorBarrier = 40f;
-    float wallBanTime = 4f;
+    [SerializeField] float wallSpeed = 10f;
+    [SerializeField] float wallClimbSpeed = 4f;
+    [SerializeField] float wallAccel = 20f;
+    [SerializeField] float wallRunTime = 3f;
+    [SerializeField] float wallStickiness = 20f;
+    [SerializeField] float wallStickDistance = 1f;
+    [SerializeField] float wallFloorBarrier = 40f;
+    [SerializeField] float wallBanTime = 4f;
     Vector3 bannedGroundNormal;
 
     //Cooldowns

@@ -44,7 +44,7 @@ public class DemoEnemyControls : MonoBehaviour {
 		ai = GetComponent<Ai>();
 		anim = GetComponent<Animator>();
 		audioSource = gameObject.AddComponent<AudioSource>();
-		score = Camera.main.GetComponent<DemoScore>();
+		//score = Camera.main.GetComponent<DemoScore>();
 		GameObject go = GameObject.FindGameObjectWithTag("Player");
 		if(go){
 			player = go.transform;
