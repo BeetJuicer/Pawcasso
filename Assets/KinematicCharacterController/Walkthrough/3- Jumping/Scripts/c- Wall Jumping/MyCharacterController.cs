@@ -18,6 +18,9 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
     {
         public KinematicCharacterMotor Motor;
 
+        [Header("Wall Detection")]
+        public float rayDetectionLength = 1f;
+
         [Header("Stable Movement")]
         public float MaxStableMoveSpeed = 10f;
         public float StableMovementSharpness = 15;
@@ -178,6 +181,35 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
                         }
                     }
 
+                    
+                    Ray front = new Ray(transform.position,Vector3.forward);
+                    Ray left = new Ray(transform.position,Vector3.left);
+                    Ray right = new Ray(transform.position,Vector3.right);
+                    Ray back = new Ray(transform.position,Vector3.back);
+                    Ray[] wallRays = { front, left, right, back };
+                    Ray nearestHit;
+                    float nearestDistance = 0f;
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (Physics.Raycast(wallRays[i], out RaycastHit hitInfo, rayDetectionLength))
+                        {
+                            if(hitInfo.distance > nearestDistance)
+                            {                             
+                                nearestHit = wallRays[i];
+                            }
+
+                            //TODO: make the _wallJumpNormal either (1) if moving towards a certain direction and there is a hit there, that one.
+                                                              // or (2) if no moveDirection, the nearest.
+                            // Right now, this code sets the _wallJumpNormal to the last direction with a hit, so priority is front, left, right, back. in order above.
+                            if (!Motor.GroundingStatus.IsStableOnGround)
+                            {
+                                _wallJumpNormal = hitInfo.normal;
+                                _canWallJump = true;
+                            }
+                        }
+                    }
+
                     // See if we actually are allowed to jump
                     if (_canWallJump ||
                         (!_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime)))
@@ -186,7 +218,8 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
                         Vector3 jumpDirection = Motor.CharacterUp;
                         if (_canWallJump)
                         {
-                            jumpDirection = _wallJumpNormal;
+                            jumpDirection = Vector3.Lerp(Motor.CharacterUp, _wallJumpNormal, 0.5f);
+                            jumpDirection *= 2;
                         }
                         else if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
                         {
@@ -199,6 +232,7 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
 
                         // Add to the return velocity and reset jump state
                         currentVelocity += (jumpDirection * JumpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                        print("Current Velocity: " + currentVelocity);
                         _jumpRequested = false;
                         _jumpConsumed = true;
                         _jumpedThisFrame = true;
