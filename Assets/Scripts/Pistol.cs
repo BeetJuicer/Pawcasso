@@ -9,6 +9,8 @@ public class Pistol : MonoBehaviour
 	[SerializeField] private ExampleCharacterController characterController;
 	[SerializeField] private DashParticles dashParticles;
 
+	[SerializeField] private GunColor gunColor = GunColor.Red;
+
     #region Gun Variables
     // shoot speed
     [SerializeField] private float rateOfFire;
@@ -122,6 +124,9 @@ public class Pistol : MonoBehaviour
 
 	void Fire()
 	{
+		//Wish to add to comboTimer;
+		ScoreManager.Instance.WishForCombo(gunColor);
+
 		// Reset the fireTimer to 0 (for ROF)
 		fireTimer = 0.0f;
 
