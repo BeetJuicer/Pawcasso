@@ -179,6 +179,9 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
                 print("Wall normal:" + _wallJumpNormal);
                 Vector3 wallInput = new Vector3(_moveInputVector.x, -_moveInputVector.z * _wallJumpNormal.z, _moveInputVector.y);
                 currentVelocity = wallInput * MaxStableMoveSpeed;
+
+                // TODO: If we lose detection of a wall in the direction we used to stick to, _canWallJump is false.
+
             }
             else
             {
