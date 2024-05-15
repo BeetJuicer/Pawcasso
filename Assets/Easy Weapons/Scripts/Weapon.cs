@@ -260,27 +260,27 @@ public class Weapon : MonoBehaviour
         if (crosshairTexture == null)
             crosshairTexture = new Texture2D(0, 0);
 
-		// Initialize the bullet hole pools list
-		for (int i = 0; i < bulletHolePoolNames.Count; i++)
-		{
-			GameObject g = GameObject.Find(bulletHolePoolNames[i]);
+		//// Initialize the bullet hole pools list
+		//for (int i = 0; i < bulletHolePoolNames.Count; i++)
+		//{
+		//	GameObject g = GameObject.Find(bulletHolePoolNames[i]);
 
-			if (g != null && g.GetComponent<BulletHolePool>() != null)
-				bulletHoleGroups[i].bulletHole = g.GetComponent<BulletHolePool>();
-			else
-				Debug.LogWarning("Bullet Hole Pool does not exist or does not have a BulletHolePool component.  Please assign GameObjects in the inspector that have the BulletHolePool component.");
-		}
+		//	if (g != null && g.GetComponent<BulletHolePool>() != null)
+		//		bulletHoleGroups[i].bulletHole = g.GetComponent<BulletHolePool>();
+		//	else
+		//		Debug.LogWarning("Bullet Hole Pool does not exist or does not have a BulletHolePool component.  Please assign GameObjects in the inspector that have the BulletHolePool component.");
+		//}
 		
-		// Initialize the default bullet hole pools list
-		for (int i = 0; i < defaultBulletHolePoolNames.Count; i++)
-		{
-			GameObject g = GameObject.Find(defaultBulletHolePoolNames[i]);
+		//// Initialize the default bullet hole pools list
+		//for (int i = 0; i < defaultBulletHolePoolNames.Count; i++)
+		//{
+		//	GameObject g = GameObject.Find(defaultBulletHolePoolNames[i]);
 
-			if (g.GetComponent<BulletHolePool>() != null)
-				defaultBulletHoles[i] = g.GetComponent<BulletHolePool>();
-			else
-				Debug.LogWarning("Default Bullet Hole Pool does not have a BulletHolePool component.  Please assign GameObjects in the inspector that have the BulletHolePool component.");
-		}
+		//	if (g.GetComponent<BulletHolePool>() != null)
+		//		defaultBulletHoles[i] = g.GetComponent<BulletHolePool>();
+		//	else
+		//		Debug.LogWarning("Default Bullet Hole Pool does not have a BulletHolePool component.  Please assign GameObjects in the inspector that have the BulletHolePool component.");
+		//}
 	}
 	
 	// Update is called once per frame

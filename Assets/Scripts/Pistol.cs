@@ -7,6 +7,9 @@ public class Pistol : MonoBehaviour
 {
 	private Brush brush;
 	[SerializeField] private ExampleCharacterController characterController;
+	[SerializeField] private DashParticles dashParticles;
+
+	[SerializeField] private GunColor gunColor = GunColor.Red;
 
     #region Gun Variables
     // shoot speed
@@ -57,6 +60,8 @@ public class Pistol : MonoBehaviour
 			actualROF = 1.0f / rateOfFire;
 		else
 			actualROF = 0.01f;
+
+		currentAmmo = ammoCapacity;
 	}
 
     // Update is called once per frame
@@ -111,15 +116,17 @@ public class Pistol : MonoBehaviour
 
 				//calculate the charge level depending on the amount of time charged.
 				characterController.EnterChargeState(1);
+				dashParticles.PlayDash(1);
 			}
 
 		}
-
-
 	}
 
 	void Fire()
 	{
+		//Wish to add to comboTimer;
+		ScoreManager.Instance.WishForCombo(gunColor);
+
 		// Reset the fireTimer to 0 (for ROF)
 		fireTimer = 0.0f;
 
@@ -167,14 +174,20 @@ public class Pistol : MonoBehaviour
 				PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 			}
 
+			//damage the enemy
+			if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
+            {
+				enemy.TakeDamage(damage, hit.point, Quaternion.identity);
+            }
+
 			// Damage
 			hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
 
 			// Hit Effects -TODO: place a paint impact particle here
 			if (hitEffect != null)
 				Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
-			else
-				print("no hit effect gameObject!");        
+			//else
+				//print("no hit effect gameObject!");        
 
 			// Add force to the object that was hit
 			//if (hit.rigidbody)
