@@ -29,6 +29,15 @@ namespace KinematicCharacterController.Examples
                     }
                     TeleportTo.isBeingTeleportedTo = true;
                 }
+
+                PlayerMovement pm = other.GetComponent<PlayerMovement>();
+                if (pm)
+                {
+                    pm.transform.position = TeleportTo.transform.position;
+                    pm.transform.rotation = TeleportTo.transform.rotation;
+
+                    TeleportTo.isBeingTeleportedTo = true;
+                }
             }
 
             isBeingTeleportedTo = false;
