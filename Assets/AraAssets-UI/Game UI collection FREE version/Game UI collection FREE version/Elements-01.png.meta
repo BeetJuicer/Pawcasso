@@ -110,15 +110,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Elements-01_0
+      name: AmmoBorder
       rect:
         serializedVersion: 2
-        x: 2604
-        y: 1318
-        width: 1005
-        height: 325
+        x: 2633
+        y: 1480
+        width: 922
+        height: 112
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -126,6 +126,90 @@ TextureImporter:
       bones: []
       spriteID: db0a360c3e78b8d45ad0f6321d3000a8
       internalID: 262549626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealthBorder
+      rect:
+        serializedVersion: 2
+        x: 2966
+        y: 886
+        width: 1013
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdaeace59ceb87c40b2a6460c409b844
+      internalID: -1883226278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealthFill
+      rect:
+        serializedVersion: 2
+        x: 3043
+        y: 2222
+        width: 1000
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbbc3e93da202584b83169651cfdd4a6
+      internalID: -876407704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elements-01_0
+      rect:
+        serializedVersion: 2
+        x: 3406
+        y: 2180
+        width: 95
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64a3cde5859ff6f409ecdc4a64fda7e7
+      internalID: -1584286574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AmmoFill
+      rect:
+        serializedVersion: 2
+        x: 3014
+        y: 1066
+        width: 923
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29e34f91dd7d6414aa0c27941c83c0e7
+      internalID: 1175639212
       vertices: []
       indices: 
       edges: []
@@ -141,7 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Elements-01_0: 262549626
+      AmmoBorder: 262549626
+      AmmoFill: 1175639212
+      Elements-01_0: -1584286574
+      HealthBorder: -1883226278
+      HealthFill: -876407704
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
