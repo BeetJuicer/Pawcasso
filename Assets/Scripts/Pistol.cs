@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController.Examples;
+using UnityEngine.UI;
 
 public class Pistol : MonoBehaviour
 {
@@ -18,11 +19,12 @@ public class Pistol : MonoBehaviour
 	private float fireTimer;
 
 	// Charging
-	private float startChargeTime;
-	private float finalChargeTime;
 	[SerializeField] private float maxChargeTime;
+	private float chargeTimer;
 	private bool isChargeAllowed;
-	private float boostStartTime;
+	private bool isCharging;
+	[SerializeField] private Slider chargeSlider;
+
 
 	// Ammo
 	private bool canFire = true;
@@ -52,6 +54,7 @@ public class Pistol : MonoBehaviour
 	[SerializeField] private GameObject[] muzzleEffects; // Particles for muzzleEffects to choose randomly.
     #endregion
 
+
     private void Start()
     {
 		brush = GetComponent<BrushMono>().brush;
@@ -62,6 +65,8 @@ public class Pistol : MonoBehaviour
 			actualROF = 0.01f;
 
 		currentAmmo = ammoCapacity;
+
+		chargeSlider.gameObject.SetActive(false);
 	}
 
     // Update is called once per frame
@@ -75,6 +80,19 @@ public class Pistol : MonoBehaviour
 
 		CheckInputs();
 
+		if(isCharging)
+        {
+			chargeSlider.gameObject.SetActive(true);
+			chargeTimer += Time.deltaTime;
+			chargeSlider.value = (chargeTimer / maxChargeTime);
+			print(chargeSlider.value);
+        }
+        else
+        {
+			chargeSlider.gameObject.SetActive(false);
+		}
+
+
 		// Reload if the weapon is out of ammo
 		if (currentAmmo <= 0)
 			Reload();
@@ -86,39 +104,31 @@ public class Pistol : MonoBehaviour
 		if (Input.GetButtonDown("Fire1"))
 		{
 			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
-			isChargeAllowed = false;
-			finalChargeTime = 0;
+			isCharging = false;
+			chargeTimer = 0;
 
 			if (fireTimer >= actualROF && canFire)
 				Fire();
 		}
 
 		// start counting the charge if allowed.
-		if (isChargeAllowed && Input.GetButtonDown("Fire2"))
+		if (Input.GetButtonDown("Fire2"))
 		{
-			startChargeTime = Time.time;
+			isCharging = true;
 		}
 
 		// count the final charge time.
 		if (Input.GetButtonUp("Fire2"))
 		{
-			// charge not allowed means the user cancelled the charge using the left mouse button. No dash.
-			if (!isChargeAllowed)
-			{
-				isChargeAllowed = true;
-			}
-			else
-			{
-				finalChargeTime = Time.time - startChargeTime;
-				//TODO: Boost() here. Call the character controller and enter a boosted state. No guns, no shooting.
-				//Fire off an event named Charge. Passing in finalChargeTime as event Argument
-				// have a low medium high.
-
-				//calculate the charge level depending on the amount of time charged.
+			//calculate the charge level depending on the amount of time charged.
+			if(chargeTimer >= maxChargeTime)
+            {
 				characterController.EnterChargeState(1);
 				dashParticles.PlayDash(1);
-			}
+            }
 
+			isCharging = false;
+			chargeTimer = 0;
 		}
 	}
 
