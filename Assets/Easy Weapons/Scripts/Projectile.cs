@@ -148,7 +148,7 @@ public class Projectile : MonoBehaviour
 		}
 	}
 
-	void Explode(Vector3 position)
+	protected void Explode(Vector3 position)
 	{
 		// Instantiate the explosion
 		if (explosion != null)
