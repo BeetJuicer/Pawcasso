@@ -10,6 +10,8 @@ public class DemoEnemySounds{
 public class DemoEnemyControls : MonoBehaviour {
 
 	public DemoEnemySounds audioClips;
+
+	public int pointWorth;
 	public enum EnemyType {Melee, Ranged, Special};
 	public GameObject healthPickUpPrefab;
 	public bool _canDropPickUp;
@@ -42,7 +44,7 @@ public class DemoEnemyControls : MonoBehaviour {
 		ai = GetComponent<Ai>();
 		anim = GetComponent<Animator>();
 		audioSource = gameObject.AddComponent<AudioSource>();
-		score = Camera.main.GetComponent<DemoScore>();
+		//score = Camera.main.GetComponent<DemoScore>();
 		GameObject go = GameObject.FindGameObjectWithTag("Player");
 		if(go){
 			player = go.transform;
@@ -140,12 +142,13 @@ public class DemoEnemyControls : MonoBehaviour {
 	        _isHit = false;
         }
         
+		//TODO: implement scoring system.
 		if(ai.lifeState == Ai.LIFE_STATE.IsDead){
 			if(!_pointScored){
 				if(enemyType == EnemyType.Special){
-					score.ScorePoint(50);
+					//score.ScorePoint(50);
 				} else {
-					score.ScorePoint(15);
+					ScoreManager.Instance.AddToPlayerScore(pointWorth);
 				}
 				_pointScored = true;
 			}
@@ -158,6 +161,9 @@ public class DemoEnemyControls : MonoBehaviour {
 				}
 				_canDropPickUp = false;
 			}
+
+			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
+
 			Destroy(GetComponent<Rigidbody>());
 			Destroy(GetComponent<Collider>());
 			Destroy(GetComponent<Ai>());		
@@ -183,16 +189,16 @@ public class DemoEnemyControls : MonoBehaviour {
 		if(enemyType == EnemyType.Special){
 			GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().specialEnemyCount--;
 		}
-		GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().enemyCount--;
+		//TODO: update enemy count in room.
+		//GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().enemyCount--;
 		Destroy(gameObject);
 	}
 	
-	void OnCollisionEnter(Collision col){
-		if(col.collider.name.Contains("Bullet")){
-			_isHit = true;
-			ai.Health -= 25;
-			GameObject blood = Instantiate(bloodPrefab, col.collider.transform.position, col.collider.transform.rotation) as GameObject;
-			Destroy(blood, 3);
-		}
+	public void TakeDamage(float damage, Vector3 hitSpawnPoint, Quaternion rotation)
+    {
+		_isHit = true;
+		ai.Health -= damage;
+		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
+		Destroy(blood, 3);
 	}
 }

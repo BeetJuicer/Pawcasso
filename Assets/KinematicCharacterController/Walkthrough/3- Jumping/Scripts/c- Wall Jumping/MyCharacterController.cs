@@ -18,6 +18,9 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
     {
         public KinematicCharacterMotor Motor;
 
+        [Header("Wall Detection")]
+        public float rayDetectionLength = 1f;
+
         [Header("Stable Movement")]
         public float MaxStableMoveSpeed = 10f;
         public float StableMovementSharpness = 15;
@@ -50,6 +53,7 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
         private float _timeSinceLastAbleToJump = 0f;
         private bool _doubleJumpConsumed = false;
         private bool _canWallJump = false;
+        private bool _canWallRun = false;
         private Vector3 _wallJumpNormal;
 
         private void Start()
@@ -119,6 +123,40 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
             Vector3 targetMovementVelocity = Vector3.zero;
+
+
+            Ray front = new Ray(transform.position, Vector3.forward);
+            Ray left = new Ray(transform.position, Vector3.left);
+            Ray right = new Ray(transform.position, Vector3.right);
+            Ray back = new Ray(transform.position, Vector3.back);
+            Ray[] wallRays = { front, left, right, back };
+            Ray nearestHit = front;
+            float nearestDistance = 0f;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (Physics.Raycast(wallRays[i], out RaycastHit hitInfo, rayDetectionLength))
+                {
+                    if (hitInfo.distance > nearestDistance)
+                    {
+                        //nearestHit = wallRays[i];
+                    }
+
+                    //Issue 1: Ledges that are too short are still considered wall runnable. Add two more rays, one at top and bottom.
+                    //Issue 2: I should only be able to wallrun when the wall is either left or right. BUT I should be able to walljump from any wall direction.
+
+                    //TODO: make the _wallJumpNormal either (1) if moving towards a certain direction and there is a hit there, that one.
+                    // or (2) if no moveDirection, the nearest.
+                    // Right now, this code sets the _wallJumpNormal to the last direction with a hit, so priority is front, left, right, back
+                    if (!Motor.GroundingStatus.IsStableOnGround)
+                    {
+                        nearestHit = wallRays[i];//for testing
+                        _wallJumpNormal = hitInfo.normal;
+                        _canWallJump = true;
+                    }
+                }
+            }
+
             if (Motor.GroundingStatus.IsStableOnGround)
             {
                 // Reorient velocity on slope
@@ -129,8 +167,21 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
                 Vector3 reorientedInput = Vector3.Cross(Motor.GroundingStatus.GroundNormal, inputRight).normalized * _moveInputVector.magnitude;
                 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
 
+
                 // Smooth movement Velocity
                 currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-StableMovementSharpness * deltaTime));
+
+            }
+            //canwalljump means next to a wall. rename this bullshit.
+            else if(_canWallJump)
+            {
+                //only negative depending on the face of the wall?
+                print("Wall normal:" + _wallJumpNormal);
+                Vector3 wallInput = new Vector3(_moveInputVector.x, -_moveInputVector.z * _wallJumpNormal.z, _moveInputVector.y);
+                currentVelocity = wallInput * MaxStableMoveSpeed;
+
+                // TODO: If we lose detection of a wall in the direction we used to stick to, _canWallJump is false.
+
             }
             else
             {
@@ -186,7 +237,8 @@ namespace KinematicCharacterController.Walkthrough.WallJumping
                         Vector3 jumpDirection = Motor.CharacterUp;
                         if (_canWallJump)
                         {
-                            jumpDirection = _wallJumpNormal;
+                            jumpDirection = Vector3.Lerp(Motor.CharacterUp, _wallJumpNormal, 0.5f);
+                            jumpDirection *= 2;
                         }
                         else if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
                         {

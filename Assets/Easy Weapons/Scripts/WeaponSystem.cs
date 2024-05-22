@@ -12,14 +12,14 @@ public class WeaponSystem : MonoBehaviour
 {
 	public GameObject[] weapons;				// The array that holds all the weapons that the player has
 	public int startingWeaponIndex = 0;			// The weapon index that the player will start with
-	private int weaponIndex;                    // The current index of the active weapon
+	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
 
 	// Use this for initialization
 	void Start()
 	{
 		// Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
-		weaponIndex = startingWeaponIndex;
-		SetActiveWeapon(weaponIndex);
+		WeaponIndex = startingWeaponIndex;
+		SetActiveWeapon(WeaponIndex);
 	}
 	
 	// Update is called once per frame
@@ -70,8 +70,8 @@ public class WeaponSystem : MonoBehaviour
 		// Send a messsage so that users can do other actions whenever this happens
 		SendMessageUpwards("OnEasyWeaponsSwitch", SendMessageOptions.DontRequireReceiver);
 
-		// Make sure the weaponIndex references the correct weapon
-		weaponIndex = index;
+		// Make sure the WeaponIndex references the correct weapon
+		WeaponIndex = index;
 
 		// Make sure beam game objects aren't left over after weapon switching
 		weapons[index].GetComponent<Weapon>().StopBeam();
@@ -88,17 +88,17 @@ public class WeaponSystem : MonoBehaviour
 
 	public void NextWeapon()
 	{
-		weaponIndex++;
-		if (weaponIndex > weapons.Length - 1)
-			weaponIndex = 0;
-		SetActiveWeapon(weaponIndex);
+		WeaponIndex++;
+		if (WeaponIndex > weapons.Length - 1)
+			WeaponIndex = 0;
+		SetActiveWeapon(WeaponIndex);
 	}
 
 	public void PreviousWeapon()
 	{
-		weaponIndex--;
-		if (weaponIndex < 0)
-			weaponIndex = weapons.Length - 1;
-		SetActiveWeapon(weaponIndex);
+		WeaponIndex--;
+		if (WeaponIndex < 0)
+			WeaponIndex = weapons.Length - 1;
+		SetActiveWeapon(WeaponIndex);
 	}
 }
