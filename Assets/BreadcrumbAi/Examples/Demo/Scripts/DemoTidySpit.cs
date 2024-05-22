@@ -5,6 +5,7 @@ public class DemoTidySpit : MonoBehaviour {
 
 	public GameObject explodePrefab;
 	private bool _destroy;
+	[SerializeField] private float damage;
 	
 	void Update(){
 		if(_destroy){
@@ -22,5 +23,9 @@ public class DemoTidySpit : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision col){
 		_destroy = true;
+		if (col.gameObject.CompareTag("Player"))
+        {
+			col.gameObject.GetComponent<Health>().ChangeHealth(-5);
+        }
 	}
 }

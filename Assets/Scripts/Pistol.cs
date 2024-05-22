@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController.Examples;
+using UnityEngine.UI;
 
 public class Pistol : MonoBehaviour
 {
 	private Brush brush;
 	[SerializeField] private ExampleCharacterController characterController;
+	[SerializeField] private DashParticles dashParticles;
+
+	[SerializeField] private GunColor gunColor = GunColor.Red;
 
     #region Gun Variables
     // shoot speed
@@ -15,11 +19,12 @@ public class Pistol : MonoBehaviour
 	private float fireTimer;
 
 	// Charging
-	private float startChargeTime;
-	private float finalChargeTime;
 	[SerializeField] private float maxChargeTime;
+	private float chargeTimer;
 	private bool isChargeAllowed;
-	private float boostStartTime;
+	private bool isCharging;
+	[SerializeField] private Slider chargeSlider;
+
 
 	// Ammo
 	private bool canFire = true;
@@ -49,6 +54,7 @@ public class Pistol : MonoBehaviour
 	[SerializeField] private GameObject[] muzzleEffects; // Particles for muzzleEffects to choose randomly.
     #endregion
 
+
     private void Start()
     {
 		brush = GetComponent<BrushMono>().brush;
@@ -57,6 +63,10 @@ public class Pistol : MonoBehaviour
 			actualROF = 1.0f / rateOfFire;
 		else
 			actualROF = 0.01f;
+
+		currentAmmo = ammoCapacity;
+
+		chargeSlider.gameObject.SetActive(false);
 	}
 
     // Update is called once per frame
@@ -70,6 +80,19 @@ public class Pistol : MonoBehaviour
 
 		CheckInputs();
 
+		if(isCharging)
+        {
+			chargeSlider.gameObject.SetActive(true);
+			chargeTimer += Time.deltaTime;
+			chargeSlider.value = (chargeTimer / maxChargeTime);
+			print(chargeSlider.value);
+        }
+        else
+        {
+			chargeSlider.gameObject.SetActive(false);
+		}
+
+
 		// Reload if the weapon is out of ammo
 		if (currentAmmo <= 0)
 			Reload();
@@ -81,45 +104,39 @@ public class Pistol : MonoBehaviour
 		if (Input.GetButtonDown("Fire1"))
 		{
 			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
-			isChargeAllowed = false;
-			finalChargeTime = 0;
+			isCharging = false;
+			chargeTimer = 0;
 
 			if (fireTimer >= actualROF && canFire)
 				Fire();
 		}
 
 		// start counting the charge if allowed.
-		if (isChargeAllowed && Input.GetButtonDown("Fire2"))
+		if (Input.GetButtonDown("Fire2"))
 		{
-			startChargeTime = Time.time;
+			isCharging = true;
 		}
 
 		// count the final charge time.
 		if (Input.GetButtonUp("Fire2"))
 		{
-			// charge not allowed means the user cancelled the charge using the left mouse button. No dash.
-			if (!isChargeAllowed)
-			{
-				isChargeAllowed = true;
-			}
-			else
-			{
-				finalChargeTime = Time.time - startChargeTime;
-				//TODO: Boost() here. Call the character controller and enter a boosted state. No guns, no shooting.
-				//Fire off an event named Charge. Passing in finalChargeTime as event Argument
-				// have a low medium high.
-
-				//calculate the charge level depending on the amount of time charged.
+			//calculate the charge level depending on the amount of time charged.
+			if(chargeTimer >= maxChargeTime)
+            {
 				characterController.EnterChargeState(1);
-			}
+				dashParticles.PlayDash(1);
+            }
 
+			isCharging = false;
+			chargeTimer = 0;
 		}
-
-
 	}
 
 	void Fire()
 	{
+		//Wish to add to comboTimer;
+		ScoreManager.Instance.WishForCombo(gunColor);
+
 		// Reset the fireTimer to 0 (for ROF)
 		fireTimer = 0.0f;
 
@@ -167,14 +184,20 @@ public class Pistol : MonoBehaviour
 				PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 			}
 
+			//damage the enemy
+			if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
+            {
+				enemy.TakeDamage(damage, hit.point, Quaternion.identity);
+            }
+
 			// Damage
 			hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
 
 			// Hit Effects -TODO: place a paint impact particle here
 			if (hitEffect != null)
 				Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
-			else
-				print("no hit effect gameObject!");        
+			//else
+				//print("no hit effect gameObject!");        
 
 			// Add force to the object that was hit
 			//if (hit.rigidbody)

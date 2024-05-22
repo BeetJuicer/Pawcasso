@@ -9,7 +9,8 @@ namespace KinematicCharacterController.Examples
     public enum CharacterState
     {
         Default,
-        Charging
+        Charging,
+        WallRunning
     }
 
     public enum OrientationMethod
@@ -45,6 +46,9 @@ namespace KinematicCharacterController.Examples
     public class ExampleCharacterController : MonoBehaviour, ICharacterController
     {
         public KinematicCharacterMotor Motor;
+
+        [Header("Wall Detection")]
+        public float rayDetectionLength = 1f;
 
         [Header("Stable Movement")]
         public float MaxStableMoveSpeed = 10f;
@@ -92,6 +96,11 @@ namespace KinematicCharacterController.Examples
         private bool _jumpedThisFrame = false;
         private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;
+        private bool _canWallJump = false;
+        private bool _canWallRun = false;
+        private Vector3 _wallJumpNormal;
+
+
         private Vector3 _internalVelocityAdd = Vector3.zero;
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
@@ -142,6 +151,11 @@ namespace KinematicCharacterController.Examples
                         _isStopped = false;
                         _timeSinceStartedCharge = 0f;
                         _timeSinceStopped = 0f;
+                        break;
+                    }
+                case CharacterState.WallRunning:
+                    {
+
                         break;
                     }
             }
@@ -343,6 +357,38 @@ namespace KinematicCharacterController.Examples
             {
                 case CharacterState.Default:
                     {
+                        //Ray front = new Ray(transform.position, Vector3.forward);
+                        //Ray left = new Ray(transform.position, Vector3.left);
+                        //Ray right = new Ray(transform.position, Vector3.right);
+                        //Ray back = new Ray(transform.position, Vector3.back);
+                        //Ray[] wallRays = { front, left, right, back };
+                        //Ray nearestHit = front;
+                        //float nearestDistance = 0f;
+
+                        //for (int i = 0; i < 4; i++)
+                        //{
+                        //    if (Physics.Raycast(wallRays[i], out RaycastHit hitInfo, rayDetectionLength))
+                        //    {
+                        //        if (hitInfo.distance > nearestDistance)
+                        //        {
+                        //            //nearestHit = wallRays[i];
+                        //        }
+
+                        //        //Issue 1: Ledges that are too short are still considered wall runnable. Add two more rays, one at top and bottom.
+                        //        //Issue 2: I should only be able to wallrun when the wall is either left or right. BUT I should be able to walljump from any wall direction.
+
+                        //        //TODO: make the _wallJumpNormal either (1) if moving towards a certain direction and there is a hit there, that one.
+                        //        // or (2) if no moveDirection, the nearest.
+                        //        // Right now, this code sets the _wallJumpNormal to the last direction with a hit, so priority is front, left, right, back
+                        //        if (!Motor.GroundingStatus.IsStableOnGround)
+                        //        {
+                        //            nearestHit = wallRays[i];//for testing
+                        //            _wallJumpNormal = hitInfo.normal;
+                        //            _canWallJump = true;
+                        //        }
+                        //    }
+                        //}
+
                         // Ground movement
                         if (Motor.GroundingStatus.IsStableOnGround)
                         {
@@ -363,9 +409,26 @@ namespace KinematicCharacterController.Examples
                             // Smooth movement Velocity
                             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
                         }
+                        //canwalljump means next to a wall. rename this bullshit.
+                        else if (_canWallJump)
+                        {
+                            //only negative depending on the face of the wall?
+                            print("Wall normal:" + _wallJumpNormal);
+                            Vector3 wallInput = new Vector3(_moveInputVector.x, -_moveInputVector.z * _wallJumpNormal.z, _moveInputVector.y);
+                            currentVelocity = wallInput * MaxStableMoveSpeed;
+
+                            // TODO: If we lose detection of a wall in the direction we used to stick to, _canWallJump is false.
+
+                        }
                         // Air movement
                         else
                         {
+                            //if(CheckIfThereIsWall(moveDirection), wallrunDuration > 0)
+                            //{
+                             //   TransitionToState wallRun
+                            //}
+
+
                             // Add move input
                             if (_moveInputVector.sqrMagnitude > 0f)
                             {
@@ -410,39 +473,56 @@ namespace KinematicCharacterController.Examples
                             currentVelocity *= (1f / (1f + (Drag * deltaTime)));
                         }
 
-                        // Handle jumping
-                        _jumpedThisFrame = false;
-                        _timeSinceJumpRequested += deltaTime;
-                        if (_jumpRequested)
                         {
-                            // See if we actually are allowed to jump
-                            if (!_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
+                            // Handle jumping
+                            _jumpedThisFrame = false;
+                            _timeSinceJumpRequested += deltaTime;
+                            if (_jumpRequested)
                             {
-                                // Calculate jump direction before ungrounding
-                                Vector3 jumpDirection = Motor.CharacterUp;
-                                if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
+                                // See if we actually are allowed to jump
+                                if (_canWallJump ||
+                                    !_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
                                 {
-                                    jumpDirection = Motor.GroundingStatus.GroundNormal;
+                                    // Calculate jump direction before ungrounding
+                                    Vector3 jumpDirection = Motor.CharacterUp;
+
+                                    //WallJump
+                                    if (_canWallJump)
+                                    {
+                                        jumpDirection = Vector3.Lerp(Motor.CharacterUp, _wallJumpNormal, 0.5f);
+                                        jumpDirection *= 2;
+                                    }
+                                    //Normal Jump
+                                    else if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
+                                    {
+                                        //TODO: Upon exiting charge state(not here, find it somewhere else).
+                                        //Start a small window of time where the player receives a forward boost on their jump.
+                                        //If this jump request is within that time window, add a forward boost.
+                                        jumpDirection = Motor.GroundingStatus.GroundNormal;
+                                    }
+
+                                    // Makes the character skip ground probing/snapping on its next update. 
+                                    // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                    Motor.ForceUnground();
+
+                                    // Add to the return velocity and reset jump state
+                                    currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                    currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                                    _jumpRequested = false;
+                                    _jumpConsumed = true;
+                                    _jumpedThisFrame = true;
                                 }
-
-                                // Makes the character skip ground probing/snapping on its next update. 
-                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                                Motor.ForceUnground();
-
-                                // Add to the return velocity and reset jump state
-                                currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                                currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
-                                _jumpRequested = false;
-                                _jumpConsumed = true;
-                                _jumpedThisFrame = true;
                             }
-                        }
 
-                        // Take into account additive velocity
-                        if (_internalVelocityAdd.sqrMagnitude > 0f)
-                        {
-                            currentVelocity += _internalVelocityAdd;
-                            _internalVelocityAdd = Vector3.zero;
+                            // Reset wall jump
+                            _canWallJump = false;
+
+                            // Take into account additive velocity
+                            if (_internalVelocityAdd.sqrMagnitude > 0f)
+                            {
+                                currentVelocity += _internalVelocityAdd;
+                                _internalVelocityAdd = Vector3.zero;
+                            }
                         }
                         break;
                     }
@@ -463,14 +543,50 @@ namespace KinematicCharacterController.Examples
                         }
                         else
                         {
+                            float onPaintSpeedMultiplier = PaintSurfaceChecker.IsOnColoredGround ? 1.5f : 1f;
                             // When charging, velocity is always constant
                             float previousY = currentVelocity.y;
-                            currentVelocity = _currentChargeVelocity;
+                            currentVelocity = _currentChargeVelocity * onPaintSpeedMultiplier;
                             currentVelocity.y = previousY;
                             currentVelocity += Gravity * deltaTime;
                         }
                         break;
                     }
+            }
+        }
+
+        private void IsTouchingWall()
+        {
+            Ray front = new Ray(transform.position, Vector3.forward);
+            Ray left = new Ray(transform.position, Vector3.left);
+            Ray right = new Ray(transform.position, Vector3.right);
+            Ray back = new Ray(transform.position, Vector3.back);
+            Ray[] wallRays = { front, left, right, back };
+            Ray nearestHit = front;
+            float nearestDistance = 0f;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (Physics.Raycast(wallRays[i], out RaycastHit hitInfo, rayDetectionLength))
+                {
+                    if (hitInfo.distance > nearestDistance)
+                    {
+                        //nearestHit = wallRays[i];
+                    }
+
+                    //Issue 1: Ledges that are too short are still considered wall runnable. Add two more rays, one at top and bottom.
+                    //Issue 2: I should only be able to wallrun when the wall is either left or right. BUT I should be able to walljump from any wall direction.
+
+                    //TODO: make the _wallJumpNormal either (1) if moving towards a certain direction and there is a hit there, that one.
+                    // or (2) if no moveDirection, the nearest.
+                    // Right now, this code sets the _wallJumpNormal to the last direction with a hit, so priority is front, left, right, back
+                    if (!Motor.GroundingStatus.IsStableOnGround)
+                    {
+                        nearestHit = wallRays[i];//for testing
+                        _wallJumpNormal = hitInfo.normal;
+                        _canWallJump = true;
+                    }
+                }
             }
         }
 
