@@ -33,6 +33,7 @@ namespace SmartPoint
                     if (resetVelocity)
                     {
                         comp.SimpleMove(Vector3.zero);
+                        print("here1");
                     }
                     //Teleport after deactiving character controller
                     comp.enabled = false;
@@ -43,7 +44,8 @@ namespace SmartPoint
                 {
                     if (resetVelocity && other.TryGetComponent<Rigidbody>(out Rigidbody m_rigid))
                     {
-                        m_rigid.velocity = m_rigid.angularVelocity = Vector3.zero;
+                        print("here2");
+                        //m_rigid.velocity = m_rigid.angularVelocity = Vector3.zero;
                     }
                     //Teleport
                     TeleportEntity(other.gameObject);
