@@ -43,7 +43,16 @@ public class Pistol : PaintGun
 
 	// RayCast
 	[SerializeField] private Transform raycastStartSpot;
-	
+
+	// Crosshairs
+	public bool showCrosshair = true;                   // Whether or not the crosshair should be displayed
+	public Texture2D crosshairTextureHorizontal;                  // The texture used to draw the crosshair
+	public Texture2D crosshairTextureVertical;                  // The texture used to draw the crosshair
+	public int crosshairLength = 10;                    // The length of each crosshair line
+	public int crosshairWidth = 4;                      // The width of each crosshair line
+	public float startingCrosshairSize = 10.0f;         // The gap of space (in pixels) between the crosshair lines (for weapon inaccuracy)
+	private float currentCrosshairSize;                 // The gap of space between crosshair lines that is updated based on weapon accuracy in realtime
+
 	// FX
 	[SerializeField] private Transform muzzleEffectsPosition;
 	[SerializeField] private GameObject hitEffect;
@@ -66,6 +75,7 @@ public class Pistol : PaintGun
 		CurrentAmmo = ammoCapacity;
 
 		chargeSlider.gameObject.SetActive(false);
+		currentCrosshairSize = startingCrosshairSize;
 	}
 
     // Update is called once per frame
@@ -73,6 +83,8 @@ public class Pistol : PaintGun
     {
 		// Calculate the current accuracy for this weapon
 		currentAccuracy = Mathf.Lerp(currentAccuracy, accuracy, accuracyRecoverRate * Time.deltaTime);
+		// Calculate the current crosshair size.  This is what causes the crosshairs to grow and shrink dynamically while shooting
+		//currentCrosshairSize = startingCrosshairSize + (accuracy - currentAccuracy) * 0.1f;
 
 		// Update the fireTimer
 		fireTimer += Time.deltaTime;
@@ -228,6 +240,29 @@ public class Pistol : PaintGun
 
 		// Send a messsage so that users can do other actions whenever this happens
 		SendMessageUpwards("OnEasyWeaponsReload", SendMessageOptions.DontRequireReceiver);
+	}
+
+	void OnGUI()
+	{
+		if (showCrosshair)
+		{
+			// Hold the location of the center of the screen in a variable
+			Vector2 center = new Vector2(Screen.width / 2, Screen.height / 2);
+
+			// Draw the crosshairs based on the weapon's inaccuracy
+			// Left
+			Rect leftRect = new Rect(center.x - crosshairLength - currentCrosshairSize, center.y - (crosshairWidth / 2), crosshairLength, crosshairWidth);
+			GUI.DrawTexture(leftRect, crosshairTextureHorizontal, ScaleMode.StretchToFill);
+			// Right
+			Rect rightRect = new Rect(center.x + currentCrosshairSize, center.y - (crosshairWidth / 2), crosshairLength, crosshairWidth);
+			GUI.DrawTexture(rightRect, crosshairTextureHorizontal, ScaleMode.StretchToFill);
+			// Top
+			Rect topRect = new Rect(center.x - (crosshairWidth / 2), center.y - crosshairLength - currentCrosshairSize, crosshairWidth, crosshairLength);
+			GUI.DrawTexture(topRect, crosshairTextureVertical, ScaleMode.StretchToFill);
+			// Bottom
+			Rect bottomRect = new Rect(center.x - (crosshairWidth / 2), center.y + currentCrosshairSize, crosshairWidth, crosshairLength);
+			GUI.DrawTexture(bottomRect, crosshairTextureVertical, ScaleMode.StretchToFill);
+		}
 	}
 
 	/* REcoil()
