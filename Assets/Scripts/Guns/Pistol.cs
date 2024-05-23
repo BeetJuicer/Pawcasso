@@ -56,6 +56,7 @@ public class Pistol : PaintGun
 	// FX
 	[SerializeField] private Transform muzzleEffectsPosition;
 	[SerializeField] private GameObject hitEffect;
+	[SerializeField] private GameObject environmentHitEffect;
 	[SerializeField] private AudioClip fireSound;    // Sound to play when the weapon is fired
 	[SerializeField] private AudioClip reloadSound;  // Sound to play when the weapon is reloading
 	[SerializeField] private AudioClip dryFireSound; // Sound to play when the user tries to fire but is out of ammo
@@ -192,6 +193,7 @@ public class Pistol : PaintGun
 			//paint the paintable.
 			if (hit.collider.gameObject.TryGetComponent<PaintTarget>(out PaintTarget paintTarget))
 			{
+				Instantiate(environmentHitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
 				PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 			}
 
