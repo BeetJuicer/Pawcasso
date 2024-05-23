@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController.Examples;
 
-public class ProjectileShooter : MonoBehaviour
+public class ProjectileShooter : PaintGun
 {
 	private Brush brush;
 	[SerializeField] private GameObject projectile;
@@ -31,7 +31,6 @@ public class ProjectileShooter : MonoBehaviour
 	private bool canFire = true;
 	[SerializeField] private int ammoCapacity;
 	[SerializeField] private float reloadTime;
-	private int currentAmmo;
 
 	// Accuracy
 	[SerializeField] private float range;
@@ -64,7 +63,7 @@ public class ProjectileShooter : MonoBehaviour
 		else
 			actualROF = 0.01f;
 
-		currentAmmo = ammoCapacity;
+		CurrentAmmo = ammoCapacity;
 	}
 
     // Update is called once per frame
@@ -80,7 +79,7 @@ public class ProjectileShooter : MonoBehaviour
 		CheckInputs();
 
 		// Reload if the weapon is out of ammo
-		if (currentAmmo <= 0)
+		if (CurrentAmmo <= 0)
 			Reload();
 	}
 
@@ -130,14 +129,14 @@ public class ProjectileShooter : MonoBehaviour
 		fireTimer = 0.0f;
 
 		// First make sure there is ammo
-		if (currentAmmo <= 0)
+		if (CurrentAmmo <= 0)
 		{
 			DryFire();
 			return;
 		}
 
 		// Subtract 1 from the current ammo
-		currentAmmo--;
+		CurrentAmmo--;
 
 		// Fire 
 		// Fire once for each shotPerRound value
@@ -244,7 +243,7 @@ public class ProjectileShooter : MonoBehaviour
 
 	void Reload()
 	{
-		currentAmmo = ammoCapacity;
+		CurrentAmmo = ammoCapacity;
 		fireTimer = -reloadTime;
 		GetComponent<AudioSource>().PlayOneShot(reloadSound);
 
