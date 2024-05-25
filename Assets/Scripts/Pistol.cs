@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController.Examples;
+using UnityEngine.UI;
 
-public class Pistol : MonoBehaviour
+public class Pistol : PaintGun
 {
 	private Brush brush;
 	[SerializeField] private ExampleCharacterController characterController;
@@ -18,17 +19,17 @@ public class Pistol : MonoBehaviour
 	private float fireTimer;
 
 	// Charging
-	private float startChargeTime;
-	private float finalChargeTime;
 	[SerializeField] private float maxChargeTime;
+	private float chargeTimer;
 	private bool isChargeAllowed;
-	private float boostStartTime;
+	private bool isCharging;
+	[SerializeField] private Slider chargeSlider;
+
 
 	// Ammo
 	private bool canFire = true;
 	[SerializeField] private int ammoCapacity;
 	[SerializeField] private float reloadTime;
-	private int currentAmmo;
 
 	// Accuracy
 	[SerializeField] private float range;
@@ -42,15 +43,26 @@ public class Pistol : MonoBehaviour
 
 	// RayCast
 	[SerializeField] private Transform raycastStartSpot;
-	
+
+	// Crosshairs
+	public bool showCrosshair = true;                   // Whether or not the crosshair should be displayed
+	public Texture2D crosshairTextureHorizontal;                  // The texture used to draw the crosshair
+	public Texture2D crosshairTextureVertical;                  // The texture used to draw the crosshair
+	public int crosshairLength = 10;                    // The length of each crosshair line
+	public int crosshairWidth = 4;                      // The width of each crosshair line
+	public float startingCrosshairSize = 10.0f;         // The gap of space (in pixels) between the crosshair lines (for weapon inaccuracy)
+	private float currentCrosshairSize;                 // The gap of space between crosshair lines that is updated based on weapon accuracy in realtime
+
 	// FX
 	[SerializeField] private Transform muzzleEffectsPosition;
 	[SerializeField] private GameObject hitEffect;
+	[SerializeField] private GameObject environmentHitEffect;
 	[SerializeField] private AudioClip fireSound;    // Sound to play when the weapon is fired
 	[SerializeField] private AudioClip reloadSound;  // Sound to play when the weapon is reloading
 	[SerializeField] private AudioClip dryFireSound; // Sound to play when the user tries to fire but is out of ammo
 	[SerializeField] private GameObject[] muzzleEffects; // Particles for muzzleEffects to choose randomly.
     #endregion
+
 
     private void Start()
     {
@@ -61,7 +73,10 @@ public class Pistol : MonoBehaviour
 		else
 			actualROF = 0.01f;
 
-		currentAmmo = ammoCapacity;
+		CurrentAmmo = ammoCapacity;
+
+		chargeSlider.gameObject.SetActive(false);
+		currentCrosshairSize = startingCrosshairSize;
 	}
 
     // Update is called once per frame
@@ -69,14 +84,29 @@ public class Pistol : MonoBehaviour
     {
 		// Calculate the current accuracy for this weapon
 		currentAccuracy = Mathf.Lerp(currentAccuracy, accuracy, accuracyRecoverRate * Time.deltaTime);
+		// Calculate the current crosshair size.  This is what causes the crosshairs to grow and shrink dynamically while shooting
+		//currentCrosshairSize = startingCrosshairSize + (accuracy - currentAccuracy) * 0.1f;
 
 		// Update the fireTimer
 		fireTimer += Time.deltaTime;
 
 		CheckInputs();
 
+		if(isCharging)
+        {
+			chargeSlider.gameObject.SetActive(true);
+			chargeTimer += Time.deltaTime;
+			chargeSlider.value = (chargeTimer / maxChargeTime);
+			print(chargeSlider.value);
+        }
+        else
+        {
+			chargeSlider.gameObject.SetActive(false);
+		}
+
+
 		// Reload if the weapon is out of ammo
-		if (currentAmmo <= 0)
+		if (CurrentAmmo <= 0)
 			Reload();
 	}
 
@@ -86,39 +116,31 @@ public class Pistol : MonoBehaviour
 		if (Input.GetButtonDown("Fire1"))
 		{
 			// cancel the charge count. disable charging unless the user actually lets go of the right mouse button.
-			isChargeAllowed = false;
-			finalChargeTime = 0;
+			isCharging = false;
+			chargeTimer = 0;
 
 			if (fireTimer >= actualROF && canFire)
 				Fire();
 		}
 
 		// start counting the charge if allowed.
-		if (isChargeAllowed && Input.GetButtonDown("Fire2"))
+		if (Input.GetButtonDown("Fire2"))
 		{
-			startChargeTime = Time.time;
+			isCharging = true;
 		}
 
 		// count the final charge time.
 		if (Input.GetButtonUp("Fire2"))
 		{
-			// charge not allowed means the user cancelled the charge using the left mouse button. No dash.
-			if (!isChargeAllowed)
-			{
-				isChargeAllowed = true;
-			}
-			else
-			{
-				finalChargeTime = Time.time - startChargeTime;
-				//TODO: Boost() here. Call the character controller and enter a boosted state. No guns, no shooting.
-				//Fire off an event named Charge. Passing in finalChargeTime as event Argument
-				// have a low medium high.
-
-				//calculate the charge level depending on the amount of time charged.
+			//calculate the charge level depending on the amount of time charged.
+			if(chargeTimer >= maxChargeTime)
+            {
 				characterController.EnterChargeState(1);
 				dashParticles.PlayDash(1);
-			}
+            }
 
+			isCharging = false;
+			chargeTimer = 0;
 		}
 	}
 
@@ -131,14 +153,14 @@ public class Pistol : MonoBehaviour
 		fireTimer = 0.0f;
 
 		// First make sure there is ammo
-		if (currentAmmo <= 0)
+		if (CurrentAmmo <= 0)
 		{
 			DryFire();
 			return;
 		}
 
 		// Subtract 1 from the current ammo
-		currentAmmo--;
+		CurrentAmmo--;
 
 		// Fire 
 		// Calculate accuracy for this shot
@@ -171,6 +193,7 @@ public class Pistol : MonoBehaviour
 			//paint the paintable.
 			if (hit.collider.gameObject.TryGetComponent<PaintTarget>(out PaintTarget paintTarget))
 			{
+				Instantiate(environmentHitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
 				PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 			}
 
@@ -213,12 +236,35 @@ public class Pistol : MonoBehaviour
 
 	void Reload()
 	{
-		currentAmmo = ammoCapacity;
+		CurrentAmmo = ammoCapacity;
 		fireTimer = -reloadTime;
 		GetComponent<AudioSource>().PlayOneShot(reloadSound);
 
 		// Send a messsage so that users can do other actions whenever this happens
 		SendMessageUpwards("OnEasyWeaponsReload", SendMessageOptions.DontRequireReceiver);
+	}
+
+	void OnGUI()
+	{
+		if (showCrosshair)
+		{
+			// Hold the location of the center of the screen in a variable
+			Vector2 center = new Vector2(Screen.width / 2, Screen.height / 2);
+
+			// Draw the crosshairs based on the weapon's inaccuracy
+			// Left
+			Rect leftRect = new Rect(center.x - crosshairLength - currentCrosshairSize, center.y - (crosshairWidth / 2), crosshairLength, crosshairWidth);
+			GUI.DrawTexture(leftRect, crosshairTextureHorizontal, ScaleMode.StretchToFill);
+			// Right
+			Rect rightRect = new Rect(center.x + currentCrosshairSize, center.y - (crosshairWidth / 2), crosshairLength, crosshairWidth);
+			GUI.DrawTexture(rightRect, crosshairTextureHorizontal, ScaleMode.StretchToFill);
+			// Top
+			Rect topRect = new Rect(center.x - (crosshairWidth / 2), center.y - crosshairLength - currentCrosshairSize, crosshairWidth, crosshairLength);
+			GUI.DrawTexture(topRect, crosshairTextureVertical, ScaleMode.StretchToFill);
+			// Bottom
+			Rect bottomRect = new Rect(center.x - (crosshairWidth / 2), center.y + currentCrosshairSize, crosshairWidth, crosshairLength);
+			GUI.DrawTexture(bottomRect, crosshairTextureVertical, ScaleMode.StretchToFill);
+		}
 	}
 
 	/* REcoil()

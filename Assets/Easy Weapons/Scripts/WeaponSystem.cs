@@ -12,16 +12,17 @@ public class WeaponSystem : MonoBehaviour
 {
 	public GameObject[] weapons;				// The array that holds all the weapons that the player has
 	public int startingWeaponIndex = 0;			// The weapon index that the player will start with
-	private int weaponIndex;                    // The current index of the active weapon
+	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
+	public int CurrentAmmo { get; private set; }
 
 	// Use this for initialization
 	void Start()
 	{
 		// Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
-		weaponIndex = startingWeaponIndex;
-		SetActiveWeapon(weaponIndex);
+		WeaponIndex = startingWeaponIndex;
+		SetActiveWeapon(WeaponIndex);
 	}
-	
+
 	// Update is called once per frame
 	void Update()
 	{
@@ -32,30 +33,14 @@ public class WeaponSystem : MonoBehaviour
 			SetActiveWeapon(1);
 		if (Input.GetButtonDown("Weapon 3"))
 			SetActiveWeapon(2);
-		if (Input.GetButtonDown("Weapon 4"))
-			SetActiveWeapon(3);
-		if (Input.GetButtonDown("Weapon 5"))
-			SetActiveWeapon(4);
-		if (Input.GetButtonDown("Weapon 6"))
-			SetActiveWeapon(5);
-		if (Input.GetButtonDown("Weapon 7"))
-			SetActiveWeapon(6);
-		if (Input.GetButtonDown("Weapon 8"))
-			SetActiveWeapon(7);
-		if (Input.GetButtonDown("Weapon 9"))
-			SetActiveWeapon(8);
 
 		// Allow the user to scroll through the weapons
 		if (Input.GetAxis("Mouse ScrollWheel") > 0)
 			NextWeapon();
 		if (Input.GetAxis("Mouse ScrollWheel") < 0)
 			PreviousWeapon();
-	}
 
-	void OnGUI()
-	{
-
-
+		CurrentAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().CurrentAmmo;
 	}
 
 	public void SetActiveWeapon(int index)
@@ -70,11 +55,11 @@ public class WeaponSystem : MonoBehaviour
 		// Send a messsage so that users can do other actions whenever this happens
 		SendMessageUpwards("OnEasyWeaponsSwitch", SendMessageOptions.DontRequireReceiver);
 
-		// Make sure the weaponIndex references the correct weapon
-		weaponIndex = index;
+		// Make sure the WeaponIndex references the correct weapon
+		WeaponIndex = index;
 
 		// Make sure beam game objects aren't left over after weapon switching
-		weapons[index].GetComponent<Weapon>().StopBeam();
+		//weapons[index].GetComponent<Weapon>().StopBeam();
 
 		// Start be deactivating all weapons
 		for (int i = 0; i < weapons.Length; i++)
@@ -82,23 +67,23 @@ public class WeaponSystem : MonoBehaviour
 			weapons[i].SetActive(false);
 		}
 
-		// Activate the one weapon that we want
-		weapons[index].SetActive(true);
+        // Activate the one weapon that we want
+        weapons[index].SetActive(true);
 	}
 
 	public void NextWeapon()
 	{
-		weaponIndex++;
-		if (weaponIndex > weapons.Length - 1)
-			weaponIndex = 0;
-		SetActiveWeapon(weaponIndex);
+		WeaponIndex++;
+		if (WeaponIndex > weapons.Length - 1)
+			WeaponIndex = 0;
+		SetActiveWeapon(WeaponIndex);
 	}
 
 	public void PreviousWeapon()
 	{
-		weaponIndex--;
-		if (weaponIndex < 0)
-			weaponIndex = weapons.Length - 1;
-		SetActiveWeapon(weaponIndex);
+		WeaponIndex--;
+		if (WeaponIndex < 0)
+			WeaponIndex = weapons.Length - 1;
+		SetActiveWeapon(WeaponIndex);
 	}
 }

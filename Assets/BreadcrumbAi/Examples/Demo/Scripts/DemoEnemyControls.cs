@@ -20,6 +20,7 @@ public class DemoEnemyControls : MonoBehaviour {
 	
 	public GameObject bloodPrefab;
 	public GameObject specialPrefab;
+	public GameObject explosionPrefab;
 	private Transform player;
 	
 	private Ai ai;
@@ -37,10 +38,17 @@ public class DemoEnemyControls : MonoBehaviour {
 	private string animDeath1 = "Death1";
 	private string animAttack = "Attack";
 	
-	private DemoScore score;
 	private bool _pointScored;
-	
-	void Start(){
+
+	private float difficultyMultiplier;
+
+    private void Awake()
+    {
+		// 0 = easy, 1 = hard
+		difficultyMultiplier = PlayerPrefs.GetInt("Difficulty") == 1 ? 1.5f : 1f;
+    }
+
+    void Start(){
 		ai = GetComponent<Ai>();
 		anim = GetComponent<Animator>();
 		audioSource = gameObject.AddComponent<AudioSource>();
@@ -142,12 +150,12 @@ public class DemoEnemyControls : MonoBehaviour {
 	        _isHit = false;
         }
         
-		//TODO: implement scoring system.
 		if(ai.lifeState == Ai.LIFE_STATE.IsDead){
 			if(!_pointScored){
 				if(enemyType == EnemyType.Special){
-					//score.ScorePoint(50);
-				} else {
+					ScoreManager.Instance.AddToPlayerScore(pointWorth * 2);
+				}
+				else {
 					ScoreManager.Instance.AddToPlayerScore(pointWorth);
 				}
 				_pointScored = true;
@@ -163,7 +171,7 @@ public class DemoEnemyControls : MonoBehaviour {
 			}
 
 			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
-
+			// Instantiate(explosionPrefab, transform.position, Quaternion.Identity);
 			Destroy(GetComponent<Rigidbody>());
 			Destroy(GetComponent<Collider>());
 			Destroy(GetComponent<Ai>());		
