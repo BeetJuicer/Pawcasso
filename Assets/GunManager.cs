@@ -3,60 +3,50 @@ using UnityEngine.UI;
 
 public class GunManager : MonoBehaviour
 {
-    // Reference to the UI Image component that displays the gun
-    public Image gunImage;
+    // Array to hold icons of guns
+    public Image[] weaponIcons;
 
-    // Array of gun sprites to display
-    public Sprite[] gunSprites;
+    // Reference to the WeaponSystem script
+    public WeaponSystem weaponSystem;
 
-    // Index of the current gun sprite
-    private int currentGunIndex = 0;
-
-    // Start is called before the first frame update
     void Start()
     {
-        // Initialize the UI image with the first gun sprite
-        if (gunImage != null && gunSprites.Length > 0)
+        // Deactivate all weapon icons initially
+        foreach (Image icon in weaponIcons)
         {
-            gunImage.sprite = gunSprites[currentGunIndex];
+            icon.gameObject.SetActive(false);
+        }
+
+        // Activate the starting weapon icon
+        if (weaponSystem != null)
+        {
+            int initialIndex = weaponSystem.WeaponIndex;
+            if (initialIndex >= 0 && initialIndex < weaponIcons.Length)
+            {
+                weaponIcons[initialIndex].gameObject.SetActive(true);
+            }
         }
     }
 
-    // Function to change the displayed gun to the next one
-    public void ChangeToNextGun()
+    void Update()
     {
-        // Increment the current gun index
-        currentGunIndex++;
-
-        // If the index exceeds the array length, loop back to the beginning
-        if (currentGunIndex >= gunSprites.Length)
+        // Ensure weaponSystem reference is not null
+        if (weaponSystem != null)
         {
-            currentGunIndex = 0;
-        }
+            int currentWeaponIndex = weaponSystem.WeaponIndex;
 
-        // Update the UI image with the new gun sprite
-        if (gunImage != null)
-        {
-            gunImage.sprite = gunSprites[currentGunIndex];
-        }
-    }
-
-    // Function to change the displayed gun to the previous one
-    public void ChangeToPreviousGun()
-    {
-        // Decrement the current gun index
-        currentGunIndex--;
-
-        // If the index is less than zero, loop to the end of the array
-        if (currentGunIndex < 0)
-        {
-            currentGunIndex = gunSprites.Length - 1;
-        }
-
-        // Update the UI image with the new gun sprite
-        if (gunImage != null)
-        {
-            gunImage.sprite = gunSprites[currentGunIndex];
+            // Deactivate all weapon icons
+            for (int i = 0; i < weaponIcons.Length; i++)
+            {
+                if (i == currentWeaponIndex)
+                {
+                    weaponIcons[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    weaponIcons[i].gameObject.SetActive(false);
+                }
+            }
         }
     }
 }
