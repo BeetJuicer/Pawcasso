@@ -203,9 +203,6 @@ public class Pistol : PaintGun
 				enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
             }
 
-			// Damage
-			hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
-
 			// Hit Effects -TODO: place a paint impact particle here
 			if (hitEffect != null)
 				Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));

@@ -68,9 +68,6 @@ public class DemoEnemyControls : MonoBehaviour {
 		// 0 = easy, 1 = hard
 		difficultyMultiplier = PlayerPrefs.GetInt("Difficulty") == 1 ? 1.5f : 1f;
 
-		//apply multiplier to health
-		ai.Health *= difficultyMultiplier;
-
 		// Setup for shield and combo.
 		switch(shieldColor)
         {
@@ -104,6 +101,9 @@ public class DemoEnemyControls : MonoBehaviour {
 		if(go){
 			player = go.transform;
 		}
+
+		//apply multiplier to health
+		ai.Health *= difficultyMultiplier;
 	}
 	
 	void Update () {
@@ -257,7 +257,8 @@ public class DemoEnemyControls : MonoBehaviour {
 			CheckShield(color);
         }
 		_isHit = true;
-		print("taking " + damage * shieldDamageReductionMultiplier + " damage!");
+		print("Last two hits: " + lastTwoHits.first + lastTwoHits.second);
+
 		ai.Health -= damage * shieldDamageReductionMultiplier;
 		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
 		Destroy(blood, 3);
@@ -284,7 +285,7 @@ public class DemoEnemyControls : MonoBehaviour {
 			{
 				// like a queue, push back 'first' to the second spot and move the current color to the 'first' spot
 				lastTwoHits.second = lastTwoHits.first;
-				lastTwoHits.first = lastTwoHits.second;
+				lastTwoHits.first = color;
 			}
 
 			if ((lastTwoHits.first == neededHits.first && lastTwoHits.second == neededHits.second) ||
