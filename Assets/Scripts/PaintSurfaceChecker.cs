@@ -8,8 +8,6 @@ public class PaintSurfaceChecker : MonoBehaviour
     private float detectionInterval = 0.1f; //how long in between checks?
     private float lastDetectTime;
     private float rayDistance = 1f;
-
-    public GameObject testSphere;
     public static bool IsOnColoredGround { get; private set; }
 
     private void Update()
@@ -17,7 +15,6 @@ public class PaintSurfaceChecker : MonoBehaviour
         if(Time.time > lastDetectTime + detectionInterval)
         {
             Color color = IsOnColoredGround ? Color.white : Color.black;
-            testSphere.GetComponent<Renderer>().material.SetColor("_Color", color);
 
             RaycastHit hit;   
             lastDetectTime = Time.time;
