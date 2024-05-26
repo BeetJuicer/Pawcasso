@@ -200,7 +200,7 @@ public class Pistol : PaintGun
 			//damage the enemy
 			if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
             {
-				enemy.TakeDamage(damage, hit.point, Quaternion.identity);
+				enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
             }
 
 			// Damage

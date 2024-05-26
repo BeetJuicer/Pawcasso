@@ -5,7 +5,6 @@ public enum GunColor
     Yellow,
     Green,
     Blue,
-    Indigo,
     Violet,
     None
 }
