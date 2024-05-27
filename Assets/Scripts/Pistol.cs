@@ -200,11 +200,8 @@ public class Pistol : PaintGun
 			//damage the enemy
 			if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
             {
-				enemy.TakeDamage(damage, hit.point, Quaternion.identity);
+				enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
             }
-
-			// Damage
-			hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
 
 			// Hit Effects -TODO: place a paint impact particle here
 			if (hitEffect != null)
