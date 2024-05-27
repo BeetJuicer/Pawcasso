@@ -167,9 +167,11 @@ public class ProjectileShooter : PaintGun
 					PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 				}
 
-				// Damage
-				hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
-
+				//damage the enemy
+				if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
+				{
+					enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
+				}
 
 				// Hit Effects
 				//if (makeHitEffects)
