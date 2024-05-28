@@ -107,6 +107,21 @@
                 "value": "{\"m_Value\":false}"
             },
             {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "SelectEdgeLoop.selectIterative",
+                "value": "{\"m_Value\":false}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "FillHole.selectEntirePath",
+                "value": "{\"m_Value\":true}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "editor.extrudeEdgesAsGroup",
+                "value": "{\"m_Value\":true}"
+            },
+            {
                 "type": "UnityEngine.ProBuilder.SelectionModifierBehavior, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "editor.rectSelectModifier",
                 "value": "{\"m_Value\":2}"
@@ -154,7 +169,7 @@
             {
                 "type": "System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "ShapeBuilder.ActiveShapeIndex",
-                "value": "{\"m_Value\":10}"
+                "value": "{\"m_Value\":7}"
             },
             {
                 "type": "System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
@@ -174,7 +189,12 @@
             {
                 "type": "UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "ShapeBuilder.LastSize",
-                "value": "{\"m_Value\":{\"x\":-10.8616943359375,\"y\":-5.021812438964844,\"z\":-6.674175262451172}}"
+                "value": "{\"m_Value\":{\"x\":-6.597618103027344,\"y\":18.32949447631836,\"z\":6.673590660095215}}"
+            },
+            {
+                "type": "UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "MoveElements.s_Translation",
+                "value": "{\"m_Value\":{\"x\":0.0,\"y\":1.0,\"z\":0.0}}"
             },
             {
                 "type": "UnityEngine.Quaternion, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -257,9 +277,19 @@
                 "value": "{\"m_Value\":15.0}"
             },
             {
+                "type": "System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "ExtrudeEdges.distance",
+                "value": "{\"m_Value\":0.5}"
+            },
+            {
                 "type": "UnityEditor.ProBuilder.Actions.MirrorObjects+MirrorSettings, Unity.ProBuilder.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "MirrorObjects.mirrorAxes",
                 "value": "{\"m_Value\":12}"
+            },
+            {
+                "type": "UnityEditor.ProBuilder.Actions.OffsetElements+CoordinateSpace, Unity.ProBuilder.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "MoveElements.s_CoordinateSpace",
+                "value": "{\"m_Value\":0}"
             }
         ]
     }
