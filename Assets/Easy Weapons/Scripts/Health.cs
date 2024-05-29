@@ -8,9 +8,11 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
+	[SerializeField] private string gameOverScene;
 	public bool canDie = true;					// Whether or not this health can die
 	
 	public float startingHealth = 100.0f;		// The amount of health to start with
@@ -23,7 +25,9 @@ public class Health : MonoBehaviour
 	public GameObject explosion;				// The explosion prefab to be instantiated
 
 	public bool isPlayer = false;				// Whether or not this health is the player
-	public GameObject deathCam;					// The camera to activate when the player dies
+	public GameObject deathCam;                 // The camera to activate when the player dies
+	[SerializeField] private HealthBar healthBar;
+	[SerializeField] private GameObject gameOverMenu;
 
 	private bool dead = false;					// Used to make sure the Die() function isn't called twice
 
@@ -32,6 +36,11 @@ public class Health : MonoBehaviour
 	{
 		// Initialize the currentHealth variable to the value specified by the user in startingHealth
 		currentHealth = startingHealth;
+
+		if (isPlayer)
+        {
+			healthBar.SetMaxHealth(startingHealth);
+        }
 	}
 
 	public void ChangeHealth(float amount)
@@ -39,14 +48,18 @@ public class Health : MonoBehaviour
 		// Change the health by the amount specified in the amount variable
 		currentHealth += amount;
 
+		if(isPlayer)
+        {
+			healthBar.SetHealth(currentHealth);
+			print("health changing: " + currentHealth);
+        }
+
 		// If the health runs out, then Die.
 		if (currentHealth <= 0 && !dead && canDie)
 			Die();
 		// Make sure that the health never exceeds the maximum health
 		else if (currentHealth > maxHealth)
 			currentHealth = maxHealth;
-
-		print("Health: " + currentHealth + "/" + maxHealth);
 	}
 
 	public void Die()
@@ -63,7 +76,7 @@ public class Health : MonoBehaviour
 		if (isPlayer)
         {
 			// TODO: Change scene to restart.
-			print("Player is dead!");
+			SceneManager.LoadScene(gameOverScene);
         }
         else
         {

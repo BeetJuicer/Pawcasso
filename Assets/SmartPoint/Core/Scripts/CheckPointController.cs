@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using SmartPoint.Events;
+using KinematicCharacterController.Examples;
 
 namespace SmartPoint
 {
@@ -191,7 +192,15 @@ namespace SmartPoint
         private void TeleportEntityToCheckpoint(GameObject entity, CheckPoint cp)
         {
             OnTeleportEvent.Invoke(cp.GetIndex(), entity);
-            entity.transform.position = cp.GetAbsolutePosition();
+
+            //use the kinematic controller's set position method, change this in case the player is changed to a different controller.
+            ExampleCharacterController cc = entity.GetComponent<ExampleCharacterController>();
+            if (cc)
+            {
+                cc.Motor.SetPositionAndRotation(cp.GetAbsolutePosition(), entity.transform.rotation);
+            }
+
+            //entity.transform.position = cp.GetAbsolutePosition();
             if (AlignTeleport)
             {
                 entity.transform.localEulerAngles = new Vector3(entity.transform.localEulerAngles.x, cp.GetDirection(), entity.transform.localEulerAngles.z);
@@ -260,6 +269,7 @@ namespace SmartPoint
         /// </summary>
         public void TeleportToNearest(GameObject entity)
         {
+
             CheckPoint temp = GetNearestCheckpoint();
             if (temp != null)
             {
