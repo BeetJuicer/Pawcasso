@@ -8,9 +8,11 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
+	[SerializeField] private string gameOverScene;
 	public bool canDie = true;					// Whether or not this health can die
 	
 	public float startingHealth = 100.0f;		// The amount of health to start with
@@ -74,7 +76,7 @@ public class Health : MonoBehaviour
 		if (isPlayer)
         {
 			// TODO: Change scene to restart.
-			gameOverMenu.SetActive(true);
+			SceneManager.LoadScene(gameOverScene);
         }
         else
         {
