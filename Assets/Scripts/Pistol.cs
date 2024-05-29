@@ -97,7 +97,6 @@ public class Pistol : PaintGun
 			chargeSlider.gameObject.SetActive(true);
 			chargeTimer += Time.deltaTime;
 			chargeSlider.value = (chargeTimer / maxChargeTime);
-			print(chargeSlider.value);
         }
         else
         {
