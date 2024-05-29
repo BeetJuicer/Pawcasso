@@ -41,7 +41,8 @@ public class Pistol : PaintGun
 	// Damage
 	[SerializeField] private float damage;
 
-	// RayCast
+	// General
+	[SerializeField] private GameObject weaponModel;                      // The actual mesh for this weapon
 	[SerializeField] private Transform raycastStartSpot;
 
 	// Crosshairs
@@ -61,10 +62,18 @@ public class Pistol : PaintGun
 	[SerializeField] private AudioClip reloadSound;  // Sound to play when the weapon is reloading
 	[SerializeField] private AudioClip dryFireSound; // Sound to play when the user tries to fire but is out of ammo
 	[SerializeField] private GameObject[] muzzleEffects; // Particles for muzzleEffects to choose randomly.
-    #endregion
+
+	// Recoil
+	public bool recoil = true;                          // Whether or not this weapon should have recoil
+	public float recoilKickBackMin = 0.1f;              // The minimum distance the weapon will kick backward when fired
+	public float recoilKickBackMax = 0.3f;              // The maximum distance the weapon will kick backward when fired
+	public float recoilRotationMin = 0.1f;              // The minimum rotation the weapon will kick when fired
+	public float recoilRotationMax = 0.25f;             // The maximum rotation the weapon will kick when fired
+	public float recoilRecoveryRate = 0.01f;            // The rate at which the weapon recovers from the recoil displacement
+	#endregion
 
 
-    private void Start()
+	private void Start()
     {
 		brush = GetComponent<BrushMono>().brush;
 
@@ -92,6 +101,7 @@ public class Pistol : PaintGun
 
 		CheckInputs();
 
+		//Charging
 		if(isCharging)
         {
 			chargeSlider.gameObject.SetActive(true);
@@ -107,6 +117,13 @@ public class Pistol : PaintGun
 		// Reload if the weapon is out of ammo
 		if (CurrentAmmo <= 0)
 			Reload();
+
+		// Recoil Recovery
+		if (recoil)
+		{
+			weaponModel.transform.position = Vector3.Lerp(weaponModel.transform.position, transform.position, recoilRecoveryRate * Time.deltaTime);
+			weaponModel.transform.rotation = Quaternion.Lerp(weaponModel.transform.rotation, transform.rotation, recoilRecoveryRate * Time.deltaTime);
+		}
 	}
 
 	void CheckInputs()
@@ -157,6 +174,9 @@ public class Pistol : PaintGun
 			DryFire();
 			return;
 		}
+
+		if (recoil)
+			Recoil();
 
 		// Subtract 1 from the current ammo
 		CurrentAmmo--;
@@ -215,12 +235,12 @@ public class Pistol : PaintGun
 			//}
 		}
 
-		/*
+		
 		// Muzzle flash effects
 		GameObject muzfx = muzzleEffects[Random.Range(0, muzzleEffects.Length)];
 		if (muzfx != null)
-			Instantiate(muzfx, muzzleEffectsPosition.position, muzzleEffectsPosition.rotation);
-		*/
+			Instantiate(muzfx, muzzleEffectsPosition.position, muzzleEffectsPosition.rotation, muzzleEffectsPosition);
+		
 		// Play the gunshot sound
 		GetComponent<AudioSource>().PlayOneShot(fireSound);
 	}
@@ -263,14 +283,10 @@ public class Pistol : PaintGun
 		}
 	}
 
-	/* REcoil()
+	
 	// Recoil FX.  This is the "kick" that you see when the weapon moves back while firing
 	void Recoil()
 	{
-		// No recoil for AIs
-		if (!playerWeapon)
-			return;
-
 		// Make sure the user didn't leave the weapon model field blank
 		if (weaponModel == null)
 		{
@@ -286,6 +302,6 @@ public class Pistol : PaintGun
 		weaponModel.transform.Translate(new Vector3(0, 0, -kickBack), Space.Self);
 		weaponModel.transform.Rotate(new Vector3(-kickRot, 0, 0), Space.Self);
 	}
-	*/
+	
 
 }

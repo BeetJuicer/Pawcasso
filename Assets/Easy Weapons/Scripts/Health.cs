@@ -35,7 +35,7 @@ public class Health : MonoBehaviour
 		// Initialize the currentHealth variable to the value specified by the user in startingHealth
 		currentHealth = startingHealth;
 
-		if(isPlayer)
+		if (isPlayer)
         {
 			healthBar.SetMaxHealth(startingHealth);
         }
@@ -74,8 +74,7 @@ public class Health : MonoBehaviour
 		if (isPlayer)
         {
 			// TODO: Change scene to restart.
-			//gameovermenu.setactive(true);
-			print("Player is dead!");
+			gameOverMenu.SetActive(true);
         }
         else
         {
