@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tank Cat
+* source:	https://sketchfab.com/3d-models/tank-cat-afec0186c75f447db3ca880427765b25
+* author:	Marius Dobre (https://sketchfab.com/Marius.Dobre)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tank Cat" (https://sketchfab.com/3d-models/tank-cat-afec0186c75f447db3ca880427765b25) by Marius Dobre (https://sketchfab.com/Marius.Dobre) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
