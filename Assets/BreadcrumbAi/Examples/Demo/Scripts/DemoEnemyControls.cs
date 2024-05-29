@@ -10,8 +10,6 @@ public class DemoEnemySounds{
 
 public class DemoEnemyControls : MonoBehaviour {
 
-
-
 	[Space]
 	public DemoEnemySounds audioClips;
 
@@ -21,6 +19,9 @@ public class DemoEnemyControls : MonoBehaviour {
 	//public bool _canDropPickUp;
 	public EnemyType enemyType;
 	public Rigidbody rangedProjectilePrefab;
+
+	[Header("Melee Stats")]
+	[SerializeField] private float meleeDamage;
 
 	[Header("Shield")]
 	[SerializeField] private GunColor shieldColor;
@@ -152,7 +153,7 @@ public class DemoEnemyControls : MonoBehaviour {
 							audioSource.clip = audioClips.audio_melee_attack_2;
 						}
 						audioSource.PlayOneShot(audioSource.clip);
-						print("implement hitting the player");
+						player.GetComponentInChildren<Health>().ChangeHealth(-meleeDamage);
 						//player.GetComponent<DemoPlayerControls>()._isHit = true;
 						//player.GetComponent<DemoPlayerControls>().Bleed(transform.rotation);
 						_animAttack = true;
