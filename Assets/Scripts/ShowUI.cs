@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShowUI : MonoBehaviour
-
 {
-    [SerializeField] private int seconds = 4; 
-
     public GameObject uiObject;
     void Start()
     {
@@ -24,7 +21,7 @@ public class ShowUI : MonoBehaviour
     }
     IEnumerator WaitForSec()
     {
-        yield return new WaitForSeconds(seconds);
+        yield return new WaitForSeconds(4);
         Destroy(uiObject);
         Destroy(gameObject);
     }
