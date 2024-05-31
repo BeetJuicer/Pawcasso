@@ -44,7 +44,9 @@ public class ProjectileShooter : PaintGun
 
 	// RayCast
 	[SerializeField] private Transform raycastStartSpot;
-	
+	[SerializeField] private GameObject weaponModel;                      // The actual mesh for this weapon
+
+
 	// FX
 	[SerializeField] private Transform muzzleEffectsPosition;
 	[SerializeField] private GameObject hitEffect;
@@ -52,9 +54,17 @@ public class ProjectileShooter : PaintGun
 	[SerializeField] private AudioClip reloadSound;  // Sound to play when the weapon is reloading
 	[SerializeField] private AudioClip dryFireSound; // Sound to play when the user tries to fire but is out of ammo
 	[SerializeField] private GameObject[] muzzleEffects; // Particles for muzzleEffects to choose randomly.
-    #endregion
 
-    private void Start()
+	// Recoil
+	public bool recoil = true;                          // Whether or not this weapon should have recoil
+	public float recoilKickBackMin = 0.1f;              // The minimum distance the weapon will kick backward when fired
+	public float recoilKickBackMax = 0.3f;              // The maximum distance the weapon will kick backward when fired
+	public float recoilRotationMin = 0.1f;              // The minimum rotation the weapon will kick when fired
+	public float recoilRotationMax = 0.25f;             // The maximum rotation the weapon will kick when fired
+	public float recoilRecoveryRate = 0.01f;            // The rate at which the weapon recovers from the recoil displacement
+	#endregion
+
+	private void Start()
     {
 		brush = GetComponent<BrushMono>().brush;
 
@@ -81,6 +91,13 @@ public class ProjectileShooter : PaintGun
 		// Reload if the weapon is out of ammo
 		if (CurrentAmmo <= 0)
 			Reload();
+
+		// Recoil Recovery
+		if (recoil)
+		{
+			weaponModel.transform.position = Vector3.Lerp(weaponModel.transform.position, transform.position, recoilRecoveryRate * Time.deltaTime);
+			weaponModel.transform.rotation = Quaternion.Lerp(weaponModel.transform.rotation, transform.rotation, recoilRecoveryRate * Time.deltaTime);
+		}
 	}
 
 	void CheckInputs()
@@ -137,6 +154,8 @@ public class ProjectileShooter : PaintGun
 
 		// Subtract 1 from the current ammo
 		CurrentAmmo--;
+		Recoil();
+
 
 		// Fire 
 		// Fire once for each shotPerRound value
@@ -156,7 +175,6 @@ public class ProjectileShooter : PaintGun
 			Ray ray = new Ray(raycastStartSpot.position, direction);
 			RaycastHit hit;
 
-
 			Debug.DrawRay(raycastStartSpot.position, direction, Color.red, 2f);
 
 			if (Physics.Raycast(ray, out hit, range))
@@ -173,25 +191,22 @@ public class ProjectileShooter : PaintGun
 					enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
 				}
 
-				// Hit Effects
-				//if (makeHitEffects)
-				//{
-				//	foreach (GameObject hitEffect in hitEffects)
-				//	{
-				//		if (hitEffect != null)
-				//			Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
-				//	}
-				//}
-			}
+                // Hit Effects
+                //foreach (GameObject hitEffect in hitEffects)
+                //{
+                //    if (hitEffect != null)
+                //        Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                //}
+        }
 		}
 
-
-		/*
 		// Muzzle flash effects
 		GameObject muzfx = muzzleEffects[Random.Range(0, muzzleEffects.Length)];
 		if (muzfx != null)
-			Instantiate(muzfx, muzzleEffectsPosition.position, muzzleEffectsPosition.rotation);
-		*/
+		{
+			Instantiate(muzfx, muzzleEffectsPosition.position, muzzleEffectsPosition.rotation, muzzleEffectsPosition);
+		}
+		
 		// Play the gunshot sound
 		GetComponent<AudioSource>().PlayOneShot(fireSound);
 	}
@@ -199,6 +214,7 @@ public class ProjectileShooter : PaintGun
 	{
 		// Reset the fire timer to 0 (for ROF)
 		launchTimer = 0.0f;
+		Recoil();
 
 		// Instantiate the projectile
 		if (projectile != null)
@@ -253,14 +269,9 @@ public class ProjectileShooter : PaintGun
 		SendMessageUpwards("OnEasyWeaponsReload", SendMessageOptions.DontRequireReceiver);
 	}
 
-	/* REcoil()
 	// Recoil FX.  This is the "kick" that you see when the weapon moves back while firing
 	void Recoil()
 	{
-		// No recoil for AIs
-		if (!playerWeapon)
-			return;
-
 		// Make sure the user didn't leave the weapon model field blank
 		if (weaponModel == null)
 		{
@@ -276,6 +287,6 @@ public class ProjectileShooter : PaintGun
 		weaponModel.transform.Translate(new Vector3(0, 0, -kickBack), Space.Self);
 		weaponModel.transform.Rotate(new Vector3(-kickRot, 0, 0), Space.Self);
 	}
-	*/
+	
 
 }

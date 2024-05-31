@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class TriggerChangeScene : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             SceneManager.LoadScene("Iteration-2");
         }
