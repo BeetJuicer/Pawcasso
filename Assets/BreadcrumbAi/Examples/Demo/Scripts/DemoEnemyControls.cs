@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using BreadcrumbAi;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class DemoEnemySounds{
@@ -9,20 +10,41 @@ public class DemoEnemySounds{
 
 public class DemoEnemyControls : MonoBehaviour {
 
+	[Space]
 	public DemoEnemySounds audioClips;
 
-	public int pointWorth;
+	public int enemyPointWorth;
 	public enum EnemyType {Melee, Ranged, Special};
-	public GameObject healthPickUpPrefab;
-	public bool _canDropPickUp;
+	//public GameObject healthPickUpPrefab;
+	//public bool _canDropPickUp;
 	public EnemyType enemyType;
 	public Rigidbody rangedProjectilePrefab;
-	
+
+	[Header("Melee Stats")]
+	[SerializeField] private float meleeDamage;
+
+	[Header("Shield")]
+	[SerializeField] private GunColor shieldColor;
+	[SerializeField] private bool isShieldActive;
+	[Range(0, 1)]
+	[SerializeField] private float shieldDamageReductionMultiplier;
+	[SerializeField] private int shieldPointWorth;
+	private struct SecondaryColorCombo
+    {
+		public GunColor first;
+		public GunColor second;
+    }
+	private SecondaryColorCombo lastTwoHits;
+	private SecondaryColorCombo neededHits;
+
+	private bool isPrimary = true;
+
+	[Header("Effects")]
 	public GameObject bloodPrefab;
 	public GameObject specialPrefab;
 	public GameObject explosionPrefab;
+
 	private Transform player;
-	
 	private Ai ai;
 	
 	private bool _removeBody, _isHit, _animAttack;
@@ -46,6 +68,29 @@ public class DemoEnemyControls : MonoBehaviour {
     {
 		// 0 = easy, 1 = hard
 		difficultyMultiplier = PlayerPrefs.GetInt("Difficulty") == 1 ? 1.5f : 1f;
+
+		// Setup for shield and combo.
+		switch(shieldColor)
+        {
+			case GunColor.Green:
+				neededHits.first = GunColor.Yellow;
+				neededHits.second = GunColor.Blue;
+				isPrimary = false;
+				break;
+			case GunColor.Orange:
+				neededHits.first = GunColor.Yellow;
+				neededHits.second = GunColor.Red;
+				isPrimary = false;
+				break;
+			case GunColor.Violet:
+				neededHits.first = GunColor.Red;
+				neededHits.second = GunColor.Blue;
+				isPrimary = false;
+				break;
+        }
+		//combo
+		lastTwoHits.first = GunColor.None;
+		lastTwoHits.second = GunColor.None;
     }
 
     void Start(){
@@ -57,6 +102,9 @@ public class DemoEnemyControls : MonoBehaviour {
 		if(go){
 			player = go.transform;
 		}
+
+		//apply multiplier to health
+		ai.Health *= difficultyMultiplier;
 	}
 	
 	void Update () {
@@ -105,7 +153,7 @@ public class DemoEnemyControls : MonoBehaviour {
 							audioSource.clip = audioClips.audio_melee_attack_2;
 						}
 						audioSource.PlayOneShot(audioSource.clip);
-						print("implement hitting the player");
+						player.GetComponentInChildren<Health>().ChangeHealth(-meleeDamage);
 						//player.GetComponent<DemoPlayerControls>()._isHit = true;
 						//player.GetComponent<DemoPlayerControls>().Bleed(transform.rotation);
 						_animAttack = true;
@@ -153,22 +201,22 @@ public class DemoEnemyControls : MonoBehaviour {
 		if(ai.lifeState == Ai.LIFE_STATE.IsDead){
 			if(!_pointScored){
 				if(enemyType == EnemyType.Special){
-					ScoreManager.Instance.AddToPlayerScore(pointWorth * 2);
+					ScoreManager.Instance.AddToPlayerScore(enemyPointWorth * 2);
 				}
 				else {
-					ScoreManager.Instance.AddToPlayerScore(pointWorth);
+					ScoreManager.Instance.AddToPlayerScore(enemyPointWorth);
 				}
 				_pointScored = true;
 			}
-			if(_canDropPickUp){
-				float rand = Random.value;
-				if(rand <= 0.3f){
-					GameObject healthPickUp = Instantiate(healthPickUpPrefab,transform.position,Quaternion.identity) as GameObject;
-					healthPickUp.transform.position = new Vector3(transform.position.x, 1, transform.position.z);
-					Destroy(healthPickUp, 20);
-				}
-				_canDropPickUp = false;
-			}
+			//if(_canDropPickUp){
+			//	float rand = Random.value;
+			//	if(rand <= 0.3f){
+			//		GameObject healthPickUp = Instantiate(healthPickUpPrefab,transform.position,Quaternion.identity) as GameObject;
+			//		healthPickUp.transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+			//		Destroy(healthPickUp, 20);
+			//	}
+			//	_canDropPickUp = false;
+			//}
 
 			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
 			// Instantiate(explosionPrefab, transform.position, Quaternion.Identity);
@@ -202,11 +250,59 @@ public class DemoEnemyControls : MonoBehaviour {
 		Destroy(gameObject);
 	}
 	
-	public void TakeDamage(float damage, Vector3 hitSpawnPoint, Quaternion rotation)
+	public void TakeDamage(float damage, Vector3 hitSpawnPoint, Quaternion rotation, GunColor color)
     {
+		// Checking for shield
+		if(isShieldActive)
+        {
+			CheckShield(color);
+        }
 		_isHit = true;
-		ai.Health -= damage;
+		print("Last two hits: " + lastTwoHits.first + lastTwoHits.second);
+
+		ai.Health -= damage * shieldDamageReductionMultiplier;
 		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
 		Destroy(blood, 3);
+	}
+
+	private void CheckShield(GunColor color)
+    {
+		//primary color
+		if (isPrimary && color == shieldColor)
+		{
+			PopShield();
+		}
+		//secondary color
+		else if (!isPrimary)
+		{
+			//First is current hit. Second is the hit before this. 
+			lastTwoHits.second = GunColor.None;
+
+			//both empty
+			if (lastTwoHits.first == GunColor.None && lastTwoHits.second == GunColor.None)
+				lastTwoHits.first = color;
+			// first is not empty
+			else if (lastTwoHits.first != GunColor.None)
+			{
+				// like a queue, push back 'first' to the second spot and move the current color to the 'first' spot
+				lastTwoHits.second = lastTwoHits.first;
+				lastTwoHits.first = color;
+			}
+
+			if ((lastTwoHits.first == neededHits.first && lastTwoHits.second == neededHits.second) ||
+			   (lastTwoHits.second == neededHits.first && lastTwoHits.first == neededHits.second))
+			{
+				PopShield();
+			}
+		}
+	}
+
+	private void PopShield()
+    {
+		print("shield popped!");
+		isShieldActive = false;
+		shieldDamageReductionMultiplier = 1;
+		ScoreManager.Instance.AddToPlayerScore(shieldPointWorth);
+		//play a pop animation here for the indicator and shit.
 	}
 }
