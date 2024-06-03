@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/LevelDesign/Stairs 1.prefab.meta
 guid: 7db8166fc37062e4394b14598c324bde
 PrefabImporter:
+========
+guid: 3eef495d483511a459b087e4801fe957
+DefaultImporter:
+>>>>>>>> main:Assets/Scenes/Cardboard Menu.unity.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
