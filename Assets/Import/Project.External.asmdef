@@ -1,3 +1,16 @@
 {
-	"name": "Project.External"
+    "name": "Project.External",
+    "rootNamespace": "",
+    "references": [
+        "Unity.VisualScripting.State"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

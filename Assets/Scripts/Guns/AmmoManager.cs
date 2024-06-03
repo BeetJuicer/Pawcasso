@@ -7,7 +7,6 @@ using UnityEngine;
 public class AmmoManager : MonoBehaviour
 {
 
-    [SerializeField] private Inventory inventory;
     [SerializeField] private TMP_Text ammoText;
 
     void Start()
