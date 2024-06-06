@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShowUI : MonoBehaviour
 {
     public GameObject uiObject;
+    [SerializeField] private int time = 4;
     void Start()
     {
         uiObject.SetActive(false);
@@ -21,7 +22,7 @@ public class ShowUI : MonoBehaviour
     }
     IEnumerator WaitForSec()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(time);
         Destroy(uiObject);
         Destroy(gameObject);
     }
