@@ -167,7 +167,7 @@ namespace SlimUI.ModernMenu{
 		void DisablePanels(){
 			PanelControls.SetActive(false);
 			PanelVideo.SetActive(false);
-			//PanelGame.SetActive(false);
+			PanelGame.SetActive(false);
 			PanelKeyBindings.SetActive(false);
 
 			lineGame.SetActive(false);
@@ -185,9 +185,9 @@ namespace SlimUI.ModernMenu{
 
 		public void GamePanel(){
 			DisablePanels();
-			firstMenu.SetActive(false);
 			PanelGame.SetActive(true);
-			//lineGame.SetActive(true);
+			lineGame.SetActive(true);
+
 		}
 
 		public void VideoPanel(){

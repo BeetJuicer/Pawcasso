@@ -18,11 +18,8 @@ public class ProjectileMover : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (flash != null)
         {
-            //Instantiate flash effect on projectile position
             var flashInstance = Instantiate(flash, transform.position, Quaternion.identity);
             flashInstance.transform.forward = gameObject.transform.forward;
-            
-            //Destroy flash effect depending on particle Duration time
             var flashPs = flashInstance.GetComponent<ParticleSystem>();
             if (flashPs != null)
             {
@@ -57,7 +54,6 @@ public class ProjectileMover : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 pos = contact.point + contact.normal * hitOffset;
 
-        //Spawn hit effect on collision
         if (hit != null)
         {
             var hitInstance = Instantiate(hit, pos, rot);
@@ -65,7 +61,6 @@ public class ProjectileMover : MonoBehaviour
             else if (rotationOffset != Vector3.zero) { hitInstance.transform.rotation = Quaternion.Euler(rotationOffset); }
             else { hitInstance.transform.LookAt(contact.point + contact.normal); }
 
-            //Destroy hit effects depending on particle Duration time
             var hitPs = hitInstance.GetComponent<ParticleSystem>();
             if (hitPs != null)
             {
@@ -77,8 +72,6 @@ public class ProjectileMover : MonoBehaviour
                 Destroy(hitInstance, hitPsParts.main.duration);
             }
         }
-
-        //Removing trail from the projectile on cillision enter or smooth removing. Detached elements must have "AutoDestroying script"
         foreach (var detachedPrefab in Detached)
         {
             if (detachedPrefab != null)
@@ -86,7 +79,6 @@ public class ProjectileMover : MonoBehaviour
                 detachedPrefab.transform.parent = null;
             }
         }
-        //Destroy projectile on collision
         Destroy(gameObject);
     }
 }

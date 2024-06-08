@@ -139,7 +139,7 @@ TextureImporter:
         width: 402
         height: 227
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,27 +147,6 @@ TextureImporter:
       bones: []
       spriteID: 2adafaf8a560e854d91749b549d0922c
       internalID: 1690720589
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Rifles_2
-      rect:
-        serializedVersion: 2
-        x: 1062
-        y: 717
-        width: 283
-        height: 283
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b30a3fa02b6ae74469aa76367c7e2f73
-      internalID: 1087674164
       vertices: []
       indices: 
       edges: []
@@ -185,7 +164,6 @@ TextureImporter:
     nameFileIdTable:
       Rifles_0: 1189435508
       Rifles_1: 1690720589
-      Rifles_2: 1087674164
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

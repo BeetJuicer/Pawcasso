@@ -139,7 +139,7 @@ TextureImporter:
         width: 301
         height: 301
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,27 +147,6 @@ TextureImporter:
       bones: []
       spriteID: 6227b4c66e6513342821329c33eb4964
       internalID: 1612218577
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shotgun_2
-      rect:
-        serializedVersion: 2
-        x: 171
-        y: 139
-        width: 266
-        height: 270
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2d94bf843520b6d4bba94c84168abb07
-      internalID: 1330535783
       vertices: []
       indices: 
       edges: []
@@ -185,7 +164,6 @@ TextureImporter:
     nameFileIdTable:
       Shotgun_0: -887790735
       Shotgun_1: 1612218577
-      Shotgun_2: 1330535783
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
