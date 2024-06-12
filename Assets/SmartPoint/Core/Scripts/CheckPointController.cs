@@ -193,6 +193,8 @@ namespace SmartPoint
         {
             OnTeleportEvent.Invoke(cp.GetIndex(), entity);
 
+            print("player is here");
+
             //use the kinematic controller's set position method, change this in case the player is changed to a different controller.
             ExampleCharacterController cc = entity.GetComponent<ExampleCharacterController>();
             if (cc)

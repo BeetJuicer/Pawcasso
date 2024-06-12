@@ -16,7 +16,10 @@ public class SuckForce : MonoBehaviour
 	[SerializeField] private float suckTime;
 	private bool suck;
 	private float suckTimer;
-
+	[SerializeField] private GameObject tendril;
+	private bool spawnedTendrils;
+	private List<GameObject> tendrils = new List<GameObject>();
+	[SerializeField] private LayerMask whatToSuck;
 
 
 	void Start()
@@ -35,6 +38,7 @@ public class SuckForce : MonoBehaviour
 		if (lifeTimer >= lifetime)
 		{
 			suck = true;
+			gameObject.GetComponent<Rigidbody>().useGravity = false;
 		}
 
 		if(suck)
@@ -43,6 +47,10 @@ public class SuckForce : MonoBehaviour
 			if(suckTimer >= suckTime)
 			{
 				// Destroy this projectile
+				foreach(GameObject tendril in tendrils)
+                {
+					Destroy(tendril);
+                }
 				Destroy(gameObject);
 			}
         }
@@ -57,14 +65,22 @@ public class SuckForce : MonoBehaviour
 		if (suck)
 		{
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
-			Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-			foreach (Collider hit in colliders)
-			{
-				if (hit && hit.transform != transform && hit.TryGetComponent<Rigidbody>(out Rigidbody rb))
+			Collider[] colliders = Physics.OverlapSphere(transform.position, radius, whatToSuck);
+
+			if(!spawnedTendrils)
+            {
+				for(int i = 0; i < colliders.Length; i++)
+					tendrils.Add(Instantiate(tendril, transform.position, Quaternion.identity));
+            }
+
+			for(int i = 0; i < colliders.Length; i++)
+            {
+				if (colliders[i] && colliders[i].transform != transform && colliders[i].TryGetComponent<Rigidbody>(out Rigidbody rb))
 				{
-					print(hit.gameObject.name);
-					Vector3 difference = hit.transform.position - transform.position;
+					Vector3 difference = colliders[i].transform.position - transform.position;
 					rb.AddForce(-difference.normalized * power, ForceMode.Force);
+					tendrils[i].GetComponent<LineRenderer>().SetPosition(0, transform.position);
+					tendrils[i].GetComponent<LineRenderer>().SetPosition(1, colliders[i].transform.position);
 				}
 			}
 		}
