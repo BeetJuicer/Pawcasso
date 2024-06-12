@@ -489,24 +489,9 @@ namespace KinematicCharacterController.Examples
                             _timeSinceJumpRequested += deltaTime;
                             if (_jumpRequested)
                             {
-
-                                // Handle double jump
-                                if (AllowDoubleJump)
-                                {
-                                    if (_jumpConsumed && !_doubleJumpConsumed && (AllowJumpingWhenSliding ? !Motor.GroundingStatus.FoundAnyGround : !Motor.GroundingStatus.IsStableOnGround))
-                                    {
-                                        Motor.ForceUnground(0.1f);
-                                        print("double jumping fr");
-                                        // Add to the return velocity and reset jump state
-                                        currentVelocity += (Motor.CharacterUp * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                                        _jumpRequested = false;
-                                        _doubleJumpConsumed = true;
-                                        _jumpedThisFrame = true;
-                                    }
-                                }
-
                                 // See if we actually are allowed to jump
                                 if (_canWallJump ||
+                                    (_jumpConsumed && !_doubleJumpConsumed && (AllowJumpingWhenSliding ? !Motor.GroundingStatus.FoundAnyGround : !Motor.GroundingStatus.IsStableOnGround)) ||
                                     !_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
                                 {
                                     // Calculate jump direction before ungrounding
@@ -517,6 +502,15 @@ namespace KinematicCharacterController.Examples
                                     {
                                         jumpDirection = Vector3.Lerp(Motor.CharacterUp, _wallJumpNormal, 0.5f);
                                         jumpDirection *= 2;
+                                    }
+                                    // Handle double jump
+                                    else if (AllowDoubleJump && _jumpConsumed && !_doubleJumpConsumed && (AllowJumpingWhenSliding ? !Motor.GroundingStatus.FoundAnyGround : !Motor.GroundingStatus.IsStableOnGround))
+                                    {
+                                        Motor.ForceUnground(0.1f);
+                                        print("double jumping fr");
+                                        // Add to the return velocity and reset jump state
+                                        jumpDirection = Motor.CharacterUp;
+                                        _doubleJumpConsumed = true;
                                     }
                                     //Normal Jump
                                     else if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
@@ -535,8 +529,8 @@ namespace KinematicCharacterController.Examples
                                     currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
                                     currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                     _jumpRequested = false;
-                                    _jumpConsumed = true;
                                     _jumpedThisFrame = true;
+                                    _jumpConsumed = true;
                                 }
                             }
 
@@ -550,6 +544,7 @@ namespace KinematicCharacterController.Examples
                                 _internalVelocityAdd = Vector3.zero;
                             }
                         }
+
                         break;
                     }
 
