@@ -224,27 +224,11 @@ public class DemoEnemyControls : MonoBehaviour {
 
 			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
 			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-			Destroy(GetComponent<Rigidbody>());
-			Destroy(GetComponent<Collider>());
-			Destroy(GetComponent<Ai>());
+			UpdateEnemyCount();
 			Destroy(gameObject);
-			//if(!_removeBody){
-			//	StartCoroutine(DestroyBody());		
-			//} else {
-			//	transform.position -= new Vector3(0,0.01f,0);
-			//}
 	    }
     }
-    
-    IEnumerator DestroyBody(){
-		if(enemyType == EnemyType.Special){
-			Destroy(specialPrefab);
-		}
-		yield return new WaitForSeconds(2);
-
-		Invoke("UpdateEnemyCount", 3);
-		_removeBody = true;
-	}
+		
 	
 	void UpdateEnemyCount(){
 		if(enemyType == EnemyType.Special){
