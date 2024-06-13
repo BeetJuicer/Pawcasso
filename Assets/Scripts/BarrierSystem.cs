@@ -1,31 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class BarrierSystem : MonoBehaviour
 {
-    public GameObject[] Enemies;
     public GameObject barrier;
+    private int enemiesKilled = 0;
+    private int totalEnemiesToKill = 0;
 
-    // Start is called before the first frame update
-    void Update()
+    void Start()
     {
-        if (AllEnemiesCleared())
+        // Instantiate the barrier at the start if not already set
+        if (barrier == null)
         {
-            Destroy(barrier);
+            Debug.LogError("Barrier GameObject is not assigned to BarrierSystem!");
+            return;
+        }
+        barrier.SetActive(true); // Ensure the barrier is active at the start
+    }
+
+    public void UpdateTotalEnemiesToKill(int count)
+    {
+        totalEnemiesToKill += count;
+        Debug.Log("Total enemies to kill: " + totalEnemiesToKill);
+    }
+
+    public void OnEnemyKilled()
+    {
+        enemiesKilled++;
+        Debug.Log("Enemies killed: " + enemiesKilled);
+
+        if (enemiesKilled >= totalEnemiesToKill)
+        {
+            DestroyBarrier();
         }
     }
 
-    bool AllEnemiesCleared()
+    private void DestroyBarrier()
     {
-        foreach (GameObject enemy in Enemies)
+        if (barrier != null)
         {
-            if (enemy != null)
-            {
-                return false;
-            }
+            Destroy(barrier);
+            Debug.Log("Barrier destroyed!");
         }
-        return true;
+        else
+        {
+            Debug.LogError("Barrier GameObject is not assigned to BarrierSystem!");
+        }
     }
 }
