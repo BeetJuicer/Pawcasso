@@ -6,6 +6,7 @@ public class EnemyType
 {
     public GameObject enemyPrefab;
     public int count;
+    public Transform[] spawnPoints;  // Spawn points for this enemy type
 }
 
 [System.Serializable]
@@ -17,7 +18,6 @@ public class EnemyWave
 public class EnemySpawner : MonoBehaviour
 {
     public EnemyWave[] waveConfigurations;  // Array of wave configurations
-    public Transform[] spawnPoints;
     private int currentWave = 0;
     private bool isTriggered = false;
     private BarrierSystem gameManager;
@@ -45,10 +45,10 @@ public class EnemySpawner : MonoBehaviour
         {
             for (int j = 0; j < enemyType.count; j++)
             {
-                int spawnIndex = Random.Range(0, spawnPoints.Length);
-                GameObject enemy = Instantiate(enemyType.enemyPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
-                // set the enemy's barrier system to be this gameobject.
-                enemy.GetComponent<DemoEnemyControls>().SetBarrierSystem(GetComponent<BarrierSystem>());
+                int spawnIndex = j % enemyType.spawnPoints.Length;
+                GameObject enemy = Instantiate(enemyType.enemyPrefab, enemyType.spawnPoints[spawnIndex].position, enemyType.spawnPoints[spawnIndex].rotation);
+                // Set the enemy's barrier system to be this gameobject.
+                enemy.GetComponent<DemoEnemyControls>().SetBarrierSystem(gameManager);
             }
             totalEnemies += enemyType.count;
         }

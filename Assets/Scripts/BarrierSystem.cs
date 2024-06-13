@@ -20,13 +20,11 @@ public class BarrierSystem : MonoBehaviour
     public void UpdateTotalEnemiesToKill(int count)
     {
         totalEnemiesToKill += count;
-        Debug.Log("Total enemies to kill: " + totalEnemiesToKill);
     }
 
     public void OnEnemyKilled()
     {
         enemiesKilled++;
-        Debug.Log("Enemies killed: " + enemiesKilled);
 
         if (enemiesKilled >= totalEnemiesToKill)
         {
@@ -39,11 +37,6 @@ public class BarrierSystem : MonoBehaviour
         if (barrier != null)
         {
             Destroy(barrier);
-            Debug.Log("Barrier destroyed!");
-        }
-        else
-        {
-            Debug.LogError("Barrier GameObject is not assigned to BarrierSystem!");
         }
     }
 }
