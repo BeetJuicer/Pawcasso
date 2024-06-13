@@ -67,6 +67,7 @@ public class DemoEnemyControls : MonoBehaviour {
 	private bool _pointScored;
 
 	private float difficultyMultiplier;
+	private BarrierSystem barrierSystem;
 
     private void Awake()
     {
@@ -127,6 +128,11 @@ public class DemoEnemyControls : MonoBehaviour {
 		}
 	}
 	
+	public void SetBarrierSystem(BarrierSystem barrierSystem)
+    {
+		this.barrierSystem = barrierSystem;
+    }
+
 	private void Animation(){
 		if(ai.lifeState == Ai.LIFE_STATE.IsAlive){
 			if(ai.moveState != Ai.MOVEMENT_STATE.IsIdle){
@@ -230,11 +236,7 @@ public class DemoEnemyControls : MonoBehaviour {
 		
 	
 	void UpdateEnemyCount(){
-		if(enemyType == EnemyType.Special){
-			GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().specialEnemyCount--;
-		}
-		//TODO: update enemy count in room.
-		//GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().enemyCount--;
+		barrierSystem.OnEnemyKilled();
 		Destroy(gameObject);
 	}
 	

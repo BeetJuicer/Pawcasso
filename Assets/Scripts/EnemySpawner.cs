@@ -46,7 +46,9 @@ public class EnemySpawner : MonoBehaviour
             for (int j = 0; j < enemyType.count; j++)
             {
                 int spawnIndex = Random.Range(0, spawnPoints.Length);
-                Instantiate(enemyType.enemyPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
+                GameObject enemy = Instantiate(enemyType.enemyPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
+                // set the enemy's barrier system to be this gameobject.
+                enemy.GetComponent<DemoEnemyControls>().SetBarrierSystem(GetComponent<BarrierSystem>());
             }
             totalEnemies += enemyType.count;
         }
