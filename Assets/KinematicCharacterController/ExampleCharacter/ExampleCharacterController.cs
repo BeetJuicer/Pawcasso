@@ -526,7 +526,8 @@ namespace KinematicCharacterController.Examples
                                     Motor.ForceUnground();
 
                                     // Add to the return velocity and reset jump state
-                                    currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                    float onPaintSpeedMultiplier = PaintSurfaceChecker.IsOnColoredGround ? 1.3f : 1f;
+                                    currentVelocity += (jumpDirection * JumpUpSpeed * onPaintSpeedMultiplier) - Vector3.Project(currentVelocity, Motor.CharacterUp);
                                     currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                     _jumpRequested = false;
                                     _jumpedThisFrame = true;

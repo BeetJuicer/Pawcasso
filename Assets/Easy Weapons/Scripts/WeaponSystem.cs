@@ -14,6 +14,7 @@ public class WeaponSystem : MonoBehaviour
 	public int startingWeaponIndex = 0;			// The weapon index that the player will start with
 	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
 	public int CurrentAmmo { get; private set; }
+	public int MaxAmmo { get; private set; }
 
 	// Use this for initialization
 	void Start()
@@ -41,6 +42,7 @@ public class WeaponSystem : MonoBehaviour
 			PreviousWeapon();
 
 		CurrentAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().CurrentAmmo;
+		MaxAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().MaxAmmo;
 	}
 
 	public void SetActiveWeapon(int index)
