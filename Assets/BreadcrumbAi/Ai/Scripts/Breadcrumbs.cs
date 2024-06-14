@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace BreadcrumbAi{
 	public class Breadcrumbs : MonoBehaviour {
@@ -23,10 +24,12 @@ namespace BreadcrumbAi{
 								 "Maximize the Layers section and add the proper Layers.\n" +
 								 "You can find the right Tags and Layers in the ReadMe file\n" +
 								 "Go to BreadcrumbAi > Ai > Documentation > ReadMe\n\n";
-	
-		#if UNITY_EDITOR
-		// This places a blue cube in the position of the breadcrumb location in the Editor
-		void OnDrawGizmos(){
+
+        public Action OnKilled { get; internal set; }
+
+#if UNITY_EDITOR
+        // This places a blue cube in the position of the breadcrumb location in the Editor
+        void OnDrawGizmos(){
 			Gizmos.color = Color.blue;
 			for(int i = 0; i < usedCrumbs.Count; i++){
 				Gizmos.DrawCube(usedCrumbs[i].transform.position,usedCrumbs[i].transform.localScale);
