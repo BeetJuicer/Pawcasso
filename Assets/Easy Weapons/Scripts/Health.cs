@@ -12,7 +12,6 @@ using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
-	[SerializeField] private string gameOverScene;
 	public bool canDie = true;					// Whether or not this health can die
 	
 	public float startingHealth = 100.0f;		// The amount of health to start with
@@ -21,11 +20,9 @@ public class Health : MonoBehaviour
 
 	public bool replaceWhenDead = false;		// Whether or not a dead replacement should be instantiated.  (Useful for breaking/shattering/exploding effects)
 	public GameObject deadReplacement;			// The prefab to instantiate when this GameObject dies
-	public bool makeExplosion = false;			// Whether or not an explosion prefab should be instantiated
-	public GameObject explosion;				// The explosion prefab to be instantiated
 
-	public bool isPlayer = false;				// Whether or not this health is the player
 	public GameObject deathCam;                 // The camera to activate when the player dies
+	[SerializeField] private string gameOverScene;
 	[SerializeField] private HealthBar healthBar;
 	[SerializeField] private GameObject gameOverMenu;
 
@@ -37,10 +34,7 @@ public class Health : MonoBehaviour
 		// Initialize the currentHealth variable to the value specified by the user in startingHealth
 		currentHealth = startingHealth;
 
-		if (isPlayer)
-        {
-			healthBar.SetMaxHealth(startingHealth);
-        }
+		healthBar.SetMaxHealth(startingHealth);
 	}
 
 	public void ChangeHealth(float amount)
@@ -48,11 +42,7 @@ public class Health : MonoBehaviour
 		// Change the health by the amount specified in the amount variable
 		currentHealth += amount;
 
-		if(isPlayer)
-        {
-			healthBar.SetHealth(currentHealth);
-			print("health changing: " + currentHealth);
-        }
+		healthBar.SetHealth(currentHealth);
 
 		// If the health runs out, then Die.
 		if (currentHealth <= 0 && !dead && canDie)
@@ -70,18 +60,8 @@ public class Health : MonoBehaviour
 		// Make death effects
 		if (replaceWhenDead)
 			Instantiate(deadReplacement, transform.position, transform.rotation);
-		if (makeExplosion)
-			Instantiate(explosion, transform.position, transform.rotation);
 
-		if (isPlayer)
-        {
-			// TODO: Change scene to restart.
-			SceneManager.LoadScene(gameOverScene);
-        }
-        else
-        {
-			// Remove this GameObject from the scene
-			Destroy(gameObject);
-		}
+		// TODO: Change scene to restart.
+		SceneManager.LoadScene(gameOverScene);
 	}
 }
