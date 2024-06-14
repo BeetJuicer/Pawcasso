@@ -44,6 +44,10 @@ public class DemoEnemyControls : MonoBehaviour {
 	public GameObject specialPrefab;
 	public GameObject explosionPrefab;
 
+	[Header("Healing")]
+	[SerializeField] private LayerMask whatIsPlayer;
+	[SerializeField] private float healRadius;
+
 	private Transform player;
 	private Ai ai;
 	
@@ -63,6 +67,7 @@ public class DemoEnemyControls : MonoBehaviour {
 	private bool _pointScored;
 
 	private float difficultyMultiplier;
+	private BarrierSystem barrierSystem;
 
     private void Awake()
     {
@@ -123,6 +128,11 @@ public class DemoEnemyControls : MonoBehaviour {
 		}
 	}
 	
+	public void SetBarrierSystem(BarrierSystem barrierSystem)
+    {
+		this.barrierSystem = barrierSystem;
+    }
+
 	private void Animation(){
 		if(ai.lifeState == Ai.LIFE_STATE.IsAlive){
 			if(ai.moveState != Ai.MOVEMENT_STATE.IsIdle){
@@ -219,34 +229,14 @@ public class DemoEnemyControls : MonoBehaviour {
 			//}
 
 			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
-			// Instantiate(explosionPrefab, transform.position, Quaternion.Identity);
-			Destroy(GetComponent<Rigidbody>());
-			Destroy(GetComponent<Collider>());
-			Destroy(GetComponent<Ai>());		
-			if(!_removeBody){
-				StartCoroutine(DestroyBody());		
-			} else {
-				transform.position -= new Vector3(0,0.01f,0);
-			}
+			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+			UpdateEnemyCount();
 	    }
     }
-    
-    IEnumerator DestroyBody(){
-		if(enemyType == EnemyType.Special){
-			Destroy(specialPrefab);
-		}
-		yield return new WaitForSeconds(2);
-
-		Invoke("UpdateEnemyCount", 3);
-		_removeBody = true;
-	}
+		
 	
 	void UpdateEnemyCount(){
-		if(enemyType == EnemyType.Special){
-			GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().specialEnemyCount--;
-		}
-		//TODO: update enemy count in room.
-		//GameObject.Find("Spawners").GetComponent<DemoSpawnerControl>().enemyCount--;
+		barrierSystem.OnEnemyKilled();
 		Destroy(gameObject);
 	}
 	
