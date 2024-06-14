@@ -47,7 +47,11 @@ public class DemoEnemyControls : MonoBehaviour {
 	[Header("Healing")]
 	[SerializeField] private LayerMask whatIsPlayer;
 	[SerializeField] private float healRadius;
+	[SerializeField] private float healAmount;
 
+	[Header("Brush")]
+	public BrushMono brush;
+		
 	private Transform player;
 	private Ai ai;
 	
@@ -102,7 +106,6 @@ public class DemoEnemyControls : MonoBehaviour {
 		ai = GetComponent<Ai>();
 		anim = GetComponent<Animator>();
 		audioSource = gameObject.AddComponent<AudioSource>();
-		//score = Camera.main.GetComponent<DemoScore>();
 		GameObject go = GameObject.FindGameObjectWithTag("Player");
 		if(go){
 			player = go.transform;
@@ -114,18 +117,11 @@ public class DemoEnemyControls : MonoBehaviour {
 	
 	void Update () {
 		CheckHealth();
-		//CheckDeathZone();
 	}
 	
 	void FixedUpdate(){
 		Animation();
 		Attack();
-	}
-	
-	private void CheckDeathZone(){
-		if(transform.position.y < -10 || transform.position.y > 10){
-			UpdateEnemyCount();
-		}
 	}
 	
 	public void SetBarrierSystem(BarrierSystem barrierSystem)
@@ -164,8 +160,6 @@ public class DemoEnemyControls : MonoBehaviour {
 						}
 						audioSource.PlayOneShot(audioSource.clip);
 						player.GetComponentInChildren<Health>().ChangeHealth(-meleeDamage);
-						//player.GetComponent<DemoPlayerControls>()._isHit = true;
-						//player.GetComponent<DemoPlayerControls>().Bleed(transform.rotation);
 						_animAttack = true;
 					} else {
 						_animAttack = false;
@@ -208,6 +202,7 @@ public class DemoEnemyControls : MonoBehaviour {
 	        _isHit = false;
         }
         
+		// - Death
 		if(ai.lifeState == Ai.LIFE_STATE.IsDead){
 			if(!_pointScored){
 				if(enemyType == EnemyType.Special){
@@ -218,25 +213,28 @@ public class DemoEnemyControls : MonoBehaviour {
 				}
 				_pointScored = true;
 			}
-			//if(_canDropPickUp){
-			//	float rand = Random.value;
-			//	if(rand <= 0.3f){
-			//		GameObject healthPickUp = Instantiate(healthPickUpPrefab,transform.position,Quaternion.identity) as GameObject;
-			//		healthPickUp.transform.position = new Vector3(transform.position.x, 1, transform.position.z);
-			//		Destroy(healthPickUp, 20);
-			//	}
-			//	_canDropPickUp = false;
-			//}
-
-			//TODO: Spawn a death paint particle that heals the player on collision with the player, limited to 1 heal per 0.2f or something.
 			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+			HealPlayer();
 			UpdateEnemyCount();
 	    }
     }
-		
 	
+
+	void HealPlayer()
+	{
+		Collider[] hits = Physics.OverlapSphere(transform.position, healRadius, whatIsPlayer);
+		foreach(Collider col in hits)
+        {
+			if (col.gameObject.CompareTag("Player"))
+            {
+				if(col.TryGetComponent<Health>(out Health player))
+					player.ChangeHealth(healAmount);
+            }
+        }
+	}
+
 	void UpdateEnemyCount(){
-		barrierSystem.OnEnemyKilled();
+		//barrierSystem.OnEnemyKilled();
 		Destroy(gameObject);
 	}
 	
@@ -248,7 +246,6 @@ public class DemoEnemyControls : MonoBehaviour {
 			CheckShield(color);
         }
 		_isHit = true;
-		print("Last two hits: " + lastTwoHits.first + lastTwoHits.second);
 
 		ai.Health -= damage * shieldDamageReductionMultiplier;
 		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;

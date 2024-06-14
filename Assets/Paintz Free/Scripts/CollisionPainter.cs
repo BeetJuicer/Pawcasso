@@ -11,6 +11,7 @@ public class CollisionPainter : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        print("collision handled");
         HandleCollision(collision);
     }
 
