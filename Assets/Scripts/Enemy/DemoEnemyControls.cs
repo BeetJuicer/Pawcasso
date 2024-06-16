@@ -234,7 +234,7 @@ public class DemoEnemyControls : MonoBehaviour {
 	}
 
 	void UpdateEnemyCount(){
-		//barrierSystem.OnEnemyKilled();
+		barrierSystem.OnEnemyKilled();
 		Destroy(gameObject);
 	}
 	
