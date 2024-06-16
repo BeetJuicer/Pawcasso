@@ -44,10 +44,12 @@ public class PaintGun : MonoBehaviour
 
 	[Header("FX")]
 	[SerializeField] protected Transform muzzleEffectsPosition;
-	[SerializeField] protected GameObject hitEffect;
 	[SerializeField] protected AudioClip fireSound;    // Sound to play when the weapon is fired
 	[SerializeField] protected AudioClip reloadSound;  // Sound to play when the weapon is reloading
 	[SerializeField] protected AudioClip dryFireSound; // Sound to play when the user tries to fire but is out of ammo
+	[Space(1)]
+	[SerializeField] protected GameObject hitEffect;
+	[SerializeField] protected GameObject bulletTrail;
 	[SerializeField] protected GameObject[] muzzleEffects; // Particles for muzzleEffects to choose randomly.
 
 	[Header("Recoil")]
@@ -154,21 +156,19 @@ public class PaintGun : MonoBehaviour
 				if (hit.collider.gameObject.TryGetComponent<PaintTarget>(out PaintTarget paintTarget))
 				{
 					PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
+					if (hitEffect != null)
+						Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
 				}
 
 				//damage the enemy
 				if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
 				{
-					enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
+					enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);	
 				}
 
-				// Hit Effects
-				//foreach (GameObject hitEffect in hitEffects)
-				//{
-				//    if (hitEffect != null)
-				//        Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
-				//}
-			}
+				//instantiate a hit projectile from the hitpoint towards me
+				Instantiate(bulletTrail, hit.point, Quaternion.FromToRotation(Vector3.up, transform.position));
+            }
 		}
 
 		// Muzzle flash effects
