@@ -389,12 +389,12 @@ namespace KinematicCharacterController.Examples
                                 //TODO: make the _wallJumpNormal either (1) if moving towards a certain direction and there is a hit there, that one.
                                 // or (2) if no moveDirection, the nearest.
                                 // Right now, this code sets the _wallJumpNormal to the last direction with a hit, so priority is front, left, right, back
-                                if (!Motor.GroundingStatus.IsStableOnGround)
+                                if (!Motor.GroundingStatus.IsStableOnGround && !hitInfo.collider.isTrigger)
                                 {
                                     nearestHit = wallRays[i];//for testing
                                     _wallJumpNormal = hitInfo.normal;
                                     _canWallJump = true;
-                                    //print("The wall is: " + hitInfo.collider.gameObject.name);
+                                    print("The wall is: " + hitInfo.collider.gameObject.name);
                                 }
                             }
                         }
@@ -502,6 +502,8 @@ namespace KinematicCharacterController.Examples
                                     {
                                         jumpDirection = Vector3.Lerp(Motor.CharacterUp, _wallJumpNormal, 0.5f);
                                         jumpDirection *= 2;
+                                        print("wall jumping fr");
+
                                     }
                                     // Handle double jump
                                     else if (AllowDoubleJump && _jumpConsumed && !_doubleJumpConsumed && (AllowJumpingWhenSliding ? !Motor.GroundingStatus.FoundAnyGround : !Motor.GroundingStatus.IsStableOnGround))

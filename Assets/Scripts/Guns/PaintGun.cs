@@ -12,6 +12,7 @@ public class PaintGun : MonoBehaviour
 	[SerializeField] protected Transform raycastStartSpot;
 	[SerializeField] protected GameObject weaponModel;    // The actual mesh for this weapon
 	[SerializeField] protected float damage;
+	[SerializeField] protected LayerMask whatIsPlayer;
 
 	[Header("Ammo")]
 	protected bool canFire = true;
@@ -150,25 +151,32 @@ public class PaintGun : MonoBehaviour
 
 			Debug.DrawRay(raycastStartSpot.position, direction, Color.red, 2f);
 
-			if (Physics.Raycast(ray, out hit, range))
+			GameObject trail = Instantiate(bulletTrail, muzzleEffectsPosition.position, muzzleEffectsPosition.rotation);
+			if (Physics.Raycast(ray, out hit, range, ~whatIsPlayer))
 			{
+				//note: duplicated the lookat for the trails because I only want to consider wall and enemies as hits.
+
 				//paint the paintable.
 				if (hit.collider.gameObject.TryGetComponent<PaintTarget>(out PaintTarget paintTarget))
 				{
 					PaintTarget.PaintObject(paintTarget, hit.point, hit.normal, brush);
 					if (hitEffect != null)
 						Instantiate(hitEffect, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+
+					//if we hit something, make the trail move towards that hit. Otherwise, it'll go wherever the muzzlePosition is pointed
+					trail.GetComponent<Transform>().LookAt(hit.point);
 				}
 
 				//damage the enemy
 				if (hit.collider.gameObject.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
 				{
-					enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);	
-				}
+					enemy.TakeDamage(damage, hit.point, Quaternion.identity, gunColor);
 
-				//instantiate a hit projectile from the hitpoint towards me
-				Instantiate(bulletTrail, hit.point, Quaternion.FromToRotation(Vector3.up, transform.position));
-            }
+					//if we hit something, make the trail move towards that hit. Otherwise, it'll go wherever the muzzlePosition is pointed
+					trail.GetComponent<Transform>().LookAt(hit.point);
+				}
+			}
+
 		}
 
 		// Muzzle flash effects
