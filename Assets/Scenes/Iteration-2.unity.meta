@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/LevelDesign/Throne.prefab.meta
+guid: eb868db8d05d3e548a37b49f2d433a79
+PrefabImporter:
+========
 guid: c0dfbe6605bf521438b9e3fdeab01870
 DefaultImporter:
+>>>>>>>> main:Assets/Scenes/Iteration-2.unity.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

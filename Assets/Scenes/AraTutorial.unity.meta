@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/SampleScene.unity.meta
+guid: 2a8b157d3bce2144594cd7e06150a540
+========
 guid: 197f169764570ac4ab3fb48b58cc26e4
+>>>>>>>> main:Assets/Scenes/AraTutorial.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
