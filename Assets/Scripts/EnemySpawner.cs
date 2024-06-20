@@ -13,6 +13,7 @@ public class EnemyType
 public class EnemyWave
 {
     public EnemyType[] enemyTypes;
+    [HideInInspector] public int enemyCountInWave;
 }
 
 public class EnemySpawner : MonoBehaviour
@@ -20,52 +21,83 @@ public class EnemySpawner : MonoBehaviour
     public EnemyWave[] waveConfigurations;  // Array of wave configurations
     private int currentWave = 0;
     private bool isTriggered = false;
-    private BarrierSystem gameManager;
 
-    void Start()
-    {
-        gameManager = FindObjectOfType<BarrierSystem>();
-    }
+    [Tooltip("An array of barriers to enable once the player enters.")]
+    [SerializeField] private GameObject[] barriersToEnableOnEntry;
 
-    void Update()
+    [Tooltip("An array of barriers to disable once all waves are finished.")]
+    [SerializeField] private GameObject[] barriersToDisableOnExit;
+
+    private int enemiesKilledThisWave;
+    public void TriggerSpawner()
     {
-        // Check if spawner is triggered, there are more waves to spawn, and no enemies are currently alive
-        if (isTriggered && currentWave < waveConfigurations.Length && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+        if (!isTriggered)
         {
-            // Spawn enemies for the current wave
-            SpawnEnemies(waveConfigurations[currentWave]);
-            currentWave++;
+            isTriggered = true;
+            EnableBarriers();
+            currentWave = 0; // Reset currentWave index
+            if (currentWave < waveConfigurations.Length)
+            {
+                SpawnEnemies(waveConfigurations[currentWave]);
+            }
         }
     }
 
     void SpawnEnemies(EnemyWave wave)
     {
-        int totalEnemies = 0;
         foreach (var enemyType in wave.enemyTypes)
         {
             for (int j = 0; j < enemyType.count; j++)
             {
                 int spawnIndex = j % enemyType.spawnPoints.Length;
                 GameObject enemy = Instantiate(enemyType.enemyPrefab, enemyType.spawnPoints[spawnIndex].position, enemyType.spawnPoints[spawnIndex].rotation);
+
                 // Set the enemy's barrier system to be this gameobject.
-                enemy.GetComponent<DemoEnemyControls>().SetBarrierSystem(gameManager);
+                enemy.GetComponent<DemoEnemyControls>().SetSpawner(this);
             }
-            totalEnemies += enemyType.count;
+            wave.enemyCountInWave += enemyType.count;
         }
-        gameManager.UpdateTotalEnemiesToKill(totalEnemies);
     }
 
-    public void TriggerSpawner()
+    public void OnEnemyKilled()
     {
-        if (!isTriggered)
+        enemiesKilledThisWave++;
+
+        if (enemiesKilledThisWave >= waveConfigurations[currentWave].enemyCountInWave)
         {
-            isTriggered = true;
-            currentWave = 0; // Reset currentWave index
-            if (waveConfigurations.Length > 0)
-            {
-                SpawnEnemies(waveConfigurations[currentWave]);
-                currentWave++;
-            }
+            //reset enemy counter
+            enemiesKilledThisWave = 0;
+            FinishWave();
+        }
+    }
+
+    private void FinishWave()
+    {
+        currentWave++;
+        if (currentWave >= waveConfigurations.Length)
+        {
+            // all waves done.
+            DisableBarriers();
+        }
+        else
+        {
+            SpawnEnemies(waveConfigurations[currentWave]);
+        }
+    }
+
+    private void EnableBarriers()
+    {
+        foreach (GameObject barrier in barriersToEnableOnEntry)
+        {
+            barrier.SetActive(true);
+        }
+    }
+
+    private void DisableBarriers()
+    {
+        foreach (GameObject barrier in barriersToDisableOnExit)
+        {
+            barrier.SetActive(false);
         }
     }
 }
