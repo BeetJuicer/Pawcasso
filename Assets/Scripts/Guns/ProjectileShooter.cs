@@ -34,7 +34,7 @@ public class ProjectileShooter : PaintGun
 			isChargeAllowed = false;
 			finalChargeTime = 0;
 
-			if (fireTimer >= actualROF && canFire)
+			if (FireTimer >= actualROF && canFire)
 				Fire();
 		}
 
