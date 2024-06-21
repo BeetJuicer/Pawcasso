@@ -7,6 +7,8 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 
 public class WeaponSystem : MonoBehaviour
 {
@@ -14,6 +16,29 @@ public class WeaponSystem : MonoBehaviour
 	public int startingWeaponIndex = 0;			// The weapon index that the player will start with
 	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
 	public int CurrentAmmo { get; private set; }
+	public int MaxAmmo { get; private set; }
+	public float ReloadTimeCurrent { get; private set; }
+	public float ReloadTimeTotal { get; private set; }
+	public bool IsReloading { get; private set; }
+
+	// Gauges
+	public SerializedDictionary<GunColor, int> gauges { get; private set; }
+
+	public void ResetGauge(GunColor color)
+    {
+		gauges[color] = 0;
+    }
+	public void SubtractFromGauge(GunColor color, int amount)
+	{
+		gauges[color] -= amount;
+	} 
+
+	private void InitializeGauges()
+    {
+		gauges.Add(GunColor.Red, 0);
+		gauges.Add(GunColor.Blue, 0);
+		gauges.Add(GunColor.Yellow, 0);
+    }
 
 	// Use this for initialization
 	void Start()
@@ -21,11 +46,14 @@ public class WeaponSystem : MonoBehaviour
 		// Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
 		WeaponIndex = startingWeaponIndex;
 		SetActiveWeapon(WeaponIndex);
+
+		InitializeGauges();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		print("ws1: " + WeaponIndex);
 		// Allow the user to instantly switch to any weapon
 		if (Input.GetButtonDown("Weapon 1"))
 			SetActiveWeapon(0);
@@ -41,6 +69,20 @@ public class WeaponSystem : MonoBehaviour
 			PreviousWeapon();
 
 		CurrentAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().CurrentAmmo;
+		MaxAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().MaxAmmo;
+		ReloadTimeTotal = weapons[WeaponIndex].GetComponent<PaintGun>().reloadTime;
+
+		//if firetimer less than 0, it means reloading
+		if (weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer < 0f)
+		{
+			IsReloading = true;
+			ReloadTimeCurrent = -weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer;
+		}
+        else
+        {
+			IsReloading = false;
+        }
+		print("ws2: " + WeaponIndex);
 	}
 
 	public void SetActiveWeapon(int index)
