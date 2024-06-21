@@ -13,6 +13,7 @@ public class PaintGun : MonoBehaviour
 	[SerializeField] protected GameObject weaponModel;    // The actual mesh for this weapon
 	[SerializeField] protected float damage;
 	[SerializeField] protected LayerMask whatIsNoCollision;
+	[SerializeField] protected WeaponSystem ws;
 
 	[Header("Ammo")]
 	protected bool canFire = true;
@@ -115,7 +116,8 @@ public class PaintGun : MonoBehaviour
 
     protected void Fire()
 	{
-		print("firing");
+		//increase the gauge in the weaponsystem
+		ws.gauges[gunColor]++;
 
 		//Wish to add to comboTimer;
 		ScoreManager.Instance.WishForCombo(gunColor);
