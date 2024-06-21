@@ -22,7 +22,7 @@ public class WeaponSystem : MonoBehaviour
 	public bool IsReloading { get; private set; }
 
 	// Gauges
-	public SerializedDictionary<GunColor, int> gauges { get; private set; }
+	public Dictionary<GunColor, int> gauges { get; private set; }
 
 	public void ResetGauge(GunColor color)
     {
@@ -35,9 +35,12 @@ public class WeaponSystem : MonoBehaviour
 
 	private void InitializeGauges()
     {
-		gauges.Add(GunColor.Red, 0);
-		gauges.Add(GunColor.Blue, 0);
-		gauges.Add(GunColor.Yellow, 0);
+        gauges = new Dictionary<GunColor, int>
+        {
+            { GunColor.Red, 0 },
+            { GunColor.Blue, 0 },
+            { GunColor.Yellow, 0 }
+        };
     }
 
 	// Use this for initialization
@@ -53,7 +56,6 @@ public class WeaponSystem : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		print("ws1: " + WeaponIndex);
 		// Allow the user to instantly switch to any weapon
 		if (Input.GetButtonDown("Weapon 1"))
 			SetActiveWeapon(0);
@@ -82,7 +84,8 @@ public class WeaponSystem : MonoBehaviour
         {
 			IsReloading = false;
         }
-		print("ws2: " + WeaponIndex);
+
+		print(gauges[GunColor.Blue]);
 	}
 
 	public void SetActiveWeapon(int index)
