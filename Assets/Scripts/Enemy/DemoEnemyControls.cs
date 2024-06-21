@@ -166,9 +166,6 @@ public class DemoEnemyControls : MonoBehaviour {
 					}
 		    	} else {
 					if(ai.attackState == Ai.ATTACK_STATE.CanAttackPlayer && Time.time > rangedAttackNext){
-						rangedAttackNext = Time.time + rangedAttackRate;
-						Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
-						spit.AddForce(transform.forward * 500);
 						_animAttack = true;
 					} else {
 						_animAttack = false;
@@ -177,8 +174,20 @@ public class DemoEnemyControls : MonoBehaviour {
 	    	}
     	}
     }
-    
-    private void CheckHealth(){
+
+	private void FireProjectile()
+    {
+		Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
+		spit.AddForce(transform.forward * 500);
+	}
+
+	private void FinishAttack()
+    {
+		rangedAttackNext = Time.time + rangedAttackRate;
+		_animAttack = false;
+	}
+
+	private void CheckHealth(){
         if(_isHit && this != null){
 			float rand = Random.value;
 			if(ai.Health > 0){
