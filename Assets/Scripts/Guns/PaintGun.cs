@@ -195,7 +195,7 @@ public class PaintGun : MonoBehaviour
 	}
 
 	protected void DryFire()
-    {
+    { 
 		GetComponent<AudioSource>().PlayOneShot(dryFireSound);
 	}
 
