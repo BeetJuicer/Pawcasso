@@ -15,6 +15,8 @@ public class WeaponSystem : MonoBehaviour
 	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
 	public int CurrentAmmo { get; private set; }
 	public int MaxAmmo { get; private set; }
+	public int ReloadTime { get; private set; }
+	public bool isReloading { get; private set; }
 
 	// Use this for initialization
 	void Start()
