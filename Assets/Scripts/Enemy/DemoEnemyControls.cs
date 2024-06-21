@@ -175,13 +175,13 @@ public class DemoEnemyControls : MonoBehaviour {
     	}
     }
 
-	private void FireProjectile()
+	public void FireProjectile()
     {
 		Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
 		spit.AddForce(transform.forward * 500);
 	}
 
-	private void FinishAttack()
+	public void FinishAttack()
     {
 		rangedAttackNext = Time.time + rangedAttackRate;
 		_animAttack = false;
