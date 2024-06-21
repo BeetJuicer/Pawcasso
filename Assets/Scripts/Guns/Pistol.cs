@@ -36,7 +36,7 @@ public class Pistol : PaintGun
 			isCharging = false;
 			chargeTimer = 0;
 
-			if (fireTimer >= actualROF && canFire)
+			if (FireTimer >= actualROF && canFire)
 				Fire();
 		}
 
