@@ -161,7 +161,8 @@ public class DemoEnemyControls : MonoBehaviour {
 						audioSource.PlayOneShot(audioSource.clip);
 						player.GetComponentInChildren<Health>().ChangeHealth(-meleeDamage);
 						_animAttack = true;
-					} else {
+                        rangedAttackNext = Time.time + rangedAttackRate;
+                    } else {
 						_animAttack = false;
 					}
 		    	} else {
@@ -177,14 +178,14 @@ public class DemoEnemyControls : MonoBehaviour {
 
 	private void FireProjectile()
     {
+		print("Firing brah brah");
 		Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
 		spit.AddForce(transform.forward * 500);
 	}
 
 	private void FinishAttack()
     {
-		rangedAttackNext = Time.time + rangedAttackRate;
-		_animAttack = false;
+		
 	}
 
 	private void CheckHealth(){
