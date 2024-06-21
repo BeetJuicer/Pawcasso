@@ -117,7 +117,8 @@ public class PaintGun : MonoBehaviour
     protected void Fire()
 	{
 		//increase the gauge in the weaponsystem
-		ws.gauges[gunColor]++;
+		if(ws != null)
+			print(ws.gauges[GunColor.Blue]);
 
 		//Wish to add to comboTimer;
 		ScoreManager.Instance.WishForCombo(gunColor);

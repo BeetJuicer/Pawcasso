@@ -5,7 +5,7 @@ using AYellowpaper.SerializedCollections;
 
 public class ShootProjectile : MonoBehaviour
 {
-	[SerializedDictionary] private WeaponSystem ws;
+	[SerializeField] private WeaponSystem ws;
 
 	[Header("Projectile Launching")]
 	[SerializeField] private GameObject projectile;
