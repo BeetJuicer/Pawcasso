@@ -14,6 +14,10 @@ public class WeaponSystem : MonoBehaviour
 	public int startingWeaponIndex = 0;			// The weapon index that the player will start with
 	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
 	public int CurrentAmmo { get; private set; }
+	public int MaxAmmo { get; private set; }
+	public float ReloadTimeCurrent { get; private set; }
+	public float ReloadTimeTotal { get; private set; }
+	public bool IsReloading { get; private set; }
 
 	// Use this for initialization
 	void Start()
@@ -41,6 +45,19 @@ public class WeaponSystem : MonoBehaviour
 			PreviousWeapon();
 
 		CurrentAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().CurrentAmmo;
+		MaxAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().MaxAmmo;
+		ReloadTimeTotal = weapons[WeaponIndex].GetComponent<PaintGun>().reloadTime;
+
+		//if firetimer less than 0, it means reloading
+		if (weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer < 0f)
+		{
+			IsReloading = true;
+			ReloadTimeCurrent = -weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer;
+		}
+        else
+        {
+			IsReloading = false;
+        }
 	}
 
 	public void SetActiveWeapon(int index)
