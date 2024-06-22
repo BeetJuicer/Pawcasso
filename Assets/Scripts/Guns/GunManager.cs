@@ -7,7 +7,9 @@ public class GunManager : MonoBehaviour
     public Image[] weaponIcons;
 
     // Reference to the WeaponSystem script
-    public WeaponSystem weaponSystem;
+    [SerializeField] private GameObject wsObj;
+    private WeaponSystem weaponSystem;
+    private int currentIcon;
 
     void Start()
     {
@@ -17,14 +19,16 @@ public class GunManager : MonoBehaviour
             icon.gameObject.SetActive(false);
         }
 
+        weaponSystem = wsObj.GetComponent<WeaponSystem>();
+
         // Activate the starting weapon icon
         if (weaponSystem != null)
         {
-            int initialIndex = weaponSystem.WeaponIndex;
-            if (initialIndex >= 0 && initialIndex < weaponIcons.Length)
-            {
-                weaponIcons[initialIndex].gameObject.SetActive(true);
-            }
+            weaponIcons[weaponSystem.WeaponIndex].gameObject.SetActive(true);
+        }
+        else
+        {
+            print("WeaponSystem is null !");
         }
     }
 
@@ -33,20 +37,17 @@ public class GunManager : MonoBehaviour
         // Ensure weaponSystem reference is not null
         if (weaponSystem != null)
         {
-            int currentWeaponIndex = weaponSystem.WeaponIndex;
-
-            // Deactivate all weapon icons
-            for (int i = 0; i < weaponIcons.Length; i++)
+            print("current: " + weaponSystem.WeaponIndex);
+            if(currentIcon != weaponSystem.WeaponIndex)
             {
-                if (i == currentWeaponIndex)
-                {
-                    weaponIcons[i].gameObject.SetActive(true);
-                }
-                else
-                {
-                    weaponIcons[i].gameObject.SetActive(false);
-                }
+                weaponIcons[currentIcon].gameObject.SetActive(false);
+                currentIcon = weaponSystem.WeaponIndex;
+                weaponIcons[currentIcon].gameObject.SetActive(true);
             }
+        }
+        else
+        {
+            print("Weapon system null !");
         }
     }
 }
