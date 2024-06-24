@@ -13,7 +13,6 @@ public class PaintGun : MonoBehaviour
 	[SerializeField] protected GameObject weaponModel;    // The actual mesh for this weapon
 	[SerializeField] protected float damage;
 	[SerializeField] protected LayerMask whatIsNoCollision;
-	[SerializeField] protected WeaponSystem ws;
 
 	[Header("Ammo")]
 	protected bool canFire = true;
@@ -116,9 +115,7 @@ public class PaintGun : MonoBehaviour
 
     protected void Fire()
 	{
-		//increase the gauge in the weaponsystem
-		if(ws != null)
-			ws.gauges[gunColor]++;
+		print("firing");
 
 		//Wish to add to comboTimer;
 		ScoreManager.Instance.WishForCombo(gunColor);
@@ -198,7 +195,7 @@ public class PaintGun : MonoBehaviour
 	}
 
 	protected void DryFire()
-    { 
+    {
 		GetComponent<AudioSource>().PlayOneShot(dryFireSound);
 	}
 
