@@ -261,6 +261,12 @@ public class DemoEnemyControls : MonoBehaviour {
 		Destroy(blood, 3);
 	}
 
+	public void TakeDamage(float damage)
+	{ 
+		_isHit = true;
+		ai.Health -= damage;
+	}
+
 	private void CheckShield(GunColor color)
     {
 		//primary color
