@@ -290,7 +290,9 @@ public class DemoEnemyControls : MonoBehaviour
 
     void UpdateEnemyCount()
     {
-        spawner.OnEnemyKilled();
+        if (spawner != null)
+            spawner.OnEnemyKilled();
+        else Debug.LogError("no spawner assigned to this enemy!");
         Destroy(gameObject);
     }
 
