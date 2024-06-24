@@ -28,8 +28,8 @@ public class ShootProjectile : MonoBehaviour
 
 		//if we have enough in the gauge and the user presses a key
 		if (Input.GetKeyDown(key) &&
-			requiredColors[primaryOne] < ws.gauges[primaryOne] &&
-			requiredColors[primaryTwo] < ws.gauges[primaryTwo])
+			requiredColors[primaryOne] <= ws.gauges[primaryOne] &&
+			requiredColors[primaryTwo] <= ws.gauges[primaryTwo])
         {
 			Launch();
 			ws.SubtractFromGauge(primaryOne, requiredColors[primaryOne]);
