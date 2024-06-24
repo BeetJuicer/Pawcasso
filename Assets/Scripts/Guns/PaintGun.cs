@@ -207,7 +207,6 @@ public class PaintGun : MonoBehaviour
 		//activate reload indicator UI
 		CurrentAmmo = ammoCapacity;
 		FireTimer = -reloadTime;
-		GetComponent<AudioSource>().PlayOneShot(reloadSound);
 
 		// Send a messsage so that users can do other actions whenever this happens
 		SendMessageUpwards("OnEasyWeaponsReload", SendMessageOptions.DontRequireReceiver);
