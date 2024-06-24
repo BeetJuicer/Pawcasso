@@ -43,7 +43,6 @@ public class ShootProjectile : MonoBehaviour
 
     public void Launch()
 	{
-
 		// Instantiate the projectile
 		if (projectile != null)
 		{
