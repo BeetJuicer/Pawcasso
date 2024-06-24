@@ -84,8 +84,6 @@ public class WeaponSystem : MonoBehaviour
         {
 			IsReloading = false;
         }
-
-		print(gauges[GunColor.Blue]);
 	}
 
 	public void SetActiveWeapon(int index)
