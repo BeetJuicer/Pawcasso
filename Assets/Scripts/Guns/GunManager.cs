@@ -37,7 +37,6 @@ public class GunManager : MonoBehaviour
         // Ensure weaponSystem reference is not null
         if (weaponSystem != null)
         {
-            print("current: " + weaponSystem.WeaponIndex);
             if(currentIcon != weaponSystem.WeaponIndex)
             {
                 weaponIcons[currentIcon].gameObject.SetActive(false);

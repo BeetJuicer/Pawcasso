@@ -23,30 +23,26 @@ public class ShootProjectile : MonoBehaviour
 		var e = requiredColors.GetEnumerator();
 		e.MoveNext();
 		primaryOne = e.Current.Key;
-		print(e.Current);
 		e.MoveNext();
 		primaryTwo = e.Current.Key;
-		print(e.Current);
 
 		//if we have enough in the gauge and the user presses a key
 		if (Input.GetKeyDown(key) &&
-			requiredColors[primaryOne] > ws.gauges[primaryOne] &&
-			requiredColors[primaryTwo] > ws.gauges[primaryTwo])
+			requiredColors[primaryOne] < ws.gauges[primaryOne] &&
+			requiredColors[primaryTwo] < ws.gauges[primaryTwo])
         {
 			Launch();
 			ws.SubtractFromGauge(primaryOne, requiredColors[primaryOne]);
 			ws.SubtractFromGauge(primaryTwo, requiredColors[primaryTwo]);
         }
 
-		print(primaryOne + ": " + 
-			ws.gauges[primaryOne] + 
-			" / " + requiredColors[primaryOne]);
-		print(primaryTwo + ": " + ws.gauges[primaryTwo] + " / " + requiredColors[primaryTwo]);
+		//print(primaryOne + ": " + 
+		//	ws.gauges[primaryOne] + 
+		//	" / " + requiredColors[primaryOne] + ". " + primaryTwo + ": " + ws.gauges[primaryTwo] + " / " + requiredColors[primaryTwo]);
     }
 
     public void Launch()
 	{
-
 		// Instantiate the projectile
 		if (projectile != null)
 		{
