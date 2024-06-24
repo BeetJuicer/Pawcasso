@@ -21,8 +21,6 @@ public class WeaponSystem : MonoBehaviour
 	public float ReloadTimeTotal { get; private set; }
 	public bool IsReloading { get; private set; }
 
-	[SerializeField] protected AudioSource reloadSound;
-
 	// Gauges
 	public Dictionary<GunColor, int> gauges { get; private set; }
 
@@ -79,17 +77,12 @@ public class WeaponSystem : MonoBehaviour
 		//if firetimer less than 0, it means reloading
 		if (weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer < 0f)
 		{
-			if(!IsReloading)
-            {
-				reloadSound.Play();
-				IsReloading = true;
-            }
+			IsReloading = true;
 			ReloadTimeCurrent = -weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer;
 		}
         else
         {
 			IsReloading = false;
-			reloadSound.Stop();
         }
 	}
 
