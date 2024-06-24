@@ -7,6 +7,8 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 
 public class WeaponSystem : MonoBehaviour
 {
@@ -19,12 +21,36 @@ public class WeaponSystem : MonoBehaviour
 	public float ReloadTimeTotal { get; private set; }
 	public bool IsReloading { get; private set; }
 
+	// Gauges
+	public Dictionary<GunColor, int> gauges { get; private set; }
+
+	public void ResetGauge(GunColor color)
+    {
+		gauges[color] = 0;
+    }
+	public void SubtractFromGauge(GunColor color, int amount)
+	{
+		gauges[color] -= amount;
+	} 
+
+	private void InitializeGauges()
+    {
+        gauges = new Dictionary<GunColor, int>
+        {
+            { GunColor.Red, 0 },
+            { GunColor.Blue, 0 },
+            { GunColor.Yellow, 0 }
+        };
+    }
+
 	// Use this for initialization
 	void Start()
 	{
 		// Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
 		WeaponIndex = startingWeaponIndex;
 		SetActiveWeapon(WeaponIndex);
+
+		InitializeGauges();
 	}
 
 	// Update is called once per frame
