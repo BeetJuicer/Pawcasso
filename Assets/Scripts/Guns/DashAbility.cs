@@ -13,6 +13,8 @@ public class DashAbility : MonoBehaviour
     [SerializeField] private KeyCode key;
     [SerializeField] private GameObject dashCollider;
     [SerializeField] private float damage;
+    [SerializeField] private GameObject dashVisuals;
+    [SerializeField] private GameObject dashParticles;
     private bool isDashing = false;
     private float timeLeft;
 
@@ -57,12 +59,18 @@ public class DashAbility : MonoBehaviour
     {
         timeLeft = GetComponent<ExampleCharacterController>().EnterChargeState(1);
         dashCollider.SetActive(true);
+
+        dashVisuals.SetActive(true);
+        dashParticles.GetComponent<DashParticles>().PlayDash(1);
+
         dashCollider.GetComponent<DamageEnemiesCollider>().SetDamage(damage);
         isDashing = true;
     }
     private void ExitDash()
     {
         dashCollider.SetActive(false);
+        dashParticles.GetComponent<DashParticles>().PlayDash(1);
+        dashVisuals.SetActive(false);
         isDashing = false;
     }
 }
