@@ -7,6 +7,8 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 
 public class WeaponSystem : MonoBehaviour
 {
@@ -15,8 +17,31 @@ public class WeaponSystem : MonoBehaviour
 	public int WeaponIndex { get; private set; }                    // The current index of the active weapon
 	public int CurrentAmmo { get; private set; }
 	public int MaxAmmo { get; private set; }
-	public int ReloadTime { get; private set; }
-	public bool isReloading { get; private set; }
+	public float ReloadTimeCurrent { get; private set; }
+	public float ReloadTimeTotal { get; private set; }
+	public bool IsReloading { get; private set; }
+
+	// Gauges
+	public Dictionary<GunColor, int> gauges { get; private set; }
+
+	public void ResetGauge(GunColor color)
+    {
+		gauges[color] = 0;
+    }
+	public void SubtractFromGauge(GunColor color, int amount)
+	{
+		gauges[color] -= amount;
+	} 
+
+	private void InitializeGauges()
+    {
+        gauges = new Dictionary<GunColor, int>
+        {
+            { GunColor.Red, 0 },
+            { GunColor.Blue, 0 },
+            { GunColor.Yellow, 0 }
+        };
+    }
 
 	// Use this for initialization
 	void Start()
@@ -24,6 +49,8 @@ public class WeaponSystem : MonoBehaviour
 		// Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
 		WeaponIndex = startingWeaponIndex;
 		SetActiveWeapon(WeaponIndex);
+
+		InitializeGauges();
 	}
 
 	// Update is called once per frame
@@ -45,6 +72,18 @@ public class WeaponSystem : MonoBehaviour
 
 		CurrentAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().CurrentAmmo;
 		MaxAmmo = weapons[WeaponIndex].GetComponent<PaintGun>().MaxAmmo;
+		ReloadTimeTotal = weapons[WeaponIndex].GetComponent<PaintGun>().reloadTime;
+
+		//if firetimer less than 0, it means reloading
+		if (weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer < 0f)
+		{
+			IsReloading = true;
+			ReloadTimeCurrent = -weapons[WeaponIndex].GetComponent<PaintGun>().FireTimer;
+		}
+        else
+        {
+			IsReloading = false;
+        }
 	}
 
 	public void SetActiveWeapon(int index)

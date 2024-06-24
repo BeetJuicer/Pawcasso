@@ -12,18 +12,19 @@ public class PaintGun : MonoBehaviour
 	[SerializeField] protected Transform raycastStartSpot;
 	[SerializeField] protected GameObject weaponModel;    // The actual mesh for this weapon
 	[SerializeField] protected float damage;
-	[SerializeField] protected LayerMask whatIsPlayer;
+	[SerializeField] protected LayerMask whatIsNoCollision;
+	[SerializeField] protected WeaponSystem ws;
 
 	[Header("Ammo")]
 	protected bool canFire = true;
 	protected int ammoCapacity;
-	[SerializeField] protected float reloadTime;
+	public float reloadTime;
 
 	[Header("Shoot Speed")]
 	[SerializeField] protected float rateOfFire;
 	[SerializeField] protected float shotsPerRound;
 	protected float actualROF;
-	protected float fireTimer;
+	public float FireTimer { get; private set; }
 
 	[Header("Accuracy")]
 	[SerializeField] protected float range;
@@ -94,7 +95,7 @@ public class PaintGun : MonoBehaviour
 		//currentCrosshairSize = startingCrosshairSize + (accuracy - currentAccuracy) * 0.1f;
 
 		// Update the fireTimer
-		fireTimer += Time.deltaTime;
+		FireTimer += Time.deltaTime;
 
 		CheckInputs();
 
@@ -115,11 +116,15 @@ public class PaintGun : MonoBehaviour
 
     protected void Fire()
 	{
+		//increase the gauge in the weaponsystem
+		if(ws != null)
+			ws.gauges[gunColor]++;
+
 		//Wish to add to comboTimer;
 		ScoreManager.Instance.WishForCombo(gunColor);
 
 		// Reset the fireTimer to 0 (for ROF)
-		fireTimer = 0.0f;
+		FireTimer = 0.0f;
 
 		// First make sure there is ammo
 		if (CurrentAmmo <= 0)
@@ -135,6 +140,7 @@ public class PaintGun : MonoBehaviour
 		// Fire once for each shotPerRound value
 		for (int i = 0; i < shotsPerRound; i++)
 		{
+
 			// Calculate accuracy for this shot
 			float accuracyVary = (100 - currentAccuracy) / 1000;
 			Vector3 direction = raycastStartSpot.forward;
@@ -152,7 +158,7 @@ public class PaintGun : MonoBehaviour
 			Debug.DrawRay(raycastStartSpot.position, direction, Color.red, 2f);
 
 			GameObject trail = Instantiate(bulletTrail, muzzleEffectsPosition.position, muzzleEffectsPosition.rotation);
-			if (Physics.Raycast(ray, out hit, range, ~whatIsPlayer))
+			if (Physics.Raycast(ray, out hit, range, ~whatIsNoCollision))
 			{
 				//note: duplicated the lookat for the trails because I only want to consider wall and enemies as hits.
 
@@ -165,6 +171,7 @@ public class PaintGun : MonoBehaviour
 
 					//if we hit something, make the trail move towards that hit. Otherwise, it'll go wherever the muzzlePosition is pointed
 					trail.GetComponent<Transform>().LookAt(hit.point);
+
 				}
 
 				//damage the enemy
@@ -191,7 +198,7 @@ public class PaintGun : MonoBehaviour
 	}
 
 	protected void DryFire()
-    {
+    { 
 		GetComponent<AudioSource>().PlayOneShot(dryFireSound);
 	}
 
@@ -199,7 +206,7 @@ public class PaintGun : MonoBehaviour
     {
 		//activate reload indicator UI
 		CurrentAmmo = ammoCapacity;
-		fireTimer = -reloadTime;
+		FireTimer = -reloadTime;
 		GetComponent<AudioSource>().PlayOneShot(reloadSound);
 
 		// Send a messsage so that users can do other actions whenever this happens

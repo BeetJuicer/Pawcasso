@@ -183,7 +183,7 @@ namespace KinematicCharacterController.Examples
             }
         }
 
-        public void EnterChargeState(int chargeLevel)
+        public float EnterChargeState(int chargeLevel)
         {
             switch (chargeLevel)
             {
@@ -199,6 +199,7 @@ namespace KinematicCharacterController.Examples
             }
 
             TransitionToState(CharacterState.Charging);
+            return finalChargeTime;
         }
 
         /// <summary>
@@ -394,7 +395,6 @@ namespace KinematicCharacterController.Examples
                                     nearestHit = wallRays[i];//for testing
                                     _wallJumpNormal = hitInfo.normal;
                                     _canWallJump = true;
-                                    print("The wall is: " + hitInfo.collider.gameObject.name);
                                 }
                             }
                         }

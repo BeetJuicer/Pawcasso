@@ -176,14 +176,14 @@ public class DemoEnemyControls : MonoBehaviour {
     	}
     }
 
-	private void FireProjectile()
+	public void FireProjectile()
     {
 		print("Firing brah brah");
 		Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
 		spit.AddForce(transform.forward * 500);
 	}
 
-	private void FinishAttack()
+	public void FinishAttack()
     {
 		
 	}
@@ -260,6 +260,12 @@ public class DemoEnemyControls : MonoBehaviour {
 		ai.Health -= damage * shieldDamageReductionMultiplier;
 		GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
 		Destroy(blood, 3);
+	}
+
+	public void TakeDamage(float damage)
+	{ 
+		_isHit = true;
+		ai.Health -= damage;
 	}
 
 	private void CheckShield(GunColor color)
