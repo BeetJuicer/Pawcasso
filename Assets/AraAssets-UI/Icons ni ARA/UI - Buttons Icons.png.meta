@@ -265,7 +265,7 @@ TextureImporter:
         width: 86
         height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,6 +273,111 @@ TextureImporter:
       bones: []
       spriteID: 2ea2a8294799fb0489280f6f2434bb65
       internalID: 1747123220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons_8
+      rect:
+        serializedVersion: 2
+        x: 1033
+        y: 305
+        width: 95
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35cbe1ee2ffb1c34bad350e0e6d50df1
+      internalID: 548595660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons_9
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 304
+        width: 93
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90e21f406f3d1844dbbf74a44274d0b7
+      internalID: -29873034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons_10
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 306
+        width: 128
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00ed269fe9dd445408ca498ea9855f90
+      internalID: -99270828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons_11
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 305
+        width: 94
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd7f3fa14ae3d444aa48b729b215437a
+      internalID: 706817146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons_12
+      rect:
+        serializedVersion: 2
+        x: 1385
+        y: 305
+        width: 63
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91572298a8ed2174c8e98a419421000a
+      internalID: 298190346
       vertices: []
       indices: 
       edges: []
@@ -290,12 +395,17 @@ TextureImporter:
     nameFileIdTable:
       UI - Buttons Icons_0: 254452658
       UI - Buttons Icons_1: -120925828
+      UI - Buttons Icons_10: -99270828
+      UI - Buttons Icons_11: 706817146
+      UI - Buttons Icons_12: 298190346
       UI - Buttons Icons_2: 286115628
       UI - Buttons Icons_3: 991110100
       UI - Buttons Icons_4: 781673202
       UI - Buttons Icons_5: 47401795
       UI - Buttons Icons_6: -493279072
       UI - Buttons Icons_7: 1747123220
+      UI - Buttons Icons_8: 548595660
+      UI - Buttons Icons_9: -29873034
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
