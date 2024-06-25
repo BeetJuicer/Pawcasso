@@ -10,16 +10,22 @@ public class BeaconTrigger : MonoBehaviour
     [SerializeField] string tagFilter;
     [SerializeField] UnityEvent onTriggerEnter;
     [SerializeField] UnityEvent onTriggerExit;
-    [SerializeField] GameObject gameObjectToDestroy; // New field for the GameObject to destroy
+    [SerializeField] List<GameObject> gameObjectsToDestroy; // Changed to a list of GameObjects
 
     private void OnTriggerEnter(Collider other)
     {
         if (!string.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
         onTriggerEnter.Invoke();
 
-        if (gameObjectToDestroy != null)
+        if (gameObjectsToDestroy != null)
         {
-            Destroy(gameObjectToDestroy);
+            foreach (var obj in gameObjectsToDestroy)
+            {
+                if (obj != null)
+                {
+                    Destroy(obj);
+                }
+            }
         }
 
         if (destroyOnTriggerEnter)
