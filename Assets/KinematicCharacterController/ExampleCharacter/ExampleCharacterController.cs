@@ -395,6 +395,7 @@ namespace KinematicCharacterController.Examples
                                     nearestHit = wallRays[i];//for testing
                                     _wallJumpNormal = hitInfo.normal;
                                     _canWallJump = true;
+                                    print("The wall is: " + hitInfo.collider.gameObject.name);
                                 }
                             }
                         }

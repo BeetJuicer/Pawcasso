@@ -1,12 +1,15 @@
 using UnityEngine;
 
+
 public class TriggerArea : MonoBehaviour
 {
+    [SerializeField]
+    private EnemySpawner spawner;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
             if (spawner != null)
             {
                 spawner.TriggerSpawner();
