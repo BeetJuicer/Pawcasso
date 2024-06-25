@@ -120,8 +120,7 @@ namespace BreadcrumbAi{
 			if(_CanFollowPlayer && this.Ai_FindPlayer()){
 				_HasWanderPos = false; // TODO: this needs to be fixed
 				visionState = VISION_STATE.CanSeePlayer;
-				
-				
+
 				// CHANGE THIS TO FLEE (_CanFlee)
 				if(_IsRanged){ // Is this a ranged ground unit?
 					if(Vector3.Distance(transform.position,Player.position) > followDistance){
