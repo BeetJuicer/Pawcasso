@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController.Examples;
-using AYellowpaper.SerializedCollections;
-
-
-public class DashAbility : MonoBehaviour
+public class DashAbility : Skill
 {
-    [SerializeField] private WeaponSystem ws;
-
     [Header("Dashing")]
-    [SerializeField] private KeyCode key;
     [SerializeField] private GameObject dashCollider;
     [SerializeField] private float damage;
     [SerializeField] private GameObject dashVisuals;
@@ -18,21 +12,14 @@ public class DashAbility : MonoBehaviour
     private bool isDashing = false;
     private float timeLeft;
 
-    [SerializedDictionary("Color", "Amount")]
-    public SerializedDictionary<GunColor, int> requiredColors;
-    private GunColor primaryOne;
-    private GunColor primaryTwo;
+    protected override void Start()
+    {
+        base.Start();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        // grab the required colors
-        var e = requiredColors.GetEnumerator();
-        e.MoveNext();
-        primaryOne = e.Current.Key;
-        e.MoveNext();
-        primaryTwo = e.Current.Key;
-
         //if we have enough in the gauge and the user presses a key
         if (Input.GetKeyDown(key) &&
             requiredColors[primaryOne] <= ws.gauges[primaryOne] &&

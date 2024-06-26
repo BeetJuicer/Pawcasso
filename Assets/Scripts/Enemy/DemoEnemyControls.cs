@@ -11,6 +11,7 @@ public class DemoEnemySounds
 
 public class DemoEnemyControls : MonoBehaviour
 {
+    public bool targetStatue = false;
 
     [Space]
     public DemoEnemySounds audioClips;
@@ -109,10 +110,11 @@ public class DemoEnemyControls : MonoBehaviour
         ai = GetComponent<Ai>();
         anim = GetComponent<Animator>();
         audioSource = gameObject.AddComponent<AudioSource>();
-        GameObject go = GameObject.FindGameObjectWithTag("Player");
+        GameObject go = targetStatue ? GameObject.FindGameObjectWithTag("Statue") : GameObject.FindGameObjectWithTag("Player");
         if (go)
         {
             player = go.transform;
+            ai.Player = player;
         }
 
         //apply multiplier to health
