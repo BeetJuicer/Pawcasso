@@ -118,7 +118,7 @@ TextureImporter:
         width: 151
         height: 151
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,7 +139,7 @@ TextureImporter:
         width: 150
         height: 159
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,6 +147,27 @@ TextureImporter:
       bones: []
       spriteID: 131b1e454a1413f47a5718800e07d322
       internalID: 597200346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cardboard uii_2
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 188
+        width: 308
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69ff3336e1cde4b4b93d97f9eb076fe0
+      internalID: -1815674015
       vertices: []
       indices: 
       edges: []
@@ -164,6 +185,7 @@ TextureImporter:
     nameFileIdTable:
       cardboard uii_0: 976908186
       cardboard uii_1: 597200346
+      cardboard uii_2: -1815674015
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
