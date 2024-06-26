@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 341cebea90c70d640978b35d7fc9bba7
+guid: c46a761ac3f1e9840adc85ced047f8e5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,55 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cardboard uii_0
+      name: UI - Buttons Icons (1)_0
       rect:
         serializedVersion: 2
-        x: 884
-        y: 465
-        width: 151
-        height: 151
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9ced32a6bfdc08147b2eb3e275902e03
-      internalID: 976908186
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_1
-      rect:
-        serializedVersion: 2
-        x: 654
-        y: 466
-        width: 150
-        height: 159
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 131b1e454a1413f47a5718800e07d322
-      internalID: 597200346
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_2
-      rect:
-        serializedVersion: 2
-        x: 917
-        y: 188
-        width: 308
-        height: 201
+        x: 83
+        y: 903
+        width: 387
+        height: 138
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +124,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69ff3336e1cde4b4b93d97f9eb076fe0
-      internalID: -1815674015
+      spriteID: 661b97784914783458630a0252833b50
+      internalID: -1059976402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons (1)_1
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 752
+        width: 386
+        height: 136
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30b66589d6b398d458ce7acd6cee915f
+      internalID: -889703587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons (1)_2
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 766
+        width: 385
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04bc1808f9466c34e8718e4f888ef148
+      internalID: -1591519055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Buttons Icons (1)_3
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 904
+        width: 385
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cd46b940d844214e95edf63de72e77b
+      internalID: 1990251393
       vertices: []
       indices: 
       edges: []
@@ -175,7 +196,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2769e15636b4b6945a406b97a8a42c7c
+    spriteID: ff0023d6f4367e742b403a3fc8292fe2
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +204,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cardboard uii_0: 976908186
-      cardboard uii_1: 597200346
-      cardboard uii_2: -1815674015
+      UI - Buttons Icons (1)_0: 914543874
+      UI - Buttons Icons (1)_1: -1059976402
+      UI - Buttons Icons (1)_2: -889703587
+      UI - Buttons Icons (1)_3: -1591519055
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

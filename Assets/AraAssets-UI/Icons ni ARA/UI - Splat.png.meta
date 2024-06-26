@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 341cebea90c70d640978b35d7fc9bba7
+guid: 22fb4c6245361784ba282b27e22a792b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cardboard uii_0
+      name: UI - Splat_0
       rect:
         serializedVersion: 2
-        x: 884
-        y: 465
-        width: 151
-        height: 151
+        x: 850
+        y: 343
+        width: 339
+        height: 275
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ced32a6bfdc08147b2eb3e275902e03
-      internalID: 976908186
+      spriteID: ac6967b4c9e47df458b75aa6de5a0936
+      internalID: 187988362
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cardboard uii_1
+      name: UI - Splat_1
       rect:
         serializedVersion: 2
-        x: 654
-        y: 466
-        width: 150
-        height: 159
+        x: 467
+        y: 677
+        width: 280
+        height: 296
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +145,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 131b1e454a1413f47a5718800e07d322
-      internalID: 597200346
+      spriteID: 897a46779b768dd46b81e68e4d2fb500
+      internalID: 1331202987
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cardboard uii_2
+      name: UI - Splat_2
       rect:
         serializedVersion: 2
-        x: 917
-        y: 188
-        width: 308
-        height: 201
+        x: 807
+        y: 728
+        width: 239
+        height: 262
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9aad54bd8cf5f954f8329902da9b6504
+      internalID: 539804691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Splat_3
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 41
+        width: 270
+        height: 263
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +187,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69ff3336e1cde4b4b93d97f9eb076fe0
-      internalID: -1815674015
+      spriteID: bc0dd72f919be484496b6b1e5f86ac01
+      internalID: 63184439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Splat_4
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 364
+        width: 237
+        height: 272
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4799895cb643120479dff8835fa9e5ff
+      internalID: 1707666609
       vertices: []
       indices: 
       edges: []
@@ -175,7 +217,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2769e15636b4b6945a406b97a8a42c7c
+    spriteID: 459fcb7818510134ebe16aa124b806dc
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cardboard uii_0: 976908186
-      cardboard uii_1: 597200346
-      cardboard uii_2: -1815674015
+      UI - Splat_0: 187988362
+      UI - Splat_1: 1331202987
+      UI - Splat_2: 539804691
+      UI - Splat_3: 63184439
+      UI - Splat_4: 1707666609
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

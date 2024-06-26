@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 341cebea90c70d640978b35d7fc9bba7
+guid: acfd77f0a4c73b543a760c458d5ba400
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,55 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cardboard uii_0
+      name: ABILITY FINAL REAL_0
       rect:
         serializedVersion: 2
-        x: 884
-        y: 465
-        width: 151
-        height: 151
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9ced32a6bfdc08147b2eb3e275902e03
-      internalID: 976908186
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_1
-      rect:
-        serializedVersion: 2
-        x: 654
-        y: 466
-        width: 150
-        height: 159
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 131b1e454a1413f47a5718800e07d322
-      internalID: 597200346
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_2
-      rect:
-        serializedVersion: 2
-        x: 917
-        y: 188
-        width: 308
-        height: 201
+        x: 215
+        y: 52
+        width: 257
+        height: 323
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +124,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69ff3336e1cde4b4b93d97f9eb076fe0
-      internalID: -1815674015
+      spriteID: fabad2d1dd01e854eb40651208b2bbfd
+      internalID: -1969350984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ABILITY FINAL REAL_1
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 50
+        width: 260
+        height: 325
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff0f7151883883d43b4322d6a11c9559
+      internalID: -1661702394
       vertices: []
       indices: 
       edges: []
@@ -175,7 +154,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2769e15636b4b6945a406b97a8a42c7c
+    spriteID: 5b5dabd77b003f942be73952f00d470b
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +162,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cardboard uii_0: 976908186
-      cardboard uii_1: 597200346
-      cardboard uii_2: -1815674015
+      ABILITY FINAL REAL_0: -1969350984
+      ABILITY FINAL REAL_1: -1661702394
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

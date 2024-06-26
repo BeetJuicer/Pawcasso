@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 341cebea90c70d640978b35d7fc9bba7
+guid: 7327e67c4cc6dc8438aa5d6e6fe18656
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,55 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cardboard uii_0
+      name: UI - Gun Icons_0
       rect:
         serializedVersion: 2
-        x: 884
-        y: 465
-        width: 151
-        height: 151
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9ced32a6bfdc08147b2eb3e275902e03
-      internalID: 976908186
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_1
-      rect:
-        serializedVersion: 2
-        x: 654
-        y: 466
-        width: 150
-        height: 159
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 131b1e454a1413f47a5718800e07d322
-      internalID: 597200346
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_2
-      rect:
-        serializedVersion: 2
-        x: 917
-        y: 188
-        width: 308
-        height: 201
+        x: 581
+        y: 337
+        width: 288
+        height: 206
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +124,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69ff3336e1cde4b4b93d97f9eb076fe0
-      internalID: -1815674015
+      spriteID: 50bbaa8d2cc200a49847911b90449be7
+      internalID: 1426208095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Gun Icons_1
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 759
+        width: 214
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0178f1c2d2686d4a8c6fb5ffebb41b7
+      internalID: 1391473315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Gun Icons_2
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 722
+        width: 241
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5444e1805c485a4dbbbcaa3201528e6
+      internalID: -849615175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Gun Icons_3
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 723
+        width: 251
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f5178943ba79564c9572ce079fcf846
+      internalID: 2135821440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI - Gun Icons_4
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 722
+        width: 240
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a98e7e0773ddb774b8e61425f2ad2449
+      internalID: 367446413
       vertices: []
       indices: 
       edges: []
@@ -175,7 +217,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2769e15636b4b6945a406b97a8a42c7c
+    spriteID: 7f618d94d0792944f9ac87bfbb675fea
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cardboard uii_0: 976908186
-      cardboard uii_1: 597200346
-      cardboard uii_2: -1815674015
+      UI - Gun Icons_0: 1426208095
+      UI - Gun Icons_1: 1391473315
+      UI - Gun Icons_2: -849615175
+      UI - Gun Icons_3: 2135821440
+      UI - Gun Icons_4: 367446413
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

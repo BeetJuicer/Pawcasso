@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 341cebea90c70d640978b35d7fc9bba7
+guid: 993b32d450a1bca49a5bbd8e85fa7b1a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cardboard uii_0
+      name: AAAAABILITY_0
       rect:
         serializedVersion: 2
-        x: 884
-        y: 465
-        width: 151
-        height: 151
+        x: 216
+        y: 53
+        width: 257
+        height: 323
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,41 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ced32a6bfdc08147b2eb3e275902e03
-      internalID: 976908186
+      spriteID: c495ad2534b85b04a9215fcdabd5ff4a
+      internalID: -1021253809
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cardboard uii_1
+      name: AAAAABILITY_1
       rect:
         serializedVersion: 2
-        x: 654
-        y: 466
-        width: 150
-        height: 159
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 131b1e454a1413f47a5718800e07d322
-      internalID: 597200346
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cardboard uii_2
-      rect:
-        serializedVersion: 2
-        x: 917
-        y: 188
-        width: 308
-        height: 201
+        x: 555
+        y: 53
+        width: 257
+        height: 323
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69ff3336e1cde4b4b93d97f9eb076fe0
-      internalID: -1815674015
+      spriteID: b76c27d8f9020344a9d855e0d06f0c49
+      internalID: 1204981759
       vertices: []
       indices: 
       edges: []
@@ -175,7 +154,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2769e15636b4b6945a406b97a8a42c7c
+    spriteID: 08fb428fb5dae2c4f80b3a7b87743d1e
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +162,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cardboard uii_0: 976908186
-      cardboard uii_1: 597200346
-      cardboard uii_2: -1815674015
+      AAAAABILITY_0: -1021253809
+      AAAAABILITY_1: 1204981759
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
