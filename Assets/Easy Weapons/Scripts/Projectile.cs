@@ -121,36 +121,19 @@ public class Projectile : MonoBehaviour
 		if (col.gameObject.layer == whatIsAvoid)
 			return;
 
-		print("hit: " + col.gameObject.name);
 		Hit(col);
 	}
 
 	void Hit(Collision col)
 	{
-		// Make the projectile explode
-		Explode(col.contacts[0].point);
-
 		// Apply damage to the hit object if damageType is set to Direct
 		if (damageType == DamageType.Direct)
 		{
 			col.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
-			print("calling change health on " + col.gameObject.name);
-			//call the ApplyDamage() function on the enenmy CharacterSetup script
-			if (col.collider.gameObject.layer == LayerMask.NameToLayer("Limb"))
-			{
-				Vector3 directionShot = col.collider.transform.position - transform.position;
-
-				// Un-comment the following section for Bloody Mess support
-				/*
-				if (col.collider.gameObject.GetComponent<Limb>())
-				{
-					GameObject parent = col.collider.gameObject.GetComponent<Limb>().parent;
-					CharacterSetup character = parent.GetComponent<CharacterSetup>();
-					character.ApplyDamage(damage, col.collider.gameObject, weaponType, directionShot, Camera.main.transform.position);
-				}
-				*/
-			}
 		}
+
+		// Make the projectile explode
+		Explode(col.contacts[0].point);
 	}
 
 	protected void Explode(Vector3 position)
