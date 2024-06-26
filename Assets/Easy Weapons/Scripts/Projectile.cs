@@ -92,6 +92,7 @@ public class Projectile : MonoBehaviour
 				{
 					if (enemy != null)
 					{
+						print("seeking: " + enemy.gameObject.name);
 						Vector3 direction = enemy.transform.position - transform.position;
 						float dot = Vector3.Dot(direction.normalized, transform.forward);
 						if (dot > greatestDotSoFar)
@@ -120,7 +121,7 @@ public class Projectile : MonoBehaviour
 		// If the projectile collides with something, call the Hit() function
 		if (col.gameObject.layer == whatIsAvoid)
 			return;
-
+		print("hit: " + col.gameObject.name);
 		Hit(col);
 	}
 
