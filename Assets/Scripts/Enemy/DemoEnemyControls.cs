@@ -290,7 +290,9 @@ public class DemoEnemyControls : MonoBehaviour
 
     void UpdateEnemyCount()
     {
-        spawner.OnEnemyKilled();
+        if (spawner != null)
+            spawner.OnEnemyKilled();
+        else Debug.LogError("no spawner assigned to this enemy!");
         Destroy(gameObject);
     }
 
@@ -306,6 +308,12 @@ public class DemoEnemyControls : MonoBehaviour
         ai.Health -= damage * shieldDamageReductionMultiplier;
         GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
         Destroy(blood, 3);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _isHit = true;
+        ai.Health -= damage * shieldDamageReductionMultiplier;
     }
 
     private void CheckShield(GunColor color)
