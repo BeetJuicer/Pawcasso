@@ -22,6 +22,7 @@ public class DemoEnemyControls : MonoBehaviour
     //public bool _canDropPickUp;
     public EnemyType enemyType;
     public Rigidbody rangedProjectilePrefab;
+    [SerializeField] Transform rangedProjectileSpawnpoint;
 
     [Header("Melee Stats")]
     [SerializeField] private float meleeDamage;
@@ -210,8 +211,7 @@ public class DemoEnemyControls : MonoBehaviour
 
     public void FireProjectile()
     {
-        Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
-        spit.AddForce(transform.forward * 500);
+        Rigidbody spit = Instantiate(rangedProjectilePrefab, rangedProjectileSpawnpoint.position, transform.rotation) as Rigidbody;
     }
 
     public void FinishAttack()
