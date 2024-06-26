@@ -6,9 +6,20 @@ using TMPro;
 public class UIAmmoScript : MonoBehaviour
 {
     [SerializeField] private WeaponSystem weaponSystem;
+    [SerializeField] private TextMeshProUGUI currentAmmo;
+    [SerializeField] private TextMeshProUGUI maxAmmo;
 
     private void Update()
     {
-        GetComponent<TextMeshProUGUI>().SetText("Ammo: " + weaponSystem.CurrentAmmo + " / " + weaponSystem.MaxAmmo);
+        if (weaponSystem.IsReloading)
+        {
+            currentAmmo.text = "...";
+            maxAmmo.text = "...";
+        }
+        else
+        {
+            currentAmmo.text = weaponSystem.CurrentAmmo.ToString();
+            maxAmmo.text = weaponSystem.MaxAmmo.ToString();
+        }
     }
 }

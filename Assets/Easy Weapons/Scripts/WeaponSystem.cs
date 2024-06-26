@@ -25,6 +25,7 @@ public class WeaponSystem : MonoBehaviour
 
     // Gauges
     public Dictionary<GunColor, int> gauges { get; private set; }
+    public Dictionary<GunColor, int> gaugesMax { get; private set; }
 
     public void ResetGauge(GunColor color)
     {
@@ -43,6 +44,18 @@ public class WeaponSystem : MonoBehaviour
             { GunColor.Blue, 0 },
             { GunColor.Yellow, 0 }
         };
+
+        gaugesMax = new Dictionary<GunColor, int>
+        {
+            { GunColor.Red, 120 },
+            { GunColor.Blue, 60 },
+            { GunColor.Yellow, 30 }
+        };
+    }
+
+    private void Awake()
+    {
+        InitializeGauges();
     }
 
     // Use this for initialization
@@ -51,8 +64,6 @@ public class WeaponSystem : MonoBehaviour
         // Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
         WeaponIndex = startingWeaponIndex;
         SetActiveWeapon(WeaponIndex);
-
-        InitializeGauges();
     }
 
     // Update is called once per frame

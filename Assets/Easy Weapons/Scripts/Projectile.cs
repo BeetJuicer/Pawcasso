@@ -42,8 +42,9 @@ public class Projectile : MonoBehaviour
 
 	private float lifeTimer = 0.0f;										// The timer to keep track of how long this projectile has been in existence
 	private float targetListUpdateTimer = 0.0f;							// The timer to keep track of how long it's been since the enemy list was last updated
-	private GameObject[] enemyList;										// An array to hold possible targets
+	private GameObject[] enemyList;                                     // An array to hold possible targets
 
+	[SerializeField] private LayerMask whatIsAvoid;
 
 	void Start()
 	{
@@ -117,35 +118,22 @@ public class Projectile : MonoBehaviour
 	void OnCollisionEnter(Collision col)
 	{
 		// If the projectile collides with something, call the Hit() function
+		if (col.gameObject.layer == whatIsAvoid)
+			return;
+
 		Hit(col);
 	}
 
 	void Hit(Collision col)
 	{
-		// Make the projectile explode
-		Explode(col.contacts[0].point);
-
 		// Apply damage to the hit object if damageType is set to Direct
 		if (damageType == DamageType.Direct)
 		{
 			col.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
-
-			//call the ApplyDamage() function on the enenmy CharacterSetup script
-			if (col.collider.gameObject.layer == LayerMask.NameToLayer("Limb"))
-			{
-				Vector3 directionShot = col.collider.transform.position - transform.position;
-
-				// Un-comment the following section for Bloody Mess support
-				/*
-				if (col.collider.gameObject.GetComponent<Limb>())
-				{
-					GameObject parent = col.collider.gameObject.GetComponent<Limb>().parent;
-					CharacterSetup character = parent.GetComponent<CharacterSetup>();
-					character.ApplyDamage(damage, col.collider.gameObject, weaponType, directionShot, Camera.main.transform.position);
-				}
-				*/
-			}
 		}
+
+		// Make the projectile explode
+		Explode(col.contacts[0].point);
 	}
 
 	protected void Explode(Vector3 position)
