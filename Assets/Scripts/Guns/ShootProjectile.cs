@@ -9,7 +9,12 @@ public class ShootProjectile : Skill
 	[SerializeField] private GameObject projectile;
 	[SerializeField] private Transform projectileSpawnSpot;
 	[SerializeField] protected float launchCooldown;
-	
+
+    protected override void Awake()
+    {
+		base.Awake();
+    }
+
     private void Update()
     {
 		//if we have enough in the gauge and the user presses a key

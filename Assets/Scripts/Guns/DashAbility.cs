@@ -9,12 +9,13 @@ public class DashAbility : Skill
     [SerializeField] private float damage;
     [SerializeField] private GameObject dashVisuals;
     [SerializeField] private GameObject dashParticles;
+    [SerializeField] private ExampleCharacterController characterController;
     private bool isDashing = false;
     private float timeLeft;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
     }
 
     // Update is called once per frame
@@ -44,7 +45,7 @@ public class DashAbility : Skill
 
     private void EnterDash()
     {
-        timeLeft = GetComponent<ExampleCharacterController>().EnterChargeState(1);
+        timeLeft = characterController.EnterChargeState(1);
         dashCollider.SetActive(true);
 
         dashVisuals.SetActive(true);
