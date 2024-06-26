@@ -23,13 +23,13 @@ public class DashAbility : Skill
     {
         //if we have enough in the gauge and the user presses a key
         if (Input.GetKeyDown(key) &&
-            requiredColors[primaryOne] <= ws.gauges[primaryOne] &&
-            requiredColors[primaryTwo] <=    ws.gauges[primaryTwo])
+            requiredColors[PrimaryOne] <= ws.gauges[PrimaryOne] &&
+            requiredColors[PrimaryTwo] <=    ws.gauges[PrimaryTwo])
         {
             EnterDash();
 
-            ws.SubtractFromGauge(primaryOne, requiredColors[primaryOne]);
-            ws.SubtractFromGauge(primaryTwo, requiredColors[primaryTwo]);
+            ws.SubtractFromGauge(PrimaryOne, requiredColors[PrimaryOne]);
+            ws.SubtractFromGauge(PrimaryTwo, requiredColors[PrimaryTwo]);
         }
 
         // timer for dash

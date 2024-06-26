@@ -7,8 +7,8 @@ public class Skill : MonoBehaviour
 {
     [SerializedDictionary("Color", "Amount")]
     public SerializedDictionary<GunColor, int> requiredColors;
-    public GunColor primaryOne { get; protected set; }
-    public GunColor primaryTwo{ get; protected set; }
+    public GunColor PrimaryOne { get; protected set; }
+    public GunColor PrimaryTwo{ get; protected set; }
 
     [SerializeField] protected WeaponSystem ws;
     [SerializeField] protected KeyCode key;
@@ -17,8 +17,8 @@ public class Skill : MonoBehaviour
     {
         var e = requiredColors.GetEnumerator();
         e.MoveNext();
-        primaryOne = e.Current.Key;
+        PrimaryOne = e.Current.Key;
         e.MoveNext();
-        primaryTwo = e.Current.Key;
+        PrimaryTwo = e.Current.Key;
     }
 }
