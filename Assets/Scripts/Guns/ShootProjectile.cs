@@ -3,42 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 
-public class ShootProjectile : MonoBehaviour
+public class ShootProjectile : Skill
 {
-	[SerializeField] private WeaponSystem ws;
-
 	[Header("Projectile Launching")]
 	[SerializeField] private GameObject projectile;
 	[SerializeField] private Transform projectileSpawnSpot;
 	[SerializeField] protected float launchCooldown;
-	[SerializeField] private KeyCode key;
-	private bool canShoot = true;
-	
-	[SerializedDictionary("Color", "Amount")]
-	public SerializedDictionary<GunColor, int> requiredColors;
-	private GunColor primaryOne;
-	private GunColor primaryTwo;
+
+    protected override void Awake()
+    {
+		base.Awake();
+    }
+
     private void Update()
     {
-		var e = requiredColors.GetEnumerator();
-		e.MoveNext();
-		primaryOne = e.Current.Key;
-		e.MoveNext();
-		primaryTwo = e.Current.Key;
-
 		//if we have enough in the gauge and the user presses a key
 		if (Input.GetKeyDown(key) &&
-			requiredColors[primaryOne] <= ws.gauges[primaryOne] &&
-			requiredColors[primaryTwo] <= ws.gauges[primaryTwo])
+			requiredColors[PrimaryOne] <= ws.gauges[PrimaryOne] &&
+			requiredColors[PrimaryTwo] <= ws.gauges[PrimaryTwo])
         {
 			Launch();
-			ws.SubtractFromGauge(primaryOne, requiredColors[primaryOne]);
-			ws.SubtractFromGauge(primaryTwo, requiredColors[primaryTwo]);
+			ws.SubtractFromGauge(PrimaryOne, requiredColors[PrimaryOne]);
+			ws.SubtractFromGauge(PrimaryTwo, requiredColors[PrimaryTwo]);
         }
-
-		//print(primaryOne + ": " + 
-		//	ws.gauges[primaryOne] + 
-		//	" / " + requiredColors[primaryOne] + ". " + primaryTwo + ": " + ws.gauges[primaryTwo] + " / " + requiredColors[primaryTwo]);
     }
 
     public void Launch()

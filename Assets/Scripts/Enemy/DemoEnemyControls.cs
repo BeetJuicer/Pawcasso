@@ -11,6 +11,7 @@ public class DemoEnemySounds
 
 public class DemoEnemyControls : MonoBehaviour
 {
+    public bool targetStatue = false;
 
     [Space]
     public DemoEnemySounds audioClips;
@@ -21,6 +22,7 @@ public class DemoEnemyControls : MonoBehaviour
     //public bool _canDropPickUp;
     public EnemyType enemyType;
     public Rigidbody rangedProjectilePrefab;
+    [SerializeField] Transform rangedProjectileSpawnpoint;
 
     [Header("Melee Stats")]
     [SerializeField] private float meleeDamage;
@@ -109,10 +111,11 @@ public class DemoEnemyControls : MonoBehaviour
         ai = GetComponent<Ai>();
         anim = GetComponent<Animator>();
         audioSource = gameObject.AddComponent<AudioSource>();
-        GameObject go = GameObject.FindGameObjectWithTag("Player");
+        GameObject go = targetStatue ? GameObject.FindGameObjectWithTag("Statue") : GameObject.FindGameObjectWithTag("Player");
         if (go)
         {
             player = go.transform;
+            ai.Player = player;
         }
 
         //apply multiplier to health
@@ -208,8 +211,7 @@ public class DemoEnemyControls : MonoBehaviour
 
     public void FireProjectile()
     {
-        Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
-        spit.AddForce(transform.forward * 500);
+        Rigidbody spit = Instantiate(rangedProjectilePrefab, rangedProjectileSpawnpoint.position, transform.rotation) as Rigidbody;
     }
 
     public void FinishAttack()
