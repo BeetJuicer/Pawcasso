@@ -27,6 +27,7 @@ public class Health : MonoBehaviour
 	[SerializeField] private HealthBar healthBar;
 	[SerializeField] private GameObject gameOverMenu;
 	[SerializeField] private GameObject playerObjectToDestroy;
+	[SerializeField] private HurtIndicator hurtIndicator;
 
 
 	private bool dead = false;					// Used to make sure the Die() function isn't called twice
@@ -40,12 +41,42 @@ public class Health : MonoBehaviour
 		//healthBar.SetMaxHealth(startingHealth);
 	}
 
+	public void ChangeHealth(float amount, Vector3 position)
+    {
+		// Change the health by the amount specified in the amount variable
+		currentHealth += amount;
+
+		healthBar.SetHealth(currentHealth);
+
+		//Hurt
+		if (amount < 0 && !isStatue)
+			hurtIndicator.Hurt(position);
+
+		// If the health runs out, then Die.
+		if (currentHealth <= 0 && !dead && canDie)
+		{
+			dead = true;
+			if (isStatue)
+				DieStatue();
+			else
+				Die();
+		}
+		// Make sure that the health never exceeds the maximum health
+		else if (currentHealth > maxHealth)
+			currentHealth = maxHealth;
+	}
+
 	public void ChangeHealth(float amount)
 	{
 		// Change the health by the amount specified in the amount variable
 		currentHealth += amount;
 
-		//healthBar.SetHealth(currentHealth);
+		healthBar.SetHealth(currentHealth);
+
+		//Hurt
+		print("Hurt!");
+		if (amount < 0 && !isStatue)
+			hurtIndicator.Hurt();
 
 		// If the health runs out, then Die.
 		if (currentHealth <= 0 && !dead && canDie)

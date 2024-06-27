@@ -221,7 +221,7 @@ public class DemoEnemyControls : MonoBehaviour
     public void StartMeleeAttack()
     {
         print("attacking " + ai.Player.gameObject.name + " for " + meleeDamage);
-        ai.Player.gameObject.GetComponent<Health>().ChangeHealth(-meleeDamage);
+        ai.Player.gameObject.GetComponent<Health>().ChangeHealth(-meleeDamage, transform.position);
     }
 
     public void FinishMeleeAttack()
