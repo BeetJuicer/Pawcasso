@@ -137,20 +137,28 @@ namespace BreadcrumbAi{
 						Ai_Rotation(Player.position);
 					}
 				} else if(_IsMelee){ // Is this a melee ground unit?
-					print(gameObject.name + " position: " + transform.position + ", target position: " + Player.position + ". Total Distance: " + Vector3.Distance(transform.position, Player.position) + " follow distance: " + followDistance
-						+ " attack distance: " + attackDistance);
-
 					//check if collider is within range
 					Ray ray = new Ray(transform.position, transform.forward);
-					
 					// compare attackDistance either against the player's position or against the nearest collider hit, in case of thicc colliders.
-					Vector3 whatToCheck = (Physics.Raycast(ray, out RaycastHit hitInfo, followDistance, playerLayer)) ? hitInfo.point : Player.position;
 
-					if(Vector3.Distance(transform.position, whatToCheck) > attackDistance){
+					float whatToCheck = (Physics.Raycast(ray, out RaycastHit news, followDistance, playerLayer)) ? news.distance : Vector3.Distance(transform.position, Player.position);
+					
+					if(Physics.Raycast(ray, out RaycastHit hitInfo, followDistance, playerLayer))
+                    {
+						print("hit.distance of " + hit.collider.name + ": " + hitInfo.distance
+						+ ", attackDistance: " + attackDistance);
+                    }
+                    else
+                    {
+						print("Distance(): " + Vector3.Distance(transform.position, Player.position)
+						+ ", attackDistance: " + attackDistance);
+					}
+
+					if(whatToCheck > attackDistance){
 						moveState = MOVEMENT_STATE.IsFollowingPlayer;
 						attackState = ATTACK_STATE.CanNotAttack;
 						Ai_Movement(Player.position, followSpeed);
-					} else if(Vector3.Distance(transform.position,Player.position) <= attackDistance) {
+					} else if(whatToCheck <= attackDistance) {
 						moveState = MOVEMENT_STATE.IsIdle;
 						attackState = ATTACK_STATE.CanAttackPlayer;
 						Ai_Rotation(Player.position);
