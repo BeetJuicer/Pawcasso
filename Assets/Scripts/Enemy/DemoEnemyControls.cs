@@ -186,7 +186,8 @@ public class DemoEnemyControls : MonoBehaviour
                             audioSource.clip = audioClips.audio_melee_attack_2;
                         }
                         audioSource.PlayOneShot(audioSource.clip);
-                        player.GetComponentInChildren<Health>().ChangeHealth(-meleeDamage);
+                        print("attacking " + ai.Player.gameObject.name + " for " + meleeDamage);
+                        ai.Player.gameObject.GetComponent<Health>().ChangeHealth(-meleeDamage);
                         _animAttack = true;
                     }
                     else
