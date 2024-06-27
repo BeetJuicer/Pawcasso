@@ -49,6 +49,7 @@ namespace KinematicCharacterController.Examples
             }
 
             HandleCameraInput();
+            Character.PostInputUpdate(Time.deltaTime, CharacterCamera.transform.forward);
         }
 
         private void HandleCameraInput()

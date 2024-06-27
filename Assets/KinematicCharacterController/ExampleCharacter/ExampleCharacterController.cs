@@ -263,7 +263,22 @@ namespace KinematicCharacterController.Examples
                     }
             }
         }
+        public void PostInputUpdate(float deltaTime, Vector3 cameraForward)
+        {
+            _lookInputVector = Vector3.ProjectOnPlane(cameraForward, Motor.CharacterUp);
 
+            Quaternion newRotation = default;
+            HandleRotation(ref newRotation, deltaTime);
+            MeshRoot.rotation = newRotation;
+        }
+
+        private void HandleRotation(ref Quaternion rot, float deltaTime)
+        {
+            if (_lookInputVector != Vector3.zero)
+            {
+                rot = Quaternion.LookRotation(_lookInputVector, Motor.CharacterUp);
+            }
+        }
         /// <summary>
         /// This is called every frame by the AI script in order to tell the character what its inputs are
         /// </summary>
@@ -307,6 +322,8 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
+            HandleRotation(ref currentRotation, deltaTime);
+
             switch (CurrentCharacterState)
             {
                 case CharacterState.Default:

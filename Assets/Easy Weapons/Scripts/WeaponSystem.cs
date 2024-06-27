@@ -47,9 +47,9 @@ public class WeaponSystem : MonoBehaviour
 
         gaugesMax = new Dictionary<GunColor, int>
         {
-            { GunColor.Red, 120 },
-            { GunColor.Blue, 60 },
-            { GunColor.Yellow, 30 }
+            { GunColor.Red, 48 },
+            { GunColor.Blue, 24 },
+            { GunColor.Yellow, 12 }
         };
     }
 
