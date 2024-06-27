@@ -12,7 +12,8 @@ using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
-	public bool canDie = true;					// Whether or not this health can die
+	private bool canDie = true;                 // Whether or not this health can die
+	public bool isStatue = false;
 	
 	public float startingHealth = 100.0f;		// The amount of health to start with
 	public float maxHealth = 100.0f;			// The maximum amount of health
@@ -34,20 +35,24 @@ public class Health : MonoBehaviour
 		// Initialize the currentHealth variable to the value specified by the user in startingHealth
 		currentHealth = startingHealth;
 
-		healthBar.SetMaxHealth(startingHealth);
+		//healthBar.SetMaxHealth(startingHealth);
 	}
 
 	public void ChangeHealth(float amount)
 	{
-		print("Changing health! : " + amount);
 		// Change the health by the amount specified in the amount variable
 		currentHealth += amount;
 
-		healthBar.SetHealth(currentHealth);
+		//healthBar.SetHealth(currentHealth);
 
 		// If the health runs out, then Die.
 		if (currentHealth <= 0 && !dead && canDie)
-			Die();
+        {
+			if (isStatue)
+				DieStatue();
+			else
+				Die();
+        }
 		// Make sure that the health never exceeds the maximum health
 		else if (currentHealth > maxHealth)
 			currentHealth = maxHealth;
@@ -57,11 +62,18 @@ public class Health : MonoBehaviour
 	{
 		// This GameObject is officially dead.  This is used to make sure the Die() function isn't called again
 		dead = true;
+		print("dead");
 
 		// Make death effects
 		if (replaceWhenDead)
 			Instantiate(deadReplacement, transform.position, transform.rotation);
 
+		// TODO: Change scene to restart.
+		SceneManager.LoadScene(gameOverScene);
+	}
+
+	private void DieStatue()
+    {
 		// TODO: Change scene to restart.
 		SceneManager.LoadScene(gameOverScene);
 	}
