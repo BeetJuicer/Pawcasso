@@ -50,7 +50,7 @@ public class Health : MonoBehaviour
 
 		//Hurt
 		if (amount < 0 && !isStatue)
-			hurtIndicator.Hurt(position);
+			hurtIndicator.Hurt(transform.position, position);
 
 		// If the health runs out, then Die.
 		if (currentHealth <= 0 && !dead && canDie)

@@ -6,48 +6,48 @@ public class HurtIndicator : MonoBehaviour
 {
 
 	[SerializeField] GameObject hurtElement;
-    public void Hurt(Vector3 position)
+    public void Hurt(Vector3 player, Vector3 hurterPosition)
 	{
 
 		// Calculate the direction of the hurt based on position difference
 		Vector3 myPosition = transform.position; // Assuming this holds your object's position
-		Vector3 hurtDirection = position - myPosition;
+		Vector3 hurtDirection = hurterPosition - player;
 
 		// Determine rotation based on direction vector
 		float angle = Mathf.Atan2(hurtDirection.y, hurtDirection.x) * Mathf.Rad2Deg;
 
 		// Set rotation based on quadrants
-		if (hurtDirection.x > 0 && hurtDirection.y > 0)
+		if (hurtDirection.x > 0 && hurtDirection.z > 0)
 		{
-			angle = 45; // Right and Up (hurt from bottom right)
+			angle = -45; // Right and Up (hurt from front right)
 		}
-		else if (hurtDirection.x < 0 && hurtDirection.y > 0)
+		else if (hurtDirection.x < 0 && hurtDirection.z > 0)
 		{
-			angle = 135; // Left and Up (hurt from bottom left)
+			angle = 45; // Left and Up (hurt from front left)
 		}
-		else if (hurtDirection.x > 0 && hurtDirection.y < 0)
+		else if (hurtDirection.x > 0 && hurtDirection.z < 0)
 		{
-			angle = 315; // Right and Down (hurt from top right)
+			angle = -135; // Right and Down (hurt from behind right)
 		}
-		else if (hurtDirection.x < 0 && hurtDirection.y < 0)
+		else if (hurtDirection.x < 0 && hurtDirection.z < 0)
 		{
-			angle = 225; // Left and Down (hurt from top left)
+			angle = 135; // Left and Down (hurt from behind left)
 		}
-		else if (hurtDirection.x == 0 && hurtDirection.y > 0)
+		else if (hurtDirection.x == 0 && hurtDirection.z > 0)
 		{
-			angle = 90; // Up only (hurt from directly below)
+			angle = 0; // Up only (hurt from front)
 		}
-		else if (hurtDirection.x == 0 && hurtDirection.y < 0)
+		else if (hurtDirection.x == 0 && hurtDirection.z < 0)
 		{
-			angle = 270; // Down only (hurt from directly above)
+			angle = 180; // Down only (hurt from behind)
 		}
 		else if (hurtDirection.x > 0)
 		{
-			angle = 0; // Right only (hurt from directly right)
+			angle = -90; // Right only (hurt from directly right)
 		}
 		else
 		{
-			angle = 180; // Left only (hurt from directly left)
+			angle = 90; // Left only (hurt from directly left)
 		}
 
 		// Apply the rotation to the hurtIndicator
