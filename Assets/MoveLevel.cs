@@ -8,6 +8,8 @@ public class MoveLevel : MonoBehaviour
 {
     [SerializeField] private Transform teleportTo;
     [SerializeField] private GameObject levelToDisable;
+    //dirty stupid hack but im sleepy
+    [SerializeField] private GameObject levelToDisable2;
     [SerializeField] private GameObject levelTOEnable;
 
 
@@ -26,6 +28,11 @@ public class MoveLevel : MonoBehaviour
                 levelToDisable.SetActive(false);
             else
                 Debug.LogWarning("No level disabled. Are you sure?");
+
+            if (levelToDisable2 != null)
+                levelToDisable2.SetActive(false);
+            else
+                Debug.LogWarning("No level disabled2. Are you sure?");
         }
     }
 }
