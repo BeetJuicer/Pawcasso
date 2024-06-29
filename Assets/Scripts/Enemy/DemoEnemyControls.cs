@@ -175,7 +175,6 @@ public class DemoEnemyControls : MonoBehaviour
                 {
                     if (ai.attackState == Ai.ATTACK_STATE.CanAttackPlayer && Time.time > meleeAttackNext)
                     {
-                        meleeAttackNext = Time.time + meleeAttackRate;
                         float rand = Random.value;
                         if (rand <= 0.4f)
                         {
@@ -186,8 +185,6 @@ public class DemoEnemyControls : MonoBehaviour
                             audioSource.clip = audioClips.audio_melee_attack_2;
                         }
                         audioSource.PlayOneShot(audioSource.clip);
-                        print("attacking " + ai.Player.gameObject.name + " for " + meleeDamage);
-                        ai.Player.gameObject.GetComponent<Health>().ChangeHealth(-meleeDamage);
                         _animAttack = true;
                     }
                     else
@@ -215,9 +212,21 @@ public class DemoEnemyControls : MonoBehaviour
         Rigidbody spit = Instantiate(rangedProjectilePrefab, rangedProjectileSpawnpoint.position, transform.rotation) as Rigidbody;
     }
 
-    public void FinishAttack()
+    public void FinishRangedAttack()
     {
         rangedAttackNext = Time.time + rangedAttackRate;
+        _animAttack = false;
+    }
+
+    public void StartMeleeAttack()
+    {
+        print("attacking " + ai.Player.gameObject.name + " for " + meleeDamage);
+        ai.Player.gameObject.GetComponent<Health>().ChangeHealth(-meleeDamage, transform.position);
+    }
+
+    public void FinishMeleeAttack()
+    {
+        meleeAttackNext = Time.time + meleeAttackRate;
         _animAttack = false;
     }
 

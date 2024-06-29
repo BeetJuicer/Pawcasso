@@ -9,17 +9,25 @@ public class GameOver : MonoBehaviour
 {
     [SerializeField] private string RestartScene;
     [SerializeField] private string MainMenuScene;
+    [Space(2)]
+    [SerializeField] private GameObject HUD;
+
+    private void Awake()
+    {
+        HUD.SetActive(false);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
 
     public void Restart()
     {
+        print("restart clicked");
         SceneManager.LoadScene(RestartScene);
-        print("??????");
     }
 
     public void MainMenu()
     {
         SceneManager.LoadScene(MainMenuScene);
-        print("uhuhuhuh");
     }
 
 }

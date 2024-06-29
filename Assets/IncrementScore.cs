@@ -15,7 +15,7 @@ public class IncrementScore : MonoBehaviour
     private int totalScore = 0;
     private Queue<GameObject> scoreTexts = new Queue<GameObject>();
 
-    void Start()
+    private void Update()
     {
         UpdateTotalScore();
     }
@@ -38,7 +38,7 @@ public class IncrementScore : MonoBehaviour
 
     void UpdateTotalScore()
     {
-        totalScoreText.text = "Total Score: " + totalScore.ToString();
+        totalScoreText.text = ScoreManager.PlayerScore.ToString();
     }
 
     IEnumerator FadeOutAndDestroy(GameObject scoreText)

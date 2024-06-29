@@ -143,16 +143,16 @@ namespace BreadcrumbAi{
 
 					float whatToCheck = (Physics.Raycast(ray, out RaycastHit news, followDistance, playerLayer)) ? news.distance : Vector3.Distance(transform.position, Player.position);
 					
-					if(Physics.Raycast(ray, out RaycastHit hitInfo, followDistance, playerLayer))
-                    {
-						print("hit.distance of " + hit.collider.name + ": " + hitInfo.distance
-						+ ", attackDistance: " + attackDistance);
-                    }
-                    else
-                    {
-						print("Distance(): " + Vector3.Distance(transform.position, Player.position)
-						+ ", attackDistance: " + attackDistance);
-					}
+					//if(Physics.Raycast(ray, out RaycastHit hitInfo, followDistance, playerLayer))
+     //               {
+					//	print("hit.distance of " + hit.collider.name + ": " + hitInfo.distance
+					//	+ ", attackDistance: " + attackDistance);
+     //               }
+     //               else
+     //               {
+					//	print("Distance(): " + Vector3.Distance(transform.position, Player.position)
+					//	+ ", attackDistance: " + attackDistance);
+					//}
 
 					if(whatToCheck > attackDistance){
 						moveState = MOVEMENT_STATE.IsFollowingPlayer;
