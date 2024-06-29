@@ -10,13 +10,16 @@ public class BeaconTrigger : MonoBehaviour
     [SerializeField] string tagFilter;
     [SerializeField] UnityEvent onTriggerEnter;
     [SerializeField] UnityEvent onTriggerExit;
-    [SerializeField] List<GameObject> gameObjectsToDestroy; // Changed to a list of GameObjects
+    [SerializeField] List<GameObject> gameObjectsToDestroy; // List of GameObjects to destroy immediately
+    [SerializeField] List<GameObject> delayedGameObjectsToDestroy; // List of GameObjects to destroy with delay
+    [SerializeField] float destructionDelay; // Single delay time for all delayed GameObjects
 
     private void OnTriggerEnter(Collider other)
     {
         if (!string.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
         onTriggerEnter.Invoke();
 
+        // Destroy immediate GameObjects
         if (gameObjectsToDestroy != null)
         {
             foreach (var obj in gameObjectsToDestroy)
@@ -24,6 +27,18 @@ public class BeaconTrigger : MonoBehaviour
                 if (obj != null)
                 {
                     Destroy(obj);
+                }
+            }
+        }
+
+        // Destroy delayed GameObjects
+        if (delayedGameObjectsToDestroy != null)
+        {
+            foreach (var obj in delayedGameObjectsToDestroy)
+            {
+                if (obj != null)
+                {
+                    StartCoroutine(DestroyAfterDelay(obj, destructionDelay));
                 }
             }
         }
@@ -38,5 +53,11 @@ public class BeaconTrigger : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
         onTriggerExit.Invoke();
+    }
+
+    private IEnumerator DestroyAfterDelay(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(obj);
     }
 }
