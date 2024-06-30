@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 public class WeaponSystem : MonoBehaviour
 {
+    public int unlockedWeaponIndex { get; private set; } = -1; // which weapon we're allowed to use
     public GameObject[] weapons;                // The array that holds all the weapons that the player has
     public int startingWeaponIndex = 0;         // The weapon index that the player will start with
     public int WeaponIndex { get; private set; }                    // The current index of the active weapon
@@ -53,6 +54,12 @@ public class WeaponSystem : MonoBehaviour
         };
     }
 
+    public void UnlockGun(int index)
+    {
+        unlockedWeaponIndex = Mathf.Max(index, unlockedWeaponIndex);
+        SetActiveWeapon(index);
+    }
+
     private void Awake()
     {
         InitializeGauges();
@@ -63,6 +70,12 @@ public class WeaponSystem : MonoBehaviour
     {
         // Make sure the starting active weapon is the one selected by the user in startingWeaponIndex
         WeaponIndex = startingWeaponIndex;
+        // Start be deactivating all weapons
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].SetActive(false);
+        }
+
         SetActiveWeapon(WeaponIndex);
     }
 
@@ -106,6 +119,11 @@ public class WeaponSystem : MonoBehaviour
 
     public void SetActiveWeapon(int index)
     {
+        if (unlockedWeaponIndex < index)
+        {
+            return;
+        }
+
         // Make sure this weapon exists before trying to switch to it
         if (index >= weapons.Length || index < 0)
         {
@@ -134,6 +152,8 @@ public class WeaponSystem : MonoBehaviour
 
     public void NextWeapon()
     {
+        if (WeaponIndex + 1 > unlockedWeaponIndex)
+            return;
         WeaponIndex++;
         if (WeaponIndex > weapons.Length - 1)
             WeaponIndex = 0;
@@ -144,7 +164,7 @@ public class WeaponSystem : MonoBehaviour
     {
         WeaponIndex--;
         if (WeaponIndex < 0)
-            WeaponIndex = weapons.Length - 1;
+            WeaponIndex = unlockedWeaponIndex;
         SetActiveWeapon(WeaponIndex);
     }
 }
