@@ -103,6 +103,9 @@ namespace BreadcrumbAi{
 		}
 	
 		void Update(){
+			if (GameManager.Instance().isPaused)
+				return;
+
 			Ai_LifeState();
 			if(IsGrounded()){
 				_IsJumping = false;
@@ -110,6 +113,9 @@ namespace BreadcrumbAi{
 		}
 	
 		void FixedUpdate (){
+			if (GameManager.Instance().isPaused)
+				return;
+
 			Ai_Controller(); 	// Controls Ai Movement & Attack States
 			Ai_Avoidance(~(breadcrumbLayer | enemyLayer | playerLayer | waypointLayer));	// Controls Ai wall avoidance
 			Ai_Hover();

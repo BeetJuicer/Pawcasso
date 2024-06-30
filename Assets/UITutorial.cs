@@ -7,9 +7,15 @@ public class UITutorial : MonoBehaviour
     [SerializeField] private GameObject[] windows;
     [SerializeField] private GameObject backBtn;
     [SerializeField] private GameObject nextBtn;
+    [SerializeField] private GameObject hud;
     private int activeWindow;
     private void OnEnable()
     {
+        GameManager.Instance().PauseActions();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        hud.SetActive(false);
+
         backBtn.SetActive(false);
         if (windows.Length >= 1)
         {
@@ -17,11 +23,17 @@ public class UITutorial : MonoBehaviour
             nextBtn.SetActive(true);
         }
         else
-            print("No panels");
+        {
+            print("No panels"); 
+            return;
+        }
+
+        windows[0].SetActive(true);
     }
 
     public void NextWindow()
     {
+        print("click");
         windows[activeWindow].SetActive(false);
         backBtn.SetActive(true);
 
@@ -46,5 +58,14 @@ public class UITutorial : MonoBehaviour
         {
             backBtn.SetActive(false);
         }
+    }
+
+    public void Exit()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        hud.SetActive(true);
+        GameManager.Instance().ResumeActions();
+        gameObject.SetActive(false);
     }
 }

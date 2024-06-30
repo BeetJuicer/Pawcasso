@@ -82,6 +82,9 @@ public class WeaponSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance().isPaused)
+            return;
+
         // Allow the user to instantly switch to any weapon
         if (Input.GetButtonDown("Weapon 1"))
             SetActiveWeapon(0);
