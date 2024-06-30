@@ -11,6 +11,7 @@ public class DemoEnemySounds
 
 public class DemoEnemyControls : MonoBehaviour
 {
+    public bool targetStatue = false;
 
     [Space]
     public DemoEnemySounds audioClips;
@@ -21,6 +22,7 @@ public class DemoEnemyControls : MonoBehaviour
     //public bool _canDropPickUp;
     public EnemyType enemyType;
     public Rigidbody rangedProjectilePrefab;
+    [SerializeField] Transform rangedProjectileSpawnpoint;
 
     [Header("Melee Stats")]
     [SerializeField] private float meleeDamage;
@@ -109,10 +111,11 @@ public class DemoEnemyControls : MonoBehaviour
         ai = GetComponent<Ai>();
         anim = GetComponent<Animator>();
         audioSource = gameObject.AddComponent<AudioSource>();
-        GameObject go = GameObject.FindGameObjectWithTag("Player");
+        GameObject go = targetStatue ? GameObject.FindGameObjectWithTag("Statue") : GameObject.FindGameObjectWithTag("Player");
         if (go)
         {
             player = go.transform;
+            ai.Player = player;
         }
 
         //apply multiplier to health
@@ -172,7 +175,6 @@ public class DemoEnemyControls : MonoBehaviour
                 {
                     if (ai.attackState == Ai.ATTACK_STATE.CanAttackPlayer && Time.time > meleeAttackNext)
                     {
-                        meleeAttackNext = Time.time + meleeAttackRate;
                         float rand = Random.value;
                         if (rand <= 0.4f)
                         {
@@ -183,7 +185,6 @@ public class DemoEnemyControls : MonoBehaviour
                             audioSource.clip = audioClips.audio_melee_attack_2;
                         }
                         audioSource.PlayOneShot(audioSource.clip);
-                        player.GetComponentInChildren<Health>().ChangeHealth(-meleeDamage);
                         _animAttack = true;
                     }
                     else
@@ -195,9 +196,6 @@ public class DemoEnemyControls : MonoBehaviour
                 {
                     if (ai.attackState == Ai.ATTACK_STATE.CanAttackPlayer && Time.time > rangedAttackNext)
                     {
-                        rangedAttackNext = Time.time + rangedAttackRate;
-                        Rigidbody spit = Instantiate(rangedProjectilePrefab, transform.position + transform.forward + transform.up, transform.rotation) as Rigidbody;
-                        spit.AddForce(transform.forward * 500);
                         _animAttack = true;
                     }
                     else
@@ -207,6 +205,29 @@ public class DemoEnemyControls : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void FireProjectile()
+    {
+        Rigidbody spit = Instantiate(rangedProjectilePrefab, rangedProjectileSpawnpoint.position, transform.rotation) as Rigidbody;
+    }
+
+    public void FinishRangedAttack()
+    {
+        rangedAttackNext = Time.time + rangedAttackRate;
+        _animAttack = false;
+    }
+
+    public void StartMeleeAttack()
+    {
+        print("attacking " + ai.Player.gameObject.name + " for " + meleeDamage);
+        ai.Player.gameObject.GetComponent<Health>().ChangeHealth(-meleeDamage);
+    }
+
+    public void FinishMeleeAttack()
+    {
+        meleeAttackNext = Time.time + meleeAttackRate;
+        _animAttack = false;
     }
 
     private void CheckHealth()
@@ -281,7 +302,9 @@ public class DemoEnemyControls : MonoBehaviour
 
     void UpdateEnemyCount()
     {
-        spawner.OnEnemyKilled();
+        if (spawner != null)
+            spawner.OnEnemyKilled();
+        else Debug.LogError("no spawner assigned to this enemy!");
         Destroy(gameObject);
     }
 
@@ -297,6 +320,12 @@ public class DemoEnemyControls : MonoBehaviour
         ai.Health -= damage * shieldDamageReductionMultiplier;
         GameObject blood = Instantiate(bloodPrefab, hitSpawnPoint, rotation) as GameObject;
         Destroy(blood, 3);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _isHit = true;
+        ai.Health -= damage * shieldDamageReductionMultiplier;
     }
 
     private void CheckShield(GunColor color)

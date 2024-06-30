@@ -10,15 +10,9 @@ public class Pistol : PaintGun
 	[SerializeField] private ExampleCharacterController characterController;
 	[SerializeField] private DashParticles dashParticles;
 
-	// Charging
-	private float chargeTimer;
-	private bool isCharging;
-	[SerializeField] private Slider chargeSlider;
-
 	protected override void Start()
     {
 		base.Start();
-		chargeSlider.gameObject.SetActive(false);
 	}
 
     // Update is called once per frame

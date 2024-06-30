@@ -13,7 +13,6 @@ public class PaintGun : MonoBehaviour
 	[SerializeField] protected GameObject weaponModel;    // The actual mesh for this weapon
 	[SerializeField] protected float damage;
 	[SerializeField] protected LayerMask whatIsNoCollision;
-	[SerializeField] protected WeaponSystem ws;
 
 	[Header("Ammo")]
 	protected bool canFire = true;
@@ -72,6 +71,7 @@ public class PaintGun : MonoBehaviour
 	[SerializeField] protected float startingCrosshairSize = 10.0f;         // The gap of space (in pixels) between the crosshair lines (for weapon inaccuracy)
 	protected float currentCrosshairSize;                 // The gap of space between crosshair lines that is updated based on weapon accuracy in realtime
 
+	private WeaponSystem weaponSystem;
     protected virtual void Start()
     {
 		brush = GetComponent<BrushMono>().brush;
@@ -85,6 +85,8 @@ public class PaintGun : MonoBehaviour
 		CurrentAmmo = ammoCapacity;
 
 		currentCrosshairSize = startingCrosshairSize;
+
+		weaponSystem = GetComponentInParent<WeaponSystem>();
 	}
 
 	protected virtual void Update()
@@ -116,9 +118,7 @@ public class PaintGun : MonoBehaviour
 
     protected void Fire()
 	{
-		//increase the gauge in the weaponsystem
-		if(ws != null)
-			ws.gauges[gunColor]++;
+		weaponSystem.gauges[gunColor]++;
 
 		//Wish to add to comboTimer;
 		ScoreManager.Instance.WishForCombo(gunColor);
@@ -198,7 +198,7 @@ public class PaintGun : MonoBehaviour
 	}
 
 	protected void DryFire()
-    { 
+    {
 		GetComponent<AudioSource>().PlayOneShot(dryFireSound);
 	}
 

@@ -21,6 +21,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
+        PlayerScore = 0;
         colorComboDuration = maxColorComboTimer;
     }
 

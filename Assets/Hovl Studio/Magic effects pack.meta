@@ -1,6 +1,15 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<<< HEAD:Assets/Hovl Studio/Magic effects pack.meta
 guid: cdcb4ce5f780aec498f880ae94ccb98c
 folderAsset: yes
+========
+guid: c322695d857eafa41a0bbdea2654dfb4
+>>>>>>>> main:Assets/BarbieAssets/EnemyModel/download (6).jfif.meta
+=======
+guid: ccaf0d0261bfcfe4f874cb02d8931eb9
+folderAsset: yes
+>>>>>>> main
 DefaultImporter:
   externalObjects: {}
   userData: 
