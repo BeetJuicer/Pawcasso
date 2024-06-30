@@ -31,6 +31,9 @@ namespace KinematicCharacterController.Examples
 
         private void Update()
         {
+            if (GameManager.Instance().isPaused)
+                return;
+
             if (Input.GetMouseButtonDown(0))
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -41,6 +44,9 @@ namespace KinematicCharacterController.Examples
 
         private void LateUpdate()
         {
+            if (GameManager.Instance().isPaused)
+                return;
+
             // Handle rotating the camera along with physics movers
             if (CharacterCamera.RotateWithPhysicsMover && Character.Motor.AttachedRigidbody != null)
             {
