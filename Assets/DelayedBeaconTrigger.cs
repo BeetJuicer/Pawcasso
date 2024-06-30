@@ -1,22 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DelayedBeaconTrigger : MonoBehaviour
 {
-    [SerializeField] string tagFilter;
-    [SerializeField] UnityEvent onTriggerEnter;
-    [SerializeField] UnityEvent onTriggerExit;
-    [SerializeField] float triggerExecutionDelay; // Delay before executing the delayed OnTriggerEnter function
-    [SerializeField] Slider delaySlider; // Reference to the UI Slider
+    [SerializeField] private string tagFilter;
+    [SerializeField] private UnityEvent onTriggerEnter;
+    [SerializeField] private UnityEvent onTriggerExit;
+    [SerializeField] private float triggerExecutionDelay; // Delay before executing the delayed OnTriggerEnter function
+    [SerializeField] private Slider delaySlider; // Reference to the UI Slider
+    private float currentDelay;
 
     private void Start()
     {
         // Ensure the slider's initial value reflects the triggerExecutionDelay
         if (delaySlider != null)
         {
+            delaySlider.maxValue = triggerExecutionDelay; // Set max value to the delay
             delaySlider.value = triggerExecutionDelay;
             delaySlider.onValueChanged.AddListener(UpdateTriggerExecutionDelay);
         }
@@ -36,7 +37,16 @@ public class DelayedBeaconTrigger : MonoBehaviour
 
     private IEnumerator ExecuteTriggerAfterDelay()
     {
-        yield return new WaitForSeconds(triggerExecutionDelay);
+        currentDelay = triggerExecutionDelay;
+        while (currentDelay > 0)
+        {
+            yield return null;
+            currentDelay -= Time.deltaTime;
+            if (delaySlider != null)
+            {
+                delaySlider.value = currentDelay;
+            }
+        }
         onTriggerEnter.Invoke();
     }
 
