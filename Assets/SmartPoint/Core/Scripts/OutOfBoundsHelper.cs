@@ -24,6 +24,20 @@ namespace SmartPoint
         }
         private void OnTriggerEnter(Collider other)
         {
+            //killing enemy
+            if (other.TryGetComponent<DemoEnemyControls>(out DemoEnemyControls enemy))
+            {
+                enemy.Die();
+                print("killed " + enemy.name + " through bounds");
+            }
+
+            //Damaging player
+            if(other.CompareTag("Player"))
+            {
+                print("damaged player -10 health through bounds");
+                other.GetComponent<Health>().ChangeHealth(-10f);
+            }
+
             //Check to make sure entity is in the CPC entity list
             if (CP_Controller.GetEntities().Contains(other.gameObject))
             {
@@ -44,7 +58,6 @@ namespace SmartPoint
                 {
                     if (resetVelocity && other.TryGetComponent<Rigidbody>(out Rigidbody m_rigid))
                     {
-                        print("here2");
                         //m_rigid.velocity = m_rigid.angularVelocity = Vector3.zero;
                     }
                     //Teleport
@@ -61,6 +74,7 @@ namespace SmartPoint
             }
             else if (teleportMode == TeleportMode.HighestIndex)
             {
+                print("here2");
                 CP_Controller.TeleportToLatest(go);
             }
             else if (teleportMode == TeleportMode.MostRecentlyActivated)

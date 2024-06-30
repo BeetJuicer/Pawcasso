@@ -127,6 +127,11 @@ public class DemoEnemyControls : MonoBehaviour
         CheckHealth();
     }
 
+    public void Die()
+    {
+        TakeDamage(ai.Health);
+    }
+
     void FixedUpdate()
     {
         Animation();
