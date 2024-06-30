@@ -231,27 +231,4 @@ public class PaintGun : MonoBehaviour
 		weaponModel.transform.Translate(new Vector3(0, 0, -kickBack), Space.Self);
 		weaponModel.transform.Rotate(new Vector3(-kickRot, 0, 0), Space.Self);
 	}
-
-	void OnGUI()
-	{
-		if (showCrosshair)
-		{
-			// Hold the location of the center of the screen in a variable
-			Vector2 center = new Vector2(Screen.width / 2, Screen.height / 2);
-
-			// Draw the crosshairs based on the weapon's inaccuracy
-			// Left
-			Rect leftRect = new Rect(center.x - crosshairLength - currentCrosshairSize, center.y - (crosshairWidth / 2), crosshairLength, crosshairWidth);
-			GUI.DrawTexture(leftRect, crosshairTextureHorizontal, ScaleMode.StretchToFill);
-			// Right
-			Rect rightRect = new Rect(center.x + currentCrosshairSize, center.y - (crosshairWidth / 2), crosshairLength, crosshairWidth);
-			GUI.DrawTexture(rightRect, crosshairTextureHorizontal, ScaleMode.StretchToFill);
-			// Top
-			Rect topRect = new Rect(center.x - (crosshairWidth / 2), center.y - crosshairLength - currentCrosshairSize, crosshairWidth, crosshairLength);
-			GUI.DrawTexture(topRect, crosshairTextureVertical, ScaleMode.StretchToFill);
-			// Bottom
-			Rect bottomRect = new Rect(center.x - (crosshairWidth / 2), center.y + currentCrosshairSize, crosshairWidth, crosshairLength);
-			GUI.DrawTexture(bottomRect, crosshairTextureVertical, ScaleMode.StretchToFill);
-		}
-	}
 }
