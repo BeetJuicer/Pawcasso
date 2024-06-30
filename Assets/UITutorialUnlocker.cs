@@ -11,9 +11,14 @@ public class UITutorialUnlocker : MonoBehaviour
     [SerializeField] private bool unlockGun;
     [Space(1)]
     [SerializeField] private WeaponSystem ws;
+    private bool hasBeenTriggered;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.CompareTag("Player") || hasBeenTriggered) 
+            return;
+
+        hasBeenTriggered = true;
         foreach(GameObject go in activate)
         {
             go.SetActive(true);
