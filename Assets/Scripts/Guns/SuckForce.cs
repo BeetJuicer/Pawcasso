@@ -20,6 +20,9 @@ public class SuckForce : MonoBehaviour
 	private bool spawnedTendrils;
 	private List<GameObject> tendrils = new List<GameObject>();
 	[SerializeField] private LayerMask whatToSuck;
+	[SerializeField] private AudioSource triggeredSound;
+	[SerializeField] private GameObject fragment;
+	[SerializeField] private GameObject suckFX;
 
 
 	void Start()
@@ -37,8 +40,7 @@ public class SuckForce : MonoBehaviour
 		// Destroy the projectile if the time is up
 		if (lifeTimer >= lifetime)
 		{
-			suck = true;
-			gameObject.GetComponent<Rigidbody>().useGravity = false;
+			EnterSuck();
 		}
 
 		if(suck)
@@ -53,6 +55,8 @@ public class SuckForce : MonoBehaviour
                 }
 				Destroy(gameObject);
 			}
+
+			return;
         }
 
 		// Make the projectile move
@@ -88,10 +92,18 @@ public class SuckForce : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		// If the projectile collides with something, call the Hit() function
-		suck = true;
+		EnterSuck();
 	}
 
+	private void EnterSuck()
+    {
+		gameObject.GetComponent<Rigidbody>().useGravity = false;
+		suck = true;
+		triggeredSound.Play();
+		GetComponent<AudioSource>().Play();
+		fragment.SetActive(false);
+		suckFX.SetActive(true);
+	}
 
 	// Modify the damage that this projectile can cause
 	public void MultiplyDamage(float amount)
