@@ -65,7 +65,7 @@ public class UITutorial : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         hud.SetActive(true);
-        print("tite");
+        print("tite");  
         gameObject.SetActive(false);
         GameManager.Instance().ResumeActions();
     }
