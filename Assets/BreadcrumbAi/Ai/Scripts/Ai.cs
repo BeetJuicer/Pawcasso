@@ -103,7 +103,7 @@ namespace BreadcrumbAi{
 		}
 	
 		void Update(){
-			if (GameManager.Instance().isPaused)
+			if (GameManager.Instance().IsPaused)
 				return;
 
 			Ai_LifeState();
@@ -113,7 +113,7 @@ namespace BreadcrumbAi{
 		}
 	
 		void FixedUpdate (){
-			if (GameManager.Instance().isPaused)
+			if (GameManager.Instance().IsPaused)
 				return;
 
 			Ai_Controller(); 	// Controls Ai Movement & Attack States

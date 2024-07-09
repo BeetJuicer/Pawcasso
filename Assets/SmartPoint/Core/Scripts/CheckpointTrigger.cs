@@ -19,6 +19,7 @@ namespace SmartPoint
         {
             if (cpc.GetEntities().Contains(other.gameObject))
             {
+                PlayerPrefs.SetInt("PlayerCheckpoint", cpIndex);
                 cpc.CollisionOccurred(cpIndex, other.gameObject);
             }
         }

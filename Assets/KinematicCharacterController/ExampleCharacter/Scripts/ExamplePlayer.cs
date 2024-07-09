@@ -31,7 +31,7 @@ namespace KinematicCharacterController.Examples
 
         private void Update()
         {
-            if (GameManager.Instance().isPaused)
+            if (GameManager.Instance().IsPaused)
                 return;
 
             if (Input.GetMouseButtonDown(0))
@@ -44,7 +44,7 @@ namespace KinematicCharacterController.Examples
 
         private void LateUpdate()
         {
-            if (GameManager.Instance().isPaused)
+            if (GameManager.Instance().IsPaused)
                 return;
 
             // Handle rotating the camera along with physics movers
