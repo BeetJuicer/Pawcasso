@@ -1,10 +1,28 @@
-1. Clone niyo sa local device.
-2. Duplicate characterPlayground scene.
-3. Make your changes.
-    - Pwede niyong igalaw kahit ano sa duplicated scene niyo. Pwede kayong magdagdag ng objects sa duplicated scene niyo.
-    - Pwede magdagdag ng scripts.
-    - Ekis mag-galaw ng existing scripts. Pwede gamitin, bawal galawin. Kung may plano kayong gawin sa existing scripts, inform me.
-    - Lahat ng idadagdag niyo, gawan ng folder. Folder name is name niyo. Example: GusiAssets/Scripts, LuisaAssets/Mp3Files, etc etc
-    - **IF NEED** may baguhin sa settings like keyboard inputs, player settings, **or magdagdag ng layers and tags** etc. Inform me din. Wag baguhin biglaan yung settings.
-4. Create a pull request.
-5. Good lock.
+# Pawcasso
+Repository for pawcasso, a First Person Shooter game made in Unity inspired by Splatoon's coloring mechanics and Ultrakill's combat and style combo system.
+School project made by 3rd year students of PUP - Taguig for PUPT's Techxibit.
+
+###### Game Director and Lead Developer: 
+    - Carl Capilitan (https://github.com/BeetJuicer)
+    
+###### UI/UX Manager: 
+    - Sarah Malaras (https://github.com/ssarzxc)
+    
+###### Level Designers:
+    - Gino Gusi (https://github.com/Xiaoranxi)
+    - Princess Ramos (https://github.com/ryyraii)
+    - Mary Virtudazo (https://github.com/Amari2002)
+
+###### Environment Designers:
+    - Joshua Bilog (https://github.com/JJBilog)
+    - Emmanuel Lopez (https://github.com/lops09)
+
+###### Animator
+    - Barbie Jalandoni  (https://github.com/aydilwakem)
+    
+###### Sound Designer:
+    - Luisa Hebrez (wizahebrez@gmail.com)
+
+###### Documentation:
+    - Lanz Martinez (lanzryle@gmail.com)
+    - John Rodriguez (johnpaul7519@gmail.com)
